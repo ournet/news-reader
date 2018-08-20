@@ -33,6 +33,8 @@
   },
   "homepage": "https://github.com/ournet/news-reader#readme",
   "devDependencies": {
+    "@types/feedparser": "^2.2.1",
+    "@types/got": "^8.3.3",
     "@types/mongodb": "^3.1.4",
     "@types/node": "latest",
     "ava": "^0.23.0",
@@ -43,7 +45,14 @@
   "dependencies": {
     "aws-sdk": "^2.296.0",
     "dotenv": "^6.0.0",
+    "feedparser": "^2.2.9",
+    "got": "^9.0.0",
+    "iconv-lite": "^0.4.23",
+    "jschardet": "^1.6.0",
     "mongodb": "^3.1.3",
+    "peek-stream": "^1.1.3",
+    "stream-splicer": "^2.0.0",
+    "to-utf-8": "^1.3.0",
     "winston": "^3.0.0"
   }
 }
