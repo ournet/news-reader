@@ -1,12 +1,12 @@
 
 import got = require('got');
 import FeedParser = require('feedparser');
-import { toutf8 } from './toutf8';
+import { toutf8 } from './to-utf8';
 
 const ITEM_CONTENT_NAMES = ['yandex:full-text'];
 
-export function readFeed(url: string): Promise<FeedItem[]> {
-    return new Promise<FeedItem[]>((resolve, reject) => {
+export function readFeed(url: string): Promise<FeedReaderItem[]> {
+    return new Promise<FeedReaderItem[]>((resolve, reject) => {
         const req = got.stream(url, {
             timeout: 1000 * 3,
             method: 'GET',
@@ -33,7 +33,7 @@ export function readFeed(url: string): Promise<FeedItem[]> {
             }
         });
 
-        const items: FeedItem[] = [];
+        const items: FeedReaderItem[] = [];
 
         feedparser.on('readable', function () {
             let item: FeedParser.Item;
@@ -69,7 +69,7 @@ export function readFeed(url: string): Promise<FeedItem[]> {
     });
 }
 
-export type FeedItem = {
+export type FeedReaderItem = {
     content?: string
     title: string
     /** frequently, the full article content */
