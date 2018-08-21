@@ -44,7 +44,9 @@
     "typescript": "latest"
   },
   "dependencies": {
+    "ascrape": "^0.2.0",
     "aws-sdk": "^2.296.0",
+    "charset": "^1.0.1",
     "dotenv": "^6.0.0",
     "ellipsize": "^0.1.0",
     "entities": "^1.1.1",
@@ -52,6 +54,7 @@
     "got": "^9.0.0",
     "iconv-lite": "^0.4.23",
     "jschardet": "^1.6.0",
+    "metascraper": "^3.12.1",
     "mongodb": "^3.1.3",
     "peek-stream": "^1.1.3",
     "stream-splicer": "^2.0.0",
