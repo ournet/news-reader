@@ -1,5 +1,7 @@
 
 import { fetchUrl } from '../fetch-url';
+import { extractTextFromHtml, decodeHtml } from '../helpers';
+import { sanitizeNewsText, sanitizeNewsTitle } from '../sanitizer';
 const metascraper = require('metascraper');
 const ascrape = require('ascrape');
 
@@ -8,14 +10,18 @@ export async function exploreWebPage(webpageUrl: string) {
 
     const metadata = await metascraper({ html, url });
     const content = await scrapeArticleContent(html);
+    let text: string | undefined;
+    if (content) {
+        text = decodeHtml(extractTextFromHtml(content)).trim();
+    }
 
     const webpage: WebPage = {
-        title: metadata.title,
-        url: metadata.url,
+        title: metadata.title && sanitizeNewsTitle(metadata.title),
+        url: metadata.url || url,
         image: metadata.image,
         video: metadata.video,
-        description: metadata.description,
-        text: content,
+        description: metadata.description && sanitizeNewsTitle(metadata.description),
+        text: text && sanitizeNewsText(text),
     };
 
     return webpage;

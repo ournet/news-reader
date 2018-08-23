@@ -3,6 +3,7 @@ import { readFeed, FeedReaderItem } from "../feed-reader";
 import { logger } from "../logger";
 import { getLastReadedFeedUrl } from "../feeds-last-url";
 import { sanitizeNewsText, sanitizeNewsTitle } from "../sanitizer";
+import { extractTextFromHtml } from "../helpers";
 
 export async function readNewsFeed(feed: NewsFeed, source: NewsSource, minDate: Date) {
     let feedReaderItems: FeedReaderItem[] = []
@@ -40,13 +41,13 @@ export async function readNewsFeed(feed: NewsFeed, source: NewsSource, minDate: 
             continue;
         }
 
-        let summary = sanitizeNewsText(feedItem.description || feedItem.summary || '');
+        let summary = sanitizeNewsText(extractTextFromHtml(feedItem.description || feedItem.summary || ''));
 
-        newsItem.summary = summary;
+        newsItem.summary = summary && summary.trim();
         if (feedItem.content || feedItem.description) {
-            let content = sanitizeNewsText(feedItem.content || feedItem.description || '');
+            let content = sanitizeNewsText(extractTextFromHtml(feedItem.content || feedItem.description || ''));
             if (content !== summary) {
-                newsItem.content = content;
+                newsItem.content = content && content.trim();
             }
         }
 
