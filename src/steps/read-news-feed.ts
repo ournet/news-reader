@@ -32,7 +32,7 @@ export async function readNewsFeed(feed: NewsFeed, source: NewsSource, minDate: 
     const items: NewsFeedItem[] = [];
     for (const feedItem of feedReaderItems) {
         const newsItem: NewsFeedItem = {
-            title: sanitizeNewsTitle(feedItem.title),
+            title: sanitizeNewsTitle(extractTextFromHtml(feedItem.title)),
             link: feedItem.link,
             pubdate: feedItem.pubdate || feedItem.date || new Date(),
         };
@@ -41,11 +41,11 @@ export async function readNewsFeed(feed: NewsFeed, source: NewsSource, minDate: 
             continue;
         }
 
-        let summary = sanitizeNewsText(extractTextFromHtml(feedItem.description || feedItem.summary || ''));
+        const summary = sanitizeNewsText(extractTextFromHtml(feedItem.description || feedItem.summary || ''));
 
         newsItem.summary = summary && summary.trim();
         if (feedItem.content || feedItem.description) {
-            let content = sanitizeNewsText(extractTextFromHtml(feedItem.content || feedItem.description || ''));
+            const content = sanitizeNewsText(extractTextFromHtml(feedItem.content || feedItem.description || ''));
             if (content !== summary) {
                 newsItem.content = content && content.trim();
             }

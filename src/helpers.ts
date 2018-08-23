@@ -10,6 +10,7 @@ export function decodeHtml(html: string) {
 
 export function extractTextFromHtml(html: string) {
     html = sanitizeHtml(html);
+    html = decodeHtml(html);
     return striptags(html);
 }
 

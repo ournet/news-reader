@@ -1,27 +1,35 @@
 
 import { fetchUrl } from '../fetch-url';
-import { extractTextFromHtml, decodeHtml } from '../helpers';
+import { extractTextFromHtml } from '../helpers';
 import { sanitizeNewsText, sanitizeNewsTitle } from '../sanitizer';
 const metascraper = require('metascraper');
 const ascrape = require('ascrape');
 
 export async function exploreWebPage(webpageUrl: string) {
-    const { body: html, url } = await fetchUrl(webpageUrl);
+    const { body: html, url } = await fetchUrl(webpageUrl, {
+        timeout: 1000 * 3,
+        headers: {
+            'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
+            'cache-control': 'max-age=0',
+            'accept': 'text/html,application/xhtml+xml',
+            'accept-charset': 'utf8',
+        },
+    });
 
     const metadata = await metascraper({ html, url });
     const content = await scrapeArticleContent(html);
     let text: string | undefined;
     if (content) {
-        text = decodeHtml(extractTextFromHtml(content)).trim();
+        text = sanitizeNewsText(extractTextFromHtml(content));
     }
 
     const webpage: WebPage = {
-        title: metadata.title && sanitizeNewsTitle(metadata.title),
+        title: metadata.title && sanitizeNewsTitle(extractTextFromHtml(metadata.title)),
         url: metadata.url || url,
         image: metadata.image,
         video: metadata.video,
-        description: metadata.description && sanitizeNewsTitle(metadata.description),
-        text: text && sanitizeNewsText(text),
+        description: metadata.description && sanitizeNewsTitle(extractTextFromHtml(metadata.description)),
+        text,
     };
 
     return webpage;

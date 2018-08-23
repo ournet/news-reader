@@ -8,3 +8,4 @@ lib
 types
 package-lock.json
 *-error.log
+data/*.json
