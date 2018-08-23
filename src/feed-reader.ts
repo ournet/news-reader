@@ -1,37 +1,32 @@
 
-import got = require('got');
 import FeedParser = require('feedparser');
-import { toutf8 } from './to-utf8';
+import { fetchUrl } from './fetch-url';
+import { Readable } from 'stream';
 
 const ITEM_CONTENT_NAMES = ['yandex:full-text'];
 
-export function readFeed(url: string): Promise<FeedReaderItem[]> {
-    return new Promise<FeedReaderItem[]>((resolve, reject) => {
-        const req = got.stream(url, {
-            timeout: 1000 * 3,
-            method: 'GET',
-            headers: {
-                'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
-                'cache-control': 'max-age=0',
-                'accept': 'application/xhtml+xml,application/xml',
-                'accept-charset': 'utf8',
-            },
-        });
-        req.on('error', reject);
+export async function readFeed(feedUrl: string): Promise<FeedReaderItem[]> {
+    const { body } = await fetchUrl(feedUrl, {
+        timeout: 1000 * 3,
+        headers: {
+            'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
+            'cache-control': 'max-age=0',
+            'accept': 'application/xhtml+xml,application/xml',
+            'accept-charset': 'utf8',
+        },
+    });
 
+    const stream = new Readable();
+
+    return new Promise<FeedReaderItem[]>((resolve, reject) => {
         const feedparser = new FeedParser({
             normalize: true,
+            addmeta: false,
         });
 
         feedparser.on('error', reject);
 
-        req.pipe(toutf8()).pipe(feedparser);
-
-        req.on('response', function (res) {
-            if (res.statusCode !== 200) {
-                req.emit('error', new Error('Bad status code'));
-            }
-        });
+        stream.pipe(feedparser);
 
         const items: FeedReaderItem[] = [];
 
@@ -66,6 +61,9 @@ export function readFeed(url: string): Promise<FeedReaderItem[]> {
         });
 
         feedparser.on('end', () => resolve(items));
+
+        stream.push(body, 'utf8');
+        stream.push(null);
     });
 }
 
