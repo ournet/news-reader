@@ -12,5 +12,5 @@ test('sanitize', async t => {
     const items = await readNewsFeed(feed, source, minDate);
     t.true(items.length > 0);
     // writeFileSync('file.json', JSON.stringify(items[0]));
-    t.log(JSON.stringify(items[0]));
+    // t.log(JSON.stringify(items[0]));
 })

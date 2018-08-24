@@ -7,6 +7,6 @@ test('encoding', async t => {
     for (const url of urls) {
         const items = await readFeed(url);
         t.true(items.length > 0);
-        t.log(JSON.stringify(items.map(item => item.title)));
+        // t.log(JSON.stringify(items.map(item => item.title)));
     }
 })

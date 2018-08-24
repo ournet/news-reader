@@ -7,6 +7,7 @@
     "pretest": "npm run clean && npm run tsc",
     "test": "ava --no-cache --verbose lib/**/*.test.js",
     "posttest": "npm run clean-test-code",
+    "retest": "ava --no-cache --verbose lib/**/*.test.js",
     "tsc": "tsc",
     "tscw": "tsc -w",
     "preversion": "npm run tsc",

@@ -32,3 +32,15 @@ export const MIN_EVENT_NEWS = process.env.MIN_EVENT_NEWS
 if (!MIN_EVENT_NEWS || MIN_EVENT_NEWS === NaN || MIN_EVENT_NEWS < 2) {
     throw new Error('MIN_EVENT_NEWS is required!');
 }
+
+export const ENTITIZER_URL = process.env.ENTITIZER_URL || '';
+
+if (!ENTITIZER_URL) {
+    throw new Error('ENTITIZER_URL is required!');
+}
+
+export const ENTITIZER_KEY = process.env.ENTITIZER_KEY || '';
+
+if (!ENTITIZER_KEY) {
+    throw new Error('ENTITIZER_KEY is required!');
+}
