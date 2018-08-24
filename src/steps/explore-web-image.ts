@@ -1,7 +1,8 @@
 
 import { ImageFormat } from '@ournet/images-domain';
 import got = require('got');
-import jimp = require('jimp');
+import sharp = require('sharp');
+const imghash = require('imghash');
 
 export async function exploreWebImage(imageUrl: string) {
     const { body, url } = await got(imageUrl, {
@@ -23,19 +24,23 @@ export async function exploreWebImage(imageUrl: string) {
 }
 
 async function getWebImage(data: Buffer, url: string): Promise<WebImage> {
-    const image = await jimp.read(data);
-    const height = image.getHeight();
-    const width = image.getWidth();
+    const image = sharp(data);
+    const metadata = await image.metadata();
+    if (!metadata.height || !metadata.width) {
+        throw new Error(`Invalid image. No metadata. ${url}`);
+    }
+
+    const height = metadata.height || 0;
+    const width = metadata.width || 0;
     const length = data.byteLength;
-    const hash = <any>image.hash() as string;
-    const mime = image.getMIME();
+    const hash = await getImageHash(data);
     let format: ImageFormat;
-    if (mime === 'image/jpeg') {
+    if (metadata.format === 'jpeg') {
         format = 'jpg';
-    } else if (mime === 'image/npg') {
+    } else if (metadata.format === 'png') {
         format = 'png';
     } else {
-        throw new Error(`Invalid image format: ${mime}`);
+        throw new Error(`Invalid image format: ${metadata.format}`);
     }
 
     return {
@@ -47,6 +52,10 @@ async function getWebImage(data: Buffer, url: string): Promise<WebImage> {
         hash,
         format,
     }
+}
+
+function getImageHash(data: Buffer): Promise<string> {
+    return imghash.hash(data);
 }
 
 export type WebImage = {
