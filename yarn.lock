@@ -3038,6 +3038,10 @@ querystring@0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/querystring/-/querystring-0.2.0.tgz#b209849203bb25df820da756e747005878521620"
 
+quote-parser@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/quote-parser/-/quote-parser-0.1.6.tgz#c0fc22541f043b3ee6c3b4c0f7d0faa010ad053e"
+
 randomatic@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/randomatic/-/randomatic-3.1.0.tgz#36f2ca708e9e567f5ed2ec01949026d50aa10116"
