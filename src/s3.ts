@@ -1,14 +1,14 @@
 import S3 = require('aws-sdk/clients/s3');
 import { delay } from './helpers';
-import { S3_IMAGES_BUCKET } from './config';
+import { S3_IMAGES_BUCKET, S3_IMAGES_NEWS_NAME, S3_IMAGES_EVENTS_NAME } from './config';
 import { ImageHelper } from '@ournet/images-domain';
 
 const s3 = new S3();
 
-export function copyImageToStoriesById(id: string) {
+export function copyImageToEventsById(id: string) {
     const key = formatImageKeyFromId(id, 'master');
 
-    copyToStoriesByKey(key);
+    return copyToEventsByKey(key);
 }
 
 export function putImageById(id: string, body: Buffer | Blob) {
@@ -28,12 +28,12 @@ async function putImage(key: string, body: Buffer | Blob) {
     }).promise();
 }
 
-function copyToStoriesByKey(key: string) {
-    return copyImage('news/' + key, 'stories/' + key)
+function copyToEventsByKey(key: string) {
+    return copyImage(S3_IMAGES_NEWS_NAME + '/' + key, S3_IMAGES_EVENTS_NAME + '/' + key)
         .catch(async err => {
             if (err.code === 'SlowDown' && err.retryable) {
                 await delay(1000);
-                await copyToStoriesByKey(key);
+                await copyToEventsByKey(key);
             }
             throw err;
         });

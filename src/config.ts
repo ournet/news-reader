@@ -1,4 +1,7 @@
 
+export const S3_IMAGES_NEWS_NAME = 'news';
+export const S3_IMAGES_EVENTS_NAME = 'events';
+
 export const S3_IMAGES_BUCKET = process.env.S3_IMAGES_BUCKET || '';
 
 if (!S3_IMAGES_BUCKET) {
