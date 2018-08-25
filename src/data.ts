@@ -1,7 +1,5 @@
 
-import { TOPICS_DB_CONNECTION, NEWS_ES_HOST } from './config';
-
-import { MongoClient } from 'mongodb';
+import { Db, MongoClient } from 'mongodb';
 import DynamoDB = require('aws-sdk/clients/dynamodb');
 
 import { TopicRepositoryBuilder } from '@ournet/topics-data';
@@ -9,27 +7,30 @@ import { TopicRepository } from '@ournet/topics-domain';
 import { NewsRepositoryBuilder, EventRepositoryBuilder, ArticleContentRepositoryBuilder } from '@ournet/news-data';
 import { ImageRepositoryBuilder } from '@ournet/images-data';
 import { QuoteRepositoryBuilder } from '@ournet/quotes-data';
+import { NewsRepository, EventRepository, ArticleContentRepository } from '@ournet/news-domain';
+import { ImageRepository } from '@ournet/images-domain';
+import { QuoteRepository } from '@ournet/quotes-domain';
 
 const dynamoClient = new DynamoDB.DocumentClient();
-let mongoClient: MongoClient;
 
-export let topicRep: TopicRepository;
-export const newsRep = NewsRepositoryBuilder.build(dynamoClient, NEWS_ES_HOST);
-export const eventRep = EventRepositoryBuilder.build(dynamoClient);
-export const actircleContentRep = ArticleContentRepositoryBuilder.build(dynamoClient);
-export const imageRep = ImageRepositoryBuilder.build(dynamoClient);
-export const quoteRep = QuoteRepositoryBuilder.build(dynamoClient);
+export class DataApi {
+    readonly topicRep: TopicRepository
+    readonly newsRep: NewsRepository
+    readonly eventRep: EventRepository
+    readonly articleContentRep: ArticleContentRepository
+    readonly imageRep: ImageRepository
+    readonly quoteRep: QuoteRepository
 
-export async function init() {
-    mongoClient = await MongoClient.connect(TOPICS_DB_CONNECTION);
-
-    if (!topicRep) {
-        topicRep = TopicRepositoryBuilder.build(mongoClient.db());
+    constructor(mongoDb: Db, newsESHost: string) {
+        this.topicRep = TopicRepositoryBuilder.build(mongoDb);
+        this.newsRep = NewsRepositoryBuilder.build(dynamoClient, newsESHost);
+        this.eventRep = EventRepositoryBuilder.build(dynamoClient);
+        this.articleContentRep = ArticleContentRepositoryBuilder.build(dynamoClient);
+        this.imageRep = ImageRepositoryBuilder.build(dynamoClient);
+        this.quoteRep = QuoteRepositoryBuilder.build(dynamoClient);
     }
 }
 
-export async function close() {
-    if (mongoClient) {
-        await mongoClient.close();
-    }
+export function createMongoClient(connectionString: string) {
+    return MongoClient.connect(connectionString);
 }

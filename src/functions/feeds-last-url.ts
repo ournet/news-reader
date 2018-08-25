@@ -1,4 +1,4 @@
-import { Locale } from "./types";
+import { Locale } from "../types";
 import { join } from "path";
 import { readFile, writeFile } from "fs";
 import { Dictionary } from "@ournet/domain";

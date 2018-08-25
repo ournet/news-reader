@@ -3,6 +3,7 @@ import { ImageFormat } from '@ournet/images-domain';
 import got = require('got');
 import sharp = require('sharp');
 const imghash = require('imghash');
+const dominantColor = require('dominant-color');
 
 export async function exploreWebImage(imageUrl: string) {
     const { body, url } = await got(imageUrl, {
@@ -42,6 +43,7 @@ async function getWebImage(data: Buffer, url: string): Promise<WebImage> {
     } else {
         throw new Error(`Invalid image format: ${metadata.format}`);
     }
+    const color = await getDominantColor(data);
 
     return {
         url,
@@ -51,7 +53,19 @@ async function getWebImage(data: Buffer, url: string): Promise<WebImage> {
         length,
         hash,
         format,
+        color,
     }
+}
+
+function getDominantColor(data: Buffer): Promise<string> {
+    return new Promise((resolve, reject) => {
+        dominantColor(data, { format: 'hex' }, (err: Error, color: string) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(color);
+        })
+    });
 }
 
 function getImageHash(data: Buffer): Promise<string> {
@@ -66,4 +80,5 @@ export type WebImage = {
     length: number
     hash: string
     format: ImageFormat
+    color: string
 }

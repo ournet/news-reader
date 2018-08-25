@@ -1270,6 +1270,13 @@ domhandler@^2.3.0:
   dependencies:
     domelementtype "1"
 
+dominant-color@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/dominant-color/-/dominant-color-0.0.1.tgz#8d1321eec71635d9b56cb742ce75363455ead6d4"
+  dependencies:
+    imagemagick "^0.1.3"
+    rgb-hex "^1.0.0"
+
 domutils@1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/domutils/-/domutils-1.5.1.tgz#dcd8488a26f563d61079e48c9f7b7e32373682cf"
@@ -1817,6 +1824,10 @@ image-type@^2.1.0:
     file-type "^3.0.0"
     meow "^3.3.0"
 
+imagemagick@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/imagemagick/-/imagemagick-0.1.3.tgz#7483cea093b4d9f2e2f396857adc8821b537c56a"
+
 imghash@^0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/imghash/-/imghash-0.0.3.tgz#e4c33949e4f6990684194bd3a7ef89acb887e5d5"
@@ -1841,6 +1852,12 @@ import-local@^0.1.1:
 imurmurhash@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
+
+in-text-search@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/in-text-search/-/in-text-search-0.1.0.tgz#7418adc11722ee6c2c87121f7f54ffed8e6aee30"
+  dependencies:
+    stopwords-json "^1.1.0"
 
 indent-string@^2.1.0:
   version "2.1.0"
@@ -3253,6 +3270,10 @@ restore-cursor@^2.0.0:
     onetime "^2.0.0"
     signal-exit "^3.0.2"
 
+rgb-hex@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/rgb-hex/-/rgb-hex-1.0.0.tgz#bfaf8cd9cd9164b5a26d71eb4f15a0965324b3c1"
+
 rimraf@^2.6.1, rimraf@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.2.tgz#2ed8150d24a16ea8651e6d6ef0f47c4158ce7a36"
@@ -3456,6 +3477,10 @@ stack-trace@0.0.x:
 stack-utils@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/stack-utils/-/stack-utils-1.0.1.tgz#d4f33ab54e8e38778b0ca5cfd3b3afb12db68620"
+
+stopwords-json@^1.1.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/stopwords-json/-/stopwords-json-1.2.0.tgz#f0c033a4f72ddbfc6fe5da5f50b6208a0a9d7567"
 
 string-width@^1.0.1:
   version "1.0.2"

@@ -1,11 +1,11 @@
 
-import { fetchUrl } from '../fetch-url';
+import { fetchUrl } from './fetch-url';
 import { extractTextFromHtml } from '../helpers';
-import { sanitizeNewsText, sanitizeNewsTitle } from '../sanitizer';
+import { sanitizeNewsText, sanitizeNewsTitle } from './sanitizer';
 const metascraper = require('metascraper');
 const ascrape = require('ascrape');
 
-export async function exploreWebPage(webpageUrl: string) {
+export async function exploreWebPage(webpageUrl: string, extractContent?: boolean) {
     const { body: html, url } = await fetchUrl(webpageUrl, {
         timeout: 1000 * 3,
         headers: {
@@ -17,10 +17,12 @@ export async function exploreWebPage(webpageUrl: string) {
     });
 
     const metadata = await metascraper({ html, url });
-    const content = await scrapeArticleContent(html);
     let text: string | undefined;
-    if (content) {
-        text = sanitizeNewsText(extractTextFromHtml(content));
+    if (extractContent !== false) {
+        const content = await scrapeArticleContent(html);
+        if (content) {
+            text = sanitizeNewsText(extractTextFromHtml(content));
+        }
     }
 
     const webpage: WebPage = {

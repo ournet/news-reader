@@ -1,8 +1,8 @@
-import { NewsFeed, NewsSource } from "../types";
-import { readFeed, FeedReaderItem } from "../feed-reader";
+
+import { readFeed, FeedReaderItem } from "./feed-reader";
 import { logger } from "../logger";
-import { getLastReadedFeedUrl } from "../feeds-last-url";
-import { sanitizeNewsText, sanitizeNewsTitle } from "../sanitizer";
+import { getLastReadedFeedUrl } from "./feeds-last-url";
+import { sanitizeNewsText, sanitizeNewsTitle } from "./sanitizer";
 import { extractTextFromHtml } from "../helpers";
 
 export async function readNewsFeed(feed: NewsFeed, source: NewsSource, minDate: Date) {
@@ -54,6 +54,18 @@ export async function readNewsFeed(feed: NewsFeed, source: NewsSource, minDate: 
         items.push(newsItem);
     }
     return items;
+}
+
+export type NewsSource = {
+    id: string
+    name: string
+    url: string
+    country: string
+}
+
+export type NewsFeed = {
+    url: string
+    language: string
 }
 
 export type NewsFeedItem = {
