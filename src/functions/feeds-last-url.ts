@@ -45,5 +45,5 @@ async function writeDataFile(locale: Locale, feedUrl: string, lastUrl: string) {
 }
 
 function formatFilePath(locale: Locale) {
-    return join(__dirname, '..', 'data', `feed-last-urls-${locale.lang.toLowerCase()}-${locale.country.toLowerCase()}.json`);
+    return join(__dirname, '..', '..', 'data', `feed-last-urls-${locale.lang.toLowerCase()}-${locale.country.toLowerCase()}.json`);
 }

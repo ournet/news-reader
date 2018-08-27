@@ -2,8 +2,8 @@
   "name": "@ournet/news-reader",
   "version": "0.0.1",
   "description": "Ournet news-reader app",
-  "main": "./lib/index.js",
   "scripts": {
+    "start": "node ./lib/app.js",
     "pretest": "npm run clean && npm run tsc",
     "test": "ava --no-cache --verbose lib/**/*.test.js",
     "posttest": "npm run clean-test-code",

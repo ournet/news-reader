@@ -1,5 +1,5 @@
 
-// const debug = require('debug')('ournet:news-reader');
+const debug = require('debug')('ournet:news-reader');
 
 import {
     NewsHelper,
@@ -24,6 +24,8 @@ export interface ProcessFeedItemInfo {
 export async function processFeedItem(dataService: DataService, imagesStorage: ImagesStorageService,
     topicsService: TextTopicsService, feedItem: NewsFeedItem, info: ProcessFeedItemInfo) {
 
+    debug(`pre build news data: ${feedItem.link}`);
+
     const newsData = await buildNewsData(feedItem, {
         country: info.country,
         lang: info.lang,
@@ -35,6 +37,8 @@ export async function processFeedItem(dataService: DataService, imagesStorage: I
     if (!newsData) {
         return;
     }
+
+    debug(`post build news data: ${newsData.url}`);
 
     const newsItem = NewsHelper.build({
         country: newsData.country,

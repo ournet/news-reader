@@ -44,3 +44,7 @@ export const ENTITIZER_KEY = process.env.ENTITIZER_KEY || '';
 if (!ENTITIZER_KEY) {
     throw new Error('ENTITIZER_KEY is required!');
 }
+
+export const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID || '';
+export const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY || '';
+export const AWS_REGION = process.env.AWS_REGION || '';

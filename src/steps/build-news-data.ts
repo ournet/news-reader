@@ -1,5 +1,5 @@
 
-// const debug = require('debug')('ournet:news-reader');
+const debug = require('debug')('ournet:news-reader');
 
 import { logger } from "../logger";
 import { WebImage, exploreWebImage } from "../functions/explore-web-image";
@@ -29,11 +29,14 @@ export type BuildNewsDataOptions = {
 }
 
 export async function buildNewsData(feedItem: NewsFeedItem, options: BuildNewsDataOptions) {
+    debug(`pre get web page ${feedItem.link}`);
 
     const page = await getWebPage(feedItem);
     if (!page) {
         return;
     }
+
+    debug(`post get web page ${page.url}`);
 
     let summary = page.description || '';
     const minSummaryLength = options.minSummaryLength;
@@ -60,7 +63,7 @@ export async function buildNewsData(feedItem: NewsFeedItem, options: BuildNewsDa
         country: options.country,
         lang: options.lang,
         sourceId: options.sourceId,
-        publishedAt: feedItem.pubdate.toISOString(),
+        publishedAt: (feedItem.pubdate || new Date()).toISOString(),
         summary,
         title: page.title,
         url: page.url,
