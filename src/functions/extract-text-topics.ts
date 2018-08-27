@@ -1,21 +1,30 @@
 
 import got = require('got');
-import { BuildTopicParams, TopicType } from '@ournet/topics-domain';
+import { BuildTopicParams, TopicType, TopicHelper } from '@ournet/topics-domain';
 import { Locale } from '../types';
-import { ENTITIZER_URL, ENTITIZER_KEY } from '../config';
 import { Dictionary } from '@ournet/domain';
 import { URLSearchParams } from 'url';
 
+export interface TextTopicTopic extends BuildTopicParams {
+    id: string
+    slug: string
+}
+
 export type TextTopic = {
-    topic: BuildTopicParams
+    topic: TextTopicTopic
     input: { text: string, index: number }[]
 }
 
-export async function extractTextTopics(locale: Locale, text: string): Promise<TextTopic[]> {
+export type ExtractTextTopicsOptions = {
+    entitizerKey: string
+    entitizerUrl: string
+}
 
-    const url = ENTITIZER_URL;
+export async function extractTextTopics(locale: Locale, text: string, options: ExtractTextTopicsOptions): Promise<TextTopic[]> {
+
+    const url = options.entitizerUrl;
     const query = new URLSearchParams();
-    query.append('key', ENTITIZER_KEY);
+    query.append('key', options.entitizerKey);
     query.append('lang', locale.lang);
     query.append('country', locale.country);
     query.append('wikidata', 'true');
@@ -49,28 +58,30 @@ export async function extractTextTopics(locale: Locale, text: string): Promise<T
 }
 
 function convertToTextTopic(locale: Locale, entity: EntitizerEntity, input: { text: string, index: number }[], wikiData?: WikidataEntity) {
-    const topic: TextTopic = {
-        topic: {
-            abbr: entity.abbr,
-            commonName: entity.commonName,
-            country: locale.country,
-            description: entity.description,
-            englishName: entity.englishName,
-            lang: locale.lang,
-            name: entity.name,
-            type: entity.type,
-            wikiData: wikiData && {
-                data: wikiData.data,
-                about: wikiData.about,
-                id: wikiData.wikiDataId,
-                name: wikiData.name,
-                wikiPageTitle: wikiData.wikiPageTitle,
-            }
-        },
+    const params = {
+        abbr: entity.abbr,
+        commonName: entity.commonName,
+        country: locale.country,
+        description: entity.description,
+        englishName: entity.englishName,
+        lang: locale.lang,
+        name: entity.name,
+        type: entity.type,
+        wikiData: wikiData && {
+            data: wikiData.data,
+            about: wikiData.about,
+            id: wikiData.wikiDataId,
+            name: wikiData.name,
+            wikiPageTitle: wikiData.wikiPageTitle,
+        }
+    };
+    const topic = TopicHelper.build(params);
+    const textTopic: TextTopic = {
+        topic: { ...params, id: topic.id, slug: TopicHelper.parseSlugFromId(topic.id) },
         input,
     };
 
-    return topic;
+    return textTopic;
 }
 
 type EntitizerData = {
