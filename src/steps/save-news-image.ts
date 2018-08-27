@@ -4,10 +4,10 @@ const debug = require('debug')('ournet:news-reader');
 import { ImageHelper, ImageRepository } from "@ournet/images-domain";
 import { URL } from "url";
 import { WebImage } from "../functions/explore-web-image";
-import { OurnetImagesStorage } from "../types";
 import { uniq } from "@ournet/domain";
+import { ImagesStorageService } from "../services/images-storage-service";
 
-export async function saveNewsImage(imageRep: ImageRepository, imagesStorage: OurnetImagesStorage, webImage: WebImage, pageUrl: string) {
+export async function saveNewsImage(imageRep: ImageRepository, imagesStorage: ImagesStorageService, webImage: WebImage, pageUrl: string) {
 
     const host = new URL(pageUrl).host;
 

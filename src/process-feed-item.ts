@@ -1,29 +1,28 @@
 
 // const debug = require('debug')('ournet:news-reader');
 
-// import { logger } from "./logger";
-
 import {
     NewsHelper,
 } from "@ournet/news-domain";
 import { NewsFeedItem } from "./functions/read-news-feed";
-import { OurnetDataStorage, OurnetImagesStorage } from "./types";
 import { buildNewsData } from "./steps/build-news-data";
 import { saveNewsTopics } from "./steps/save-news-topics";
-import { ExtractTextTopicsOptions } from "./functions/extract-text-topics";
+import { TextTopicsService } from "./services/text-topics-service";
 import { saveNewsQuotes } from "./steps/save-news-quotes";
 import { saveArticleContent } from "./steps/save-article-content";
 import { saveNewsImage } from "./steps/save-news-image";
+import { DataService } from "./services/data-service";
+import { ImagesStorageService } from "./services/images-storage-service";
+import { logger } from "./logger";
 
-export interface ProcessFeedItemInfo extends ExtractTextTopicsOptions {
+export interface ProcessFeedItemInfo {
     sourceId: string
     country: string
     lang: string
 }
 
-export async function processFeedItem(dataStorage: OurnetDataStorage,
-    imagesStorage: OurnetImagesStorage,
-    feedItem: NewsFeedItem, info: ProcessFeedItemInfo) {
+export async function processFeedItem(dataService: DataService, imagesStorage: ImagesStorageService,
+    topicsService: TextTopicsService, feedItem: NewsFeedItem, info: ProcessFeedItemInfo) {
 
     const newsData = await buildNewsData(feedItem, {
         country: info.country,
@@ -49,19 +48,12 @@ export async function processFeedItem(dataStorage: OurnetDataStorage,
 
     const id = newsItem.id;
 
-    const existingNewsItem = await dataStorage.newsRep.getById(id);
+    const existingNewsItem = await dataService.newsRep.getById(id);
     if (existingNewsItem) {
         return existingNewsItem;
     }
 
-    if (newsData.image) {
-        const image = await saveNewsImage(dataStorage.imageRep, imagesStorage, newsData.image, newsData.url);
-        if (image) {
-            newsItem.imageIds = [image.id];
-        }
-    }
-
-    const newsTopics = await saveNewsTopics(dataStorage.topicRep, newsItem.title, newsData.content || newsData.summary, info, info);
+    const newsTopics = await saveNewsTopics(dataService.topicRep, topicsService, newsItem.title, newsData.content || newsData.summary, info);
 
     if (newsTopics.topics.length) {
         newsItem.topics = newsTopics.topics.slice(0, 6)
@@ -71,20 +63,30 @@ export async function processFeedItem(dataStorage: OurnetDataStorage,
                 name: item.topic.commonName || item.topic.name,
                 type: item.topic.type,
             }));
+    } else {
+        logger.warn(`News without topics: ${newsData.url}`);
+        return;
     }
 
-    const quotesIds = await saveNewsQuotes(dataStorage.quoteRep, newsItem, newsTopics);
+    if (newsData.image) {
+        const image = await saveNewsImage(dataService.imageRep, imagesStorage, newsData.image, newsData.url);
+        if (image) {
+            newsItem.imageIds = [image.id];
+        }
+    }
+
+    const quotesIds = await saveNewsQuotes(dataService.quoteRep, newsItem, newsTopics);
     if (quotesIds.length) {
         newsItem.quotesIds = quotesIds;
         newsItem.countQuotes = quotesIds.length;
     }
 
     if (newsData.content) {
-        await saveArticleContent(dataStorage.articleContentRep, newsData.content, {
+        await saveArticleContent(dataService.articleContentRep, newsData.content, {
             refId: newsItem.id,
             refType: 'NEWS'
         }, newsTopics);
     }
 
-    return dataStorage.newsRep.create(newsItem);
+    return dataService.newsRep.create(newsItem);
 }

@@ -7,7 +7,7 @@ import { NewsTextTopics } from "./save-news-topics";
 import { NewsItem } from "@ournet/news-domain";
 import { extractTextQuotes } from "../functions/extract-text-quotes";
 import { uniqByProperty, uniq } from "@ournet/domain";
-import { TextTopic } from "../functions/extract-text-topics";
+import { TextTopic } from "../services/text-topics-service";
 
 export type SaveQuotesInfo = {
     lang: string

@@ -2,8 +2,8 @@
 // const debug = require('debug')('ournet:news-reader');
 
 import { TopicRepository, SaveTopicsUseCase } from "@ournet/topics-domain";
-import { extractTextTopics, ExtractTextTopicsOptions, TextTopic } from "../functions/extract-text-topics";
 import { Locale } from "../types";
+import { TextTopicsService, TextTopic } from "../services/text-topics-service";
 
 export type NewsTextTopics = {
     topics: TextTopic[]
@@ -11,11 +11,11 @@ export type NewsTextTopics = {
     text: string
 }
 
-export async function saveNewsTopics(topicRep: TopicRepository, title: string, content: string, locale: Locale, options: ExtractTextTopicsOptions) {
+export async function saveNewsTopics(topicRep: TopicRepository, textTopicsService: TextTopicsService, title: string, content: string, locale: Locale) {
 
     const text = [title, content].join('\n');
 
-    const topics = await extractTextTopics(locale, text, options);
+    const topics = await textTopicsService.extract(locale, text);
     if (topics.length) {
         const saveTopics = new SaveTopicsUseCase(topicRep);
         await saveTopics.execute(topics.map(item => item.topic));

@@ -9,4 +9,5 @@ test('exploreWebImage', async t => {
     t.is(image.height, 150);
     t.is(image.hash, '00fe3703007ff604');
     t.is(image.format, 'jpg');
+    console.log(image);
 })

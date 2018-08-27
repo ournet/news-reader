@@ -10,10 +10,18 @@ import { QuoteRepositoryBuilder } from '@ournet/quotes-data';
 import { NewsRepository, EventRepository, ArticleContentRepository } from '@ournet/news-domain';
 import { ImageRepository } from '@ournet/images-domain';
 import { QuoteRepository } from '@ournet/quotes-domain';
+import { ServiceConfigurationOptions } from 'aws-sdk/lib/service';
 
-const dynamoClient = new DynamoDB.DocumentClient();
+export interface DataService {
+    readonly topicRep: TopicRepository
+    readonly newsRep: NewsRepository
+    readonly eventRep: EventRepository
+    readonly articleContentRep: ArticleContentRepository
+    readonly imageRep: ImageRepository
+    readonly quoteRep: QuoteRepository
+}
 
-export class DataApi {
+export class DbDataService implements DataService {
     readonly topicRep: TopicRepository
     readonly newsRep: NewsRepository
     readonly eventRep: EventRepository
@@ -21,7 +29,8 @@ export class DataApi {
     readonly imageRep: ImageRepository
     readonly quoteRep: QuoteRepository
 
-    constructor(mongoDb: Db, newsESHost: string) {
+    constructor(mongoDb: Db, newsESHost: string, dynamoOptions?: ServiceConfigurationOptions) {
+        const dynamoClient = new DynamoDB.DocumentClient(dynamoOptions);
         this.topicRep = TopicRepositoryBuilder.build(mongoDb);
         this.newsRep = NewsRepositoryBuilder.build(dynamoClient, newsESHost);
         this.eventRep = EventRepositoryBuilder.build(dynamoClient);

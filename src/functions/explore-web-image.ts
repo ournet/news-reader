@@ -3,7 +3,7 @@ import { ImageFormat } from '@ournet/images-domain';
 import got = require('got');
 import sharp = require('sharp');
 const imghash = require('imghash');
-const dominantColor = require('dominant-color');
+const rgbToHex = require('rgb-hex');
 
 export async function exploreWebImage(imageUrl: string) {
     const { body, url } = await got(imageUrl, {
@@ -58,14 +58,21 @@ async function getWebImage(data: Buffer, url: string): Promise<WebImage> {
 }
 
 function getDominantColor(data: Buffer): Promise<string> {
-    return new Promise((resolve, reject) => {
-        dominantColor(data, { format: 'hex' }, (err: Error, color: string) => {
-            if (err) {
-                return reject(err);
-            }
-            resolve(color);
-        })
-    });
+    return sharp(data)
+        .resize(5, 5)
+        .crop(sharp.strategy.attention)
+        .toBuffer()
+        .then(buffer => (<any>sharp(buffer)).stats())
+        .then(stats => {
+            const { channels: [r, g, b] } = stats;
+            const rgb = [
+                Math.round(r.max),
+                Math.round(g.max),
+                Math.round(b.max)
+            ];
+
+            return rgbToHex(rgb[0], rgb[1], rgb[2]);
+        });
 }
 
 function getImageHash(data: Buffer): Promise<string> {

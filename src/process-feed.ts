@@ -1,17 +1,20 @@
 
-// const debug = require('debug')('ournet:news-reader');
+const debug = require('debug')('ournet:news-reader');
 
 import { readNewsFeed, NewsFeedItem, NewsSource, NewsFeed } from "./functions/read-news-feed";
 import { logger } from "./logger";
 import { processFeedItem } from "./process-feed-item";
-import { OurnetDataStorage, OurnetImagesStorage } from "./types";
 import { NewsItem } from "@ournet/news-domain";
 import { setLastReadedFeedUrl } from "./functions/feeds-last-url";
+import { DataService } from "./services/data-service";
+import { ImagesStorageService } from "./services/images-storage-service";
+import { TextTopicsService } from "./services/text-topics-service";
 
-export async function processFeed(dataStorage: OurnetDataStorage, imagesStorage: OurnetImagesStorage, feed: NewsFeed, source: NewsSource) {
+export async function processFeed(dataService: DataService, imagesStorage: ImagesStorageService,
+    topicsService: TextTopicsService, feed: NewsFeed, source: NewsSource) {
+
     const minDate = new Date();
     minDate.setHours(minDate.getHours() - 2);
-
     let newsFeedItems: NewsFeedItem[];
     try {
         newsFeedItems = await readNewsFeed(feed, source, minDate)
@@ -28,7 +31,7 @@ export async function processFeed(dataStorage: OurnetDataStorage, imagesStorage:
         let newsItem: NewsItem | undefined;
 
         try {
-            newsItem = await processFeedItem(dataStorage, imagesStorage, newsFeedItem, {
+            newsItem = await processFeedItem(dataService, imagesStorage, topicsService, newsFeedItem, {
                 country: source.country,
                 lang: feed.language,
                 sourceId: source.id,
@@ -41,6 +44,7 @@ export async function processFeed(dataStorage: OurnetDataStorage, imagesStorage:
             continue;
         }
 
+        debug(`Saved news: ${newsItem.urlHost}${newsItem.urlPath}`);
     }
 
     await setLastReadedFeedUrl({ lang: feed.language, country: source.country },

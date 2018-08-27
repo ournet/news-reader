@@ -20,41 +20,52 @@ export type ExtractTextTopicsOptions = {
     entitizerUrl: string
 }
 
-export async function extractTextTopics(locale: Locale, text: string, options: ExtractTextTopicsOptions): Promise<TextTopic[]> {
+export interface TextTopicsService {
+    extract(locale: Locale, text: string): Promise<TextTopic[]>
+}
 
-    const url = options.entitizerUrl;
-    const query = new URLSearchParams();
-    query.append('key', options.entitizerKey);
-    query.append('lang', locale.lang);
-    query.append('country', locale.country);
-    query.append('wikidata', 'true');
-    query.append('text', text);
+export class ApiTextTopicsService implements TextTopicsService {
+    constructor(private options: ExtractTextTopicsOptions) { }
 
-    const { body } = await got(url, {
-        json: true,
-        timeout: 1000 * 3,
-        throwHttpErrors: true,
-        query,
-    });
+    async extract(locale: Locale, text: string): Promise<TextTopic[]> {
+        const url = this.options.entitizerUrl;
+        const query = new URLSearchParams();
+        query.append('key', this.options.entitizerKey);
+        query.append('lang', locale.lang);
+        query.append('country', locale.country);
+        query.append('wikidata', 'true');
+        query.append('text', text);
 
-    if (!body || !body.data) {
-        throw new Error(`Invalid entitizer response: ${JSON.stringify(body.error || body).substr(0, 100)}`);
+        const { body } = await got(url, {
+            json: true,
+            timeout: 1000 * 3,
+            throwHttpErrors: true,
+            query,
+        });
+
+        if (!body || !body.data) {
+            throw new Error(`Invalid entitizer response: ${JSON.stringify(body.error || body).substr(0, 100)}`);
+        }
+
+        const data = body.data as EntitizerData;
+
+        if (!data.entities) {
+            return [];
+        }
+
+        const textTopics: TextTopic[] = [];
+
+        for (const entity of data.entities) {
+            const topic = convertToTextTopic(locale, entity.entity, entity.input,
+                data.wikidata && entity.entity.wikiDataId && data.wikidata[entity.entity.wikiDataId] || undefined);
+
+            textTopics.push(topic);
+
+            topic.input = topic.input.sort((a, b) => a.index - b.index);
+        }
+
+        return textTopics.sort((a, b) => a.input[0].index - b.input[0].index);
     }
-
-    const data = body.data as EntitizerData;
-
-    if (!data.entities) {
-        return [];
-    }
-
-    const textTopics: TextTopic[] = [];
-
-    for (const entity of data.entities) {
-        textTopics.push(convertToTextTopic(locale, entity.entity, entity.input,
-            data.wikidata && entity.entity.wikiDataId && data.wikidata[entity.entity.wikiDataId] || undefined));
-    }
-
-    return textTopics.sort((a, b) => Math.min(...a.input.map(item => item.index)) - Math.min(...b.input.map(item => item.index)));
 }
 
 function convertToTextTopic(locale: Locale, entity: EntitizerEntity, input: { text: string, index: number }[], wikiData?: WikidataEntity) {

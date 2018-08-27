@@ -1,20 +1,25 @@
 import S3 = require('aws-sdk/clients/s3');
-import { delay } from './helpers';
+import { delay } from '../helpers';
 import { ImageHelper } from '@ournet/images-domain';
 
-export type ImagesS3ClientOptions = {
+export interface ImagesStorageService {
+    copyImageToEventsById(id: string): Promise<void>
+    putImageById(id: string, body: Buffer | Blob): Promise<void>
+}
+
+export type S3ImagesStorageOptions = {
     bucket: string
     newsName: string
     eventsName: string
 }
 
-export class ImagesS3Client {
+export class S3ImagesStorage implements ImagesStorageService {
     private s3: S3
     private bucket: string
     private newsName: string
     private eventsName: string
 
-    constructor(options: ImagesS3ClientOptions, s3options?: S3.ClientConfiguration) {
+    constructor(options: S3ImagesStorageOptions, s3options?: S3.ClientConfiguration) {
         this.bucket = options.bucket;
         this.newsName = options.newsName;
         this.eventsName = options.eventsName;

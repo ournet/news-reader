@@ -5,15 +5,20 @@ process.env.ENTITIZER_URL = 'http://free.entitizer.com/v0/extract';
 process.env.ENTITIZER_KEY = 'KEY';
 
 import test from 'ava';
-import { extractTextTopics } from './extract-text-topics';
+import { ApiTextTopicsService } from './text-topics-service';
 import { Locale } from '../types';
+
+const service = new ApiTextTopicsService({
+    entitizerUrl: 'http://free.entitizer.com/v0/extract',
+    entitizerKey: 'KEY',
+});
 
 test('invalid input', async t => {
     const locale: Locale = {
         lang: 'ro',
         country: 'ro',
     };
-    await t.throws(extractTextTopics(locale, ''), /Bad Request/);
+    await t.throws(service.extract(locale, ''), /Bad Request/);
 })
 
 test('order', async t => {
@@ -21,7 +26,7 @@ test('order', async t => {
         lang: 'ro',
         country: 'ro',
     };
-    const topics = await extractTextTopics(locale, `Președintele Statelor Unite, Donald Trump, a sugerat, luni, că viitoarea sa întâlnire cu liderul regimului de la Phenian, Kim Jong-un, ar putea avea loc în "Casa Păcii", situată la granița dintre Coreea de Nord și Coreea de Sud, relatează site-ul agenției Yonhap`);
+    const topics = await service.extract(locale, `Președintele Statelor Unite, Donald Trump, a sugerat, luni, că viitoarea sa întâlnire cu liderul regimului de la Phenian, Kim Jong-un, ar putea avea loc în "Casa Păcii", situată la granița dintre Coreea de Nord și Coreea de Sud, relatează site-ul agenției Yonhap`);
     t.truthy(topics);
     t.is(topics.length, 6);
     t.is(topics[0].topic.name, 'Statele Unite ale Americii');

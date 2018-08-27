@@ -5,6 +5,7 @@ import { logger } from "../logger";
 import { WebImage, exploreWebImage } from "../functions/explore-web-image";
 import { NewsFeedItem } from "../functions/read-news-feed";
 import { WebPage, exploreWebPage } from "../functions/explore-web-page";
+import { IMAGE_MIN_WIDTH, IMAGE_MIN_HEIGHT } from "@ournet/images-domain";
 const inTextSearch = require('in-text-search');
 
 export interface NewsData {
@@ -70,6 +71,9 @@ export async function buildNewsData(feedItem: NewsFeedItem, options: BuildNewsDa
             newsData.image = await exploreWebImage(page.image);
         } catch (e) {
             logger.error('Error on getting web image: ' + e.message);
+        }
+        if (newsData.image && (newsData.image.width < IMAGE_MIN_WIDTH || newsData.image.height < IMAGE_MIN_HEIGHT)) {
+            delete newsData.image;
         }
     }
 
