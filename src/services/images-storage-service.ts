@@ -35,7 +35,7 @@ export class S3ImagesStorage implements ImagesStorageService {
     }
 
     putImageById(id: string, body: Buffer | Blob) {
-        const key = formatImageKeyFromId(id, 'master');
+        const key = this.newsName + '/' + formatImageKeyFromId(id, 'master');
 
         return this.putImage(key, body);
     }
