@@ -3,7 +3,7 @@ import { readFeed, FeedReaderItem } from "./feed-reader";
 import { logger } from "../logger";
 import { getLastReadedFeedUrl } from "./feeds-last-url";
 import { sanitizeNewsText, sanitizeNewsTitle } from "./sanitizer";
-import { extractTextFromHtml, isValidDate } from "../helpers";
+import { extractTextFromHtml } from "../helpers";
 
 export async function readNewsFeed(feed: NewsFeed, source: NewsSource, minDate: Date) {
     let feedReaderItems: FeedReaderItem[] = []
@@ -36,10 +36,6 @@ export async function readNewsFeed(feed: NewsFeed, source: NewsSource, minDate: 
             link: feedItem.link,
             pubdate: feedItem.pubdate || feedItem.date || new Date(),
         };
-
-        if (!isValidDate(newsItem.pubdate)) {
-            newsItem.pubdate = new Date();
-        }
 
         if (newsItem.pubdate < minDate) {
             continue;

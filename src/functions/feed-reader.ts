@@ -2,6 +2,7 @@
 import FeedParser = require('feedparser');
 import { fetchUrl } from './fetch-url';
 import { Readable } from 'stream';
+import { isValidDate } from '../helpers';
 
 const ITEM_CONTENT_NAMES = ['yandex:full-text'];
 
@@ -40,7 +41,7 @@ export async function readFeed(feedUrl: string): Promise<FeedReaderItem[]> {
                         content = (<any>item)[cname]['#'];
                     }
                 });
-                items.push({
+                const feedItem: FeedReaderItem = {
                     author: item.author || undefined,
                     categories: item.categories || undefined,
                     comments: item.comments || undefined,
@@ -56,7 +57,15 @@ export async function readFeed(feedUrl: string): Promise<FeedReaderItem[]> {
                     summary: item.summary || undefined,
                     title: item.title,
                     content,
-                });
+                };
+                if (feedItem.pubdate && !isValidDate(feedItem.pubdate)) {
+                    delete feedItem.pubdate;
+                }
+                if (feedItem.date && !isValidDate(feedItem.date)) {
+                    delete feedItem.date;
+                }
+
+                items.push(feedItem);
             }
         });
 

@@ -11,8 +11,9 @@ export function decodeHtml(html: string) {
 
 export function extractTextFromHtml(html: string) {
     html = sanitizeHtml(html);
+    html = striptags(html);
     html = decodeHtml(html);
-    return striptags(html);
+    return html;
 }
 
 export function truncateAt(text: string, maxLength: number): string {

@@ -2,6 +2,7 @@
 import { fetchUrl } from './fetch-url';
 import { extractTextFromHtml } from '../helpers';
 import { sanitizeNewsText, sanitizeNewsTitle } from './sanitizer';
+import { normalizeUrl } from '@ournet/domain';
 const metascraper = require('metascraper');
 const ascrape = require('ascrape');
 
@@ -27,7 +28,7 @@ export async function exploreWebPage(webpageUrl: string, extractContent?: boolea
 
     const webpage: WebPage = {
         title: metadata.title && sanitizeNewsTitle(extractTextFromHtml(metadata.title)),
-        url: metadata.url || url,
+        url: normalizeWebPageUrl(metadata.url || url),
         image: metadata.image,
         video: metadata.video,
         description: metadata.description && sanitizeNewsTitle(extractTextFromHtml(metadata.description)),
@@ -35,6 +36,18 @@ export async function exploreWebPage(webpageUrl: string, extractContent?: boolea
     };
 
     return webpage;
+}
+
+function normalizeWebPageUrl(url: string) {
+    return normalizeUrl(url, {
+        normalizeProtocol: true,
+        normalizeHttps: undefined,
+        normalizeHttp: false,
+        stripFragment: true,
+        stripWWW: undefined,
+        removeTrailingSlash: true,
+        sortQueryParameters: true,
+    });
 }
 
 function scrapeArticleContent(html: string) {
