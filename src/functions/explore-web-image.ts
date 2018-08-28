@@ -1,5 +1,5 @@
 
-import { ImageFormat } from '@ournet/images-domain';
+import { ImageFormat, getImageSizeByName, getImageMasterSizeName } from '@ournet/images-domain';
 import got = require('got');
 import sharp = require('sharp');
 const imghash = require('imghash');
@@ -33,6 +33,15 @@ async function getWebImage(data: Buffer, url: string): Promise<WebImage> {
 
     const height = metadata.height || 0;
     const width = metadata.width || 0;
+
+    const masterSize = getImageSizeByName(getImageMasterSizeName());
+
+    if (masterSize < width) {
+        data = await image.resize(masterSize, undefined).toBuffer();
+    } else if (masterSize < height) {
+        data = await image.resize(undefined, masterSize).toBuffer();
+    }
+
     const length = data.byteLength;
     const hash = await getImageHash(data);
     let format: ImageFormat;

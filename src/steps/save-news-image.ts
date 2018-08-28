@@ -1,7 +1,7 @@
 
 const debug = require('debug')('ournet:news-reader');
 
-import { ImageHelper, ImageRepository } from "@ournet/images-domain";
+import { ImageHelper, ImageRepository, getImageContentType } from "@ournet/images-domain";
 import { URL } from "url";
 import { WebImage } from "../functions/explore-web-image";
 import { uniq } from "@ournet/domain";
@@ -35,7 +35,7 @@ export async function saveNewsImage(imageRep: ImageRepository, imagesStorage: Im
     const isOld = existingImage && (existingImage.updatedAt || existingImage.createdAt) < minStorageDate.toISOString();
 
     if (!existingImage || isOld) {
-        await imagesStorage.putImageById(id, webImage.data);
+        await imagesStorage.putImageById(id, webImage.data, getImageContentType(webImage.format));
     }
 
     if (!existingImage) {

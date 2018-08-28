@@ -1,10 +1,12 @@
 import S3 = require('aws-sdk/clients/s3');
 import { delay } from '../helpers';
-import { ImageHelper } from '@ournet/images-domain';
+import { ImageHelper, getImageMasterSizeName, ImageSizeName } from '@ournet/images-domain';
+
+const masterSizeName = getImageMasterSizeName();
 
 export interface ImagesStorageService {
     copyImageToEventsById(id: string): Promise<void>
-    putImageById(id: string, body: Buffer | Blob): Promise<void>
+    putImageById(id: string, body: Buffer | Blob, contentType: string): Promise<void>
 }
 
 export type S3ImagesStorageOptions = {
@@ -29,23 +31,23 @@ export class S3ImagesStorage implements ImagesStorageService {
 
 
     copyImageToEventsById(id: string) {
-        const key = formatImageKeyFromId(id, 'master');
+        const key = formatImageKeyFromId(id, masterSizeName);
 
         return this.copyToEventsByKey(key);
     }
 
-    putImageById(id: string, body: Buffer | Blob) {
-        const key = this.newsName + '/' + formatImageKeyFromId(id, 'master');
+    putImageById(id: string, body: Buffer | Blob, contentType: string) {
+        const key = this.newsName + '/' + formatImageKeyFromId(id, masterSizeName);
 
-        return this.putImage(key, body);
+        return this.putImage(key, body, contentType);
     }
 
-    private async putImage(key: string, body: Buffer | Blob) {
+    private async putImage(key: string, body: Buffer | Blob, contentType: string) {
         await this.s3.putObject({
             Bucket: this.bucket,
             Key: key,
             CacheControl: 'public, max-age=' + (86400 * 30),
-            ContentType: 'image/jpeg',
+            ContentType: contentType,
             Body: body,
             ACL: 'public-read'
         }).promise();
@@ -75,7 +77,7 @@ export class S3ImagesStorage implements ImagesStorageService {
 
 }
 
-function formatImageKeyFromId(id: string, size: 'master') {
+function formatImageKeyFromId(id: string, size: ImageSizeName) {
     const format = ImageHelper.parseImageIdFormat(id);
     return `${id.substr(0, 4)}/${size}/${id}.${format}`;
 }
