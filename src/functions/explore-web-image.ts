@@ -2,11 +2,12 @@
 import { ImageFormat, getImageSizeByName, getImageMasterSizeName } from '@ournet/images-domain';
 import got = require('got');
 import sharp = require('sharp');
+import { URL } from 'url';
 const imghash = require('imghash');
 const rgbToHex = require('rgb-hex');
 
 export async function exploreWebImage(imageUrl: string) {
-    const { body, url } = await got(imageUrl, {
+    const { body, url } = await got(new URL(imageUrl), {
         encoding: null,
         timeout: 1000 * 3,
         headers: {

@@ -11,9 +11,11 @@ export function decodeHtml(html: string) {
 
 export function extractTextFromHtml(html: string) {
     html = sanitizeHtml(html);
+    html = html.replace(/<\/(div|p|section)>/ig, '</$1>\n').trim();
     html = striptags(html);
     html = decodeHtml(html);
-    return html;
+    html = html.replace(/\n[\t\r ]+/g, '\n').replace(/[\t\r ]+\n/g, '\n').replace(/\n{2,}/g, '\n');
+    return html.trim();
 }
 
 export function truncateAt(text: string, maxLength: number): string {

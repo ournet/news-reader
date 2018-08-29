@@ -2,10 +2,11 @@
 import got = require('got');
 import iconv = require('iconv-lite');
 import { Dictionary } from '@ournet/domain';
+import { URL } from 'url';
 const charset = require('charset');
 
 export async function fetchUrl(webUrl: string, options?: { headers?: Dictionary<string>, timeout?: number }) {
-    const { body: buffer, url, headers } = await got(webUrl, { ...options, encoding: null });
+    const { body: buffer, url, headers } = await got(new URL(webUrl), { ...options, encoding: null });
     const encoding = detectEncoding(headers['content-type'] as string, buffer);
 
     if (encoding) {

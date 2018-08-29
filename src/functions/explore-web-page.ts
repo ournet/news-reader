@@ -45,8 +45,8 @@ function normalizeWebPageUrl(url: string) {
         normalizeHttp: false,
         stripFragment: true,
         stripWWW: undefined,
-        removeTrailingSlash: true,
-        sortQueryParameters: true,
+        removeTrailingSlash: false,
+        sortQueryParameters: false,
     });
 }
 
