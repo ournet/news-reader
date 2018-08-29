@@ -48,6 +48,9 @@ export class ApiTextTopicsService implements TextTopicsService {
         }
 
         const data = body.data as EntitizerData;
+        if (data.entities) {
+            data.entities = data.entities.filter(item => !!item.entity.wikiDataId);
+        }
 
         if (!data.entities) {
             return [];
