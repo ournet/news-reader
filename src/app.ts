@@ -22,6 +22,7 @@ async function start() {
 
     try {
         await newsReader.start(locale);
+        await connection.close();
     } catch (e) {
         await connection.close();
         throw e;
