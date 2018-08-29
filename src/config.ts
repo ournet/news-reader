@@ -1,50 +1,70 @@
 
-export const S3_IMAGES_NEWS_NAME = 'news';
-export const S3_IMAGES_EVENTS_NAME = 'events';
+export interface Config {
+    S3_IMAGES_NEWS_NAME: string
+    S3_IMAGES_EVENTS_NAME: string
 
-export const S3_IMAGES_BUCKET = process.env.S3_IMAGES_BUCKET || '';
+    S3_IMAGES_BUCKET: string
 
-if (!S3_IMAGES_BUCKET) {
-    throw new Error('S3_IMAGES_BUCKET is required!');
+    TOPICS_DB_CONNECTION: string
+
+    NEWS_ES_HOST: string
+    NEWS_SEARCH_MIN_SCORE: number
+
+    MIN_EVENT_NEWS: number
+
+    ENTITIZER_URL: string
+
+    ENTITIZER_KEY: string
+
+    AWS_ACCESS_KEY_ID: string
+    AWS_SECRET_ACCESS_KEY: string
+    AWS_REGION: string
 }
 
-export const TOPICS_DB_CONNECTION = process.env.TOPICS_DB_CONNECTION || '';
+const S3_IMAGES_NEWS_NAME = 'news';
+const S3_IMAGES_EVENTS_NAME = 'events';
+const S3_IMAGES_BUCKET = 'news.ournetcdn.net';
 
-if (!TOPICS_DB_CONNECTION) {
-    throw new Error('TOPICS_DB_CONNECTION is required!');
+export function getConfigFromEnv(): Config {
+    const config: Config = {
+        S3_IMAGES_EVENTS_NAME: process.env.S3_IMAGES_EVENTS_NAME || S3_IMAGES_EVENTS_NAME,
+        S3_IMAGES_NEWS_NAME: process.env.S3_IMAGES_NEWS_NAME || S3_IMAGES_NEWS_NAME,
+        S3_IMAGES_BUCKET: process.env.S3_IMAGES_BUCKET || S3_IMAGES_BUCKET,
+        TOPICS_DB_CONNECTION: process.env.TOPICS_DB_CONNECTION || '',
+        NEWS_ES_HOST: process.env.NEWS_ES_HOST || '',
+        NEWS_SEARCH_MIN_SCORE: process.env.NEWS_SEARCH_MIN_SCORE
+            && parseFloat(process.env.NEWS_SEARCH_MIN_SCORE) || 0,
+        MIN_EVENT_NEWS: process.env.MIN_EVENT_NEWS
+            && parseFloat(process.env.MIN_EVENT_NEWS) || 0,
+        ENTITIZER_URL: process.env.ENTITIZER_URL || '',
+        ENTITIZER_KEY: process.env.ENTITIZER_KEY || '',
+        AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID || '',
+        AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY || '',
+        AWS_REGION: process.env.AWS_REGION || '',
+    };
+
+    if (!config.TOPICS_DB_CONNECTION) {
+        throw new Error('TOPICS_DB_CONNECTION is required!');
+    }
+    if (!config.NEWS_ES_HOST) {
+        throw new Error('NEWS_ES_HOST is required!');
+    }
+
+    if (!config.NEWS_SEARCH_MIN_SCORE || config.NEWS_SEARCH_MIN_SCORE === NaN || config.NEWS_SEARCH_MIN_SCORE < 0) {
+        throw new Error('NEWS_SEARCH_MIN_SCORE is required!');
+    }
+
+    if (!config.MIN_EVENT_NEWS || config.MIN_EVENT_NEWS === NaN || config.MIN_EVENT_NEWS < 2) {
+        throw new Error('MIN_EVENT_NEWS is required!');
+    }
+
+    if (!config.ENTITIZER_URL) {
+        throw new Error('ENTITIZER_URL is required!');
+    }
+
+    if (!config.ENTITIZER_KEY) {
+        throw new Error('ENTITIZER_KEY is required!');
+    }
+
+    return config;
 }
-
-export const NEWS_ES_HOST = process.env.NEWS_ES_HOST || '';
-if (!NEWS_ES_HOST) {
-    throw new Error('NEWS_ES_HOST is required!');
-}
-
-export const NEWS_SEARCH_MIN_SCORE = process.env.NEWS_SEARCH_MIN_SCORE
-    && parseFloat(process.env.NEWS_SEARCH_MIN_SCORE) || 0;
-
-if (!NEWS_SEARCH_MIN_SCORE || NEWS_SEARCH_MIN_SCORE === NaN || NEWS_SEARCH_MIN_SCORE < 0) {
-    throw new Error('NEWS_SEARCH_MIN_SCORE is required!');
-}
-
-export const MIN_EVENT_NEWS = process.env.MIN_EVENT_NEWS
-    && parseFloat(process.env.MIN_EVENT_NEWS) || 0;
-
-if (!MIN_EVENT_NEWS || MIN_EVENT_NEWS === NaN || MIN_EVENT_NEWS < 2) {
-    throw new Error('MIN_EVENT_NEWS is required!');
-}
-
-export const ENTITIZER_URL = process.env.ENTITIZER_URL || '';
-
-if (!ENTITIZER_URL) {
-    throw new Error('ENTITIZER_URL is required!');
-}
-
-export const ENTITIZER_KEY = process.env.ENTITIZER_KEY || '';
-
-if (!ENTITIZER_KEY) {
-    throw new Error('ENTITIZER_KEY is required!');
-}
-
-export const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID || '';
-export const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY || '';
-export const AWS_REGION = process.env.AWS_REGION || '';

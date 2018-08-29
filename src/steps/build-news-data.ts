@@ -6,6 +6,7 @@ import { WebImage, exploreWebImage } from "../functions/explore-web-image";
 import { NewsFeedItem } from "../functions/read-news-feed";
 import { WebPage, exploreWebPage } from "../functions/explore-web-page";
 import { IMAGE_MIN_WIDTH, IMAGE_MIN_HEIGHT } from "@ournet/images-domain";
+import { NEWS_MIN_SUMMARY_LENGTH } from "@ournet/news-domain";
 const inTextSearch = require('in-text-search');
 
 export interface NewsData {
@@ -48,6 +49,11 @@ export async function buildNewsData(feedItem: NewsFeedItem, options: BuildNewsDa
         } else if (page.text && page.text.length > minSummaryLength) {
             summary = page.text;
         }
+    }
+
+    if (summary.length < NEWS_MIN_SUMMARY_LENGTH) {
+        logger.warn(`News summary too small`);
+        return;
     }
 
     let content = feedItem.content || '';
