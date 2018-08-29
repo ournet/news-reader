@@ -11,7 +11,7 @@ export async function readFeed(feedUrl: string): Promise<FeedReaderItem[]> {
         timeout: 1000 * 3,
         headers: {
             'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
-            'cache-control': 'max-age=0',
+            // 'cache-control': 'max-age=0',
             'accept': 'application/xhtml+xml,application/xml',
             'accept-charset': 'utf8',
         },
