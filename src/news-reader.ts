@@ -41,7 +41,7 @@ export class NewsReader {
             await this.init();
         }
         logger.info('Starting NewsReader...');
-        await processLocale(this.dataService, this.imagesService, this.textTopicsService, locale);
+        await processLocale(this.dataService, this.imagesService, this.textTopicsService, locale, this.config);
         logger.info('Ended NewsReader');
     }
 

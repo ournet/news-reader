@@ -4,6 +4,11 @@ import striptags = require('striptags');
 import entities = require('entities');
 import { Locale } from './types';
 const sanitizeHtml = require('sanitize-html');
+const inTextSearchFn = require('in-text-search');
+
+export function inTextSearch(q: string): (text: string) => number {
+    return inTextSearchFn(q).search;
+}
 
 export function decodeHtml(html: string) {
     return entities.decodeHTML(html);
@@ -38,4 +43,8 @@ export function parseLocale(text: string): Locale | undefined {
 
 export function isValidDate(d: Date) {
     return d instanceof Date && !isNaN(d.getTime());
+}
+
+export function isLetter(char: string) {
+    return char.toLowerCase() !== char.toUpperCase();
 }

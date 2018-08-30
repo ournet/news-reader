@@ -20,12 +20,14 @@ export async function processFeed(dataService: DataService, imagesStorage: Image
         newsFeedItems = await readNewsFeed(feed, source, minDate)
     } catch (e) {
         logger.error(`Error on reading news feed: ${feed.url}`, e);
-        return
+        return []
     }
 
     if (!newsFeedItems.length) {
-        return;
+        return []
     }
+
+    const newsItems: NewsItem[] = []
 
     for (const newsFeedItem of newsFeedItems) {
         let newsItem: NewsItem | undefined;
@@ -44,9 +46,13 @@ export async function processFeed(dataService: DataService, imagesStorage: Image
             continue;
         }
 
+        newsItems.push(newsItem);
+
         debug(`Saved news: ${newsItem.urlHost}${newsItem.urlPath}`);
     }
 
     await setLastReadedFeedUrl({ lang: feed.language, country: source.country },
         feed.url, newsFeedItems[newsFeedItems.length - 1].link);
+
+    return newsItems;
 }

@@ -7,10 +7,12 @@ import { TextTopicsService } from "./services/text-topics-service";
 import { Locale } from "./types";
 import { readSources } from 'news-sources';
 import { processFeed } from "./process-feed";
+import { createEvent } from "./steps/create-event";
+import { Config } from "./config";
 
 
 export async function processLocale(dataService: DataService, imagesStorage: ImagesStorageService,
-    topicsService: TextTopicsService, locale: Locale) {
+    topicsService: TextTopicsService, locale: Locale, config: Config) {
 
     const sources = await readSources(locale.country);
 
@@ -20,7 +22,10 @@ export async function processLocale(dataService: DataService, imagesStorage: Ima
                 continue;
             }
             debug(`Start processing feed: ${source.id}, ${feed.url}`);
-            await processFeed(dataService, imagesStorage, topicsService, feed, source);
+            const items = await processFeed(dataService, imagesStorage, topicsService, feed, source);
+            for (const item of items) {
+                await createEvent(dataService, item, { minEventNews: config.MIN_EVENT_NEWS, minSearchScore: config.NEWS_SEARCH_MIN_SCORE });
+            }
             debug(`Processed feed: ${source.id}, ${feed.url}`);
         }
     }
