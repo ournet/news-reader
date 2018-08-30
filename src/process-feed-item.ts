@@ -54,7 +54,9 @@ export async function processFeedItem(dataService: DataService, imagesStorage: I
 
     const existingNewsItem = await dataService.newsRep.getById(id);
     if (existingNewsItem) {
-        return existingNewsItem;
+        logger.warn(`News already exists: ${existingNewsItem.id}`);
+        return;
+        // return existingNewsItem;
     }
 
     const newsTopics = await saveNewsTopics(dataService.topicRep, topicsService, newsItem.title, newsData.content || newsData.summary, info);

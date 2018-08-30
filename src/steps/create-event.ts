@@ -184,12 +184,17 @@ async function addNewsToEvent(dataService: DataService, eventId: string, newsIte
         countImages: imagesIds.length,
         countQuotes: quotesIds.length,
         countVideos: videosIds.length,
-        quotesIds,
-        videosIds,
     };
+    if (quotesIds.length) {
+        setEvent.quotesIds = quotesIds;
+    }
+    if (videosIds.length) {
+        setEvent.videosIds = videosIds;
+    }
 
     if (event.items.length < 6 && newsItem.title.length > MIN_TITLE_LENGTH && newsItem.title.length < MAX_TITLE_LENGTH) {
         event.items.push(mapNewsItemToEventNewsItem(newsItem));
+        event.items = uniqByProperty(event.items, 'id');
         setEvent.items = event.items;
     }
 

@@ -1,5 +1,5 @@
 
-const debug = require('debug')('ournet:news-reader:service');
+// const debug = require('debug')('ournet:news-reader:service');
 
 import S3 = require('aws-sdk/clients/s3');
 import { delay } from '../helpers';
@@ -68,7 +68,7 @@ export class S3ImagesStorage implements ImagesStorageService {
     }
 
     private async copyImage(sourceKey: string, targetKey: string) {
-        debug(`Copying images from ${this.bucket + '/' + sourceKey} to ${targetKey}`);
+        // debug(`Copying images from ${this.bucket + '/' + sourceKey} to ${targetKey}`);
         await this.s3.copyObject({
             Bucket: this.bucket,
             Key: targetKey,
