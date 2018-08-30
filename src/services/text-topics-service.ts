@@ -4,6 +4,7 @@ import { BuildTopicParams, TopicType, TopicHelper } from '@ournet/topics-domain'
 import { Locale } from '../types';
 import { Dictionary } from '@ournet/domain';
 import { URLSearchParams } from 'url';
+import { truncateAt } from '../helpers';
 
 export interface TextTopicTopic extends BuildTopicParams {
     id: string
@@ -28,6 +29,9 @@ export class ApiTextTopicsService implements TextTopicsService {
     constructor(private options: ExtractTextTopicsOptions) { }
 
     async extract(locale: Locale, text: string): Promise<TextTopic[]> {
+
+        text = truncateAt(text, 4000);
+
         const url = this.options.entitizerUrl;
         const query = new URLSearchParams();
         query.append('key', this.options.entitizerKey);
