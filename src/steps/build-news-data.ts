@@ -7,6 +7,7 @@ import { NewsFeedItem } from "../functions/read-news-feed";
 import { WebPage, exploreWebPage } from "../functions/explore-web-page";
 import { IMAGE_MIN_WIDTH, IMAGE_MIN_HEIGHT } from "@ournet/images-domain";
 import { NEWS_MIN_SUMMARY_LENGTH } from "@ournet/news-domain";
+import { atonic } from "@ournet/domain";
 const inTextSearch = require('in-text-search');
 
 export interface NewsData {
@@ -99,7 +100,7 @@ async function getWebPage(newsItem: NewsFeedItem): Promise<WebPage | undefined> 
         return
     }
 
-    if (inTextSearch(newsItem.title).search(page.title) < 0.7) {
+    if (inTextSearch(atonic(newsItem.title)).search(atonic(page.title)) < 0.7) {
         logger.error(`Inavlid page title: ${newsItem.title} <> ${page.title}`);
         return
     }
