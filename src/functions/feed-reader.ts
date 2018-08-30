@@ -14,6 +14,7 @@ export async function readFeed(feedUrl: string): Promise<FeedReaderItem[]> {
             // 'cache-control': 'max-age=0',
             'accept': 'application/xhtml+xml,application/xml',
             // 'accept-charset': 'utf8',
+            // 'accept-encoding': 'gzip, deflate',
         },
     });
 

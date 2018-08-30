@@ -37,7 +37,7 @@ export async function processFeed(dataService: DataService, imagesStorage: Image
                 sourceId: source.id,
             });
         } catch (e) {
-            logger.error(`error on process feed item: ${e.message}`);
+            logger.error(`error on process feed item: ${e.message}, ${newsFeedItem.link}`, e);
             continue;
         }
         if (!newsItem) {
