@@ -8,7 +8,7 @@ import { WebPage, exploreWebPage } from "../functions/explore-web-page";
 import { IMAGE_MIN_WIDTH, IMAGE_MIN_HEIGHT } from "@ournet/images-domain";
 import { NEWS_MIN_SUMMARY_LENGTH } from "@ournet/news-domain";
 import { atonic } from "@ournet/domain";
-const inTextSearch = require('in-text-search');
+import { inTextSearch } from "../helpers";
 
 export interface NewsData {
     country: string
@@ -66,13 +66,15 @@ export async function buildNewsData(feedItem: NewsFeedItem, options: BuildNewsDa
         content = feedItem.summary;
     }
 
+    const title = page.title.length < 50 && feedItem.title.length > page.title.length ? feedItem.title : page.title;
+
     const newsData: NewsData = {
         country: options.country,
         lang: options.lang,
         sourceId: options.sourceId,
         publishedAt: (feedItem.pubdate || new Date()).toISOString(),
         summary,
-        title: page.title,
+        title,
         url: page.url,
         content: content.length > minContentLength ? content : undefined,
     };
@@ -100,7 +102,7 @@ async function getWebPage(newsItem: NewsFeedItem): Promise<WebPage | undefined> 
         return
     }
 
-    if (inTextSearch(atonic(newsItem.title)).search(atonic(page.title)) < 0.7) {
+    if (newsItem.link !== page.url && inTextSearch(atonic(newsItem.title))(atonic(page.title)) < 0.65) {
         logger.error(`Inavlid page title: ${newsItem.title} <> ${page.title}`);
         return
     }

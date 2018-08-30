@@ -10,11 +10,12 @@ import {
     ArticleContentBuilder,
     NewsEventItem,
 } from "@ournet/news-domain";
-import { uniq, Dictionary } from "@ournet/domain";
+import { uniq, Dictionary, uniqByProperty } from "@ournet/domain";
 import { logger } from "../logger";
 import { isLetter, inTextSearch } from "../helpers";
 import { ImageHelper, ImageRepository } from "@ournet/images-domain";
 import { DataService } from "../services/data-service";
+import { ImagesStorageService } from "../services/images-storage-service";
 
 const MIN_TITLE_LENGTH = 25;
 const MAX_TITLE_LENGTH = 140;
@@ -25,7 +26,7 @@ export type CreateEventOptions = {
     minEventNews: number
 }
 
-export async function createEvent(dataService: DataService, newsItem: NewsItem, options: CreateEventOptions): Promise<NewsEvent | undefined> {
+export async function createEvent(dataService: DataService, imagesStorage: ImagesStorageService, newsItem: NewsItem, options: CreateEventOptions): Promise<NewsEvent | undefined> {
 
     const maxCreatedAt = new Date();
     maxCreatedAt.setHours(maxCreatedAt.getHours() - 12);
@@ -63,14 +64,17 @@ export async function createEvent(dataService: DataService, newsItem: NewsItem, 
         event = await addNewsToEvent(dataService, newsWithEvent[0].eventId as string, newsItem);
     } else if (newsWithoutEvent.length + 1 >= options.minEventNews) {
         newsWithoutEvent.unshift(newsItem);
-        event = await createNewsEvent(dataService, newsWithoutEvent);
+        event = await createNewsEvent(dataService, imagesStorage, newsWithoutEvent);
     }
 
     return event;
 }
 
-async function createNewsEvent(dataService: DataService, newsItems: NewsItem[]) {
+async function createNewsEvent(dataService: DataService, imagesStorage: ImagesStorageService, newsItems: NewsItem[]) {
     debug(`Creating event...`);
+
+    newsItems = uniqByProperty(newsItems, 'id');
+
     const title = findBestEventTitle(newsItems) as string;
     if (!title) {
         logger.warn(`Not found a goot event title`);
@@ -134,11 +138,13 @@ async function createNewsEvent(dataService: DataService, newsItems: NewsItem[]) 
         },
     });
 
-    await dataService.articleContentRep.create(ArticleContentBuilder.build({
+    await dataService.articleContentRep.put(ArticleContentBuilder.build({
         content: contentItem.content,
         refId: event.id,
         refType: 'EVENT',
     }));
+
+    await imagesStorage.copyImageToEventsById(eventImage.id);
 
     const createdEvent = await dataService.eventRep.create(event);
 
@@ -164,7 +170,7 @@ async function addNewsToEvent(dataService: DataService, eventId: string, newsIte
     });
 
     const eventNews = await dataService.newsRep.latestByEvent({ eventId, country: event.country, lang: event.lang, limit: event.countNews + 2 },
-        { fields: ['id', 'imageIds', 'quotesIds', 'videoId'] });
+        { fields: ['id', 'imagesIds', 'quotesIds', 'videoId'] });
 
     const { imagesIds, quotesIds, videosIds } = formatEventLists(eventNews);
 
@@ -215,14 +221,14 @@ async function findEventContentItem(contentRep: ArticleContentRepository, newsIt
 }
 
 async function findBestEventImage(imageRep: ImageRepository, newsItems: NewsItem[]) {
-    const imageItems = newsItems.filter(item => item.imageIds && item.imageIds.length
-        && ImageHelper.parseImageOrientationFromId(item.imageIds[0]) === 'LANGSCAPE');
+    const imageItems = newsItems.filter(item => item.imagesIds && item.imagesIds.length
+        && ImageHelper.parseImageOrientationFromId(item.imagesIds[0]) === 'LANGSCAPE');
 
     if (!imageItems.length) {
         return;
     }
 
-    const ids = uniq(imageItems.reduce<string[]>((list, item) => list.concat(item.imageIds || []), []));
+    const ids = uniq(imageItems.reduce<string[]>((list, item) => list.concat(item.imagesIds || []), []));
 
     const images = await imageRep.getByIds(ids);
 
@@ -232,7 +238,7 @@ async function findBestEventImage(imageRep: ImageRepository, newsItems: NewsItem
         return;
     }
 
-    const item = imageItems.find(item => item.imageIds && item.imageIds.includes(image.id) || false);
+    const item = imageItems.find(item => item.imagesIds && item.imagesIds.includes(image.id) || false);
     if (!item) {
         logger.error(`Not found item by image id!!!`);
         return;
@@ -251,8 +257,8 @@ function formatEventLists(newsItems: NewsItem[]) {
     let videosIds: string[] = [];
 
     newsItems.forEach(item => {
-        if (item.imageIds) {
-            imagesIds = imagesIds.concat(item.imageIds);
+        if (item.imagesIds) {
+            imagesIds = imagesIds.concat(item.imagesIds);
         }
         if (item.videoId) {
             videosIds.push(item.videoId);

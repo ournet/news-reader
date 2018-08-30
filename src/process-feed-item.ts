@@ -75,7 +75,7 @@ export async function processFeedItem(dataService: DataService, imagesStorage: I
     if (newsData.image) {
         const image = await saveNewsImage(dataService.imageRep, imagesStorage, newsData.image, newsData.url);
         if (image) {
-            newsItem.imageIds = [image.id];
+            newsItem.imagesIds = [image.id];
         }
     }
 

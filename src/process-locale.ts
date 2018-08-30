@@ -23,8 +23,13 @@ export async function processLocale(dataService: DataService, imagesStorage: Ima
             }
             debug(`Start processing feed: ${source.id}, ${feed.url}`);
             const items = await processFeed(dataService, imagesStorage, topicsService, feed, source);
+            debug(`${items.length} items readed`);
             for (const item of items) {
-                await createEvent(dataService, item, { minEventNews: config.MIN_EVENT_NEWS, minSearchScore: config.NEWS_SEARCH_MIN_SCORE });
+                await createEvent(dataService, imagesStorage, item,
+                    {
+                        minEventNews: config.MIN_EVENT_NEWS,
+                        minSearchScore: config.NEWS_SEARCH_MIN_SCORE
+                    });
             }
             debug(`Processed feed: ${source.id}, ${feed.url}`);
         }

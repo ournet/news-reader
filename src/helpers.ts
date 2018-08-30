@@ -7,7 +7,8 @@ const sanitizeHtml = require('sanitize-html');
 const inTextSearchFn = require('in-text-search');
 
 export function inTextSearch(q: string): (text: string) => number {
-    return inTextSearchFn(q).search;
+    const textSearch = inTextSearchFn(q);
+    return text => textSearch.search(text);
 }
 
 export function decodeHtml(html: string) {
