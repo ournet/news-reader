@@ -15,6 +15,8 @@ export async function processLocale(dataService: DataService, imagesStorage: Ima
     topicsService: TextTopicsService, locale: Locale, config: Config) {
 
     const sources = await readSources(locale.country);
+    const processFeedMinDate = new Date();
+    processFeedMinDate.setMinutes(processFeedMinDate.getMinutes() - config.NEWS_PAST_MINUTES);
 
     for (const source of sources) {
         for (const feed of source.feeds) {
@@ -22,7 +24,9 @@ export async function processLocale(dataService: DataService, imagesStorage: Ima
                 continue;
             }
             debug(`Start processing feed: ${source.id}, ${feed.url}`);
-            const items = await processFeed(dataService, imagesStorage, topicsService, feed, source);
+            const items = await processFeed(dataService, imagesStorage, topicsService, feed, source, {
+                minDate: processFeedMinDate,
+            });
             debug(`${items.length} items readed`);
             for (const item of items) {
                 await createEvent(dataService, imagesStorage, item,

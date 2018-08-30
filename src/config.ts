@@ -19,6 +19,8 @@ export interface Config {
     AWS_ACCESS_KEY_ID: string
     AWS_SECRET_ACCESS_KEY: string
     AWS_REGION: string
+
+    NEWS_PAST_MINUTES: number
 }
 
 const S3_IMAGES_NEWS_NAME = 'news';
@@ -41,6 +43,8 @@ export function getConfigFromEnv(): Config {
         AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID || '',
         AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY || '',
         AWS_REGION: process.env.AWS_REGION || '',
+        NEWS_PAST_MINUTES: process.env.NEWS_PAST_MINUTES
+            && parseInt(process.env.NEWS_PAST_MINUTES) || 60,
     };
 
     if (!config.TOPICS_DB_CONNECTION) {

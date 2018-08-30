@@ -1,3 +1,6 @@
+
+const debug = require('debug')('ournet:news-reader:service');
+
 import S3 = require('aws-sdk/clients/s3');
 import { delay } from '../helpers';
 import { ImageHelper, getImageMasterSizeName, ImageSizeName } from '@ournet/images-domain';
@@ -65,12 +68,13 @@ export class S3ImagesStorage implements ImagesStorageService {
     }
 
     private async copyImage(sourceKey: string, targetKey: string) {
+        debug(`Copying images from ${this.bucket + '/' + sourceKey} to ${targetKey}`);
         await this.s3.copyObject({
             Bucket: this.bucket,
             Key: targetKey,
-            CopySource: this.newsName + '/' + sourceKey,
+            CopySource: this.bucket + '/' + sourceKey,
             CacheControl: 'public, max-age=' + (86400 * 60),
-            ContentType: 'image/jpeg',
+            // ContentType: 'image/jpeg',
             ACL: 'public-read'
         }).promise();
     }

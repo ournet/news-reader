@@ -45,7 +45,7 @@ export async function createEvent(dataService: DataService, imagesStorage: Image
 
     if (!foundedNews.length) {
         debug(`Not found news for: ${q}`);
-        return
+        return;
     }
 
     const newsWithoutEvent: NewsItem[] = [];
@@ -146,8 +146,10 @@ async function createNewsEvent(dataService: DataService, imagesStorage: ImagesSt
 
     await imagesStorage.copyImageToEventsById(eventImage.id);
 
+    debug(`pre creating event...`);
     const createdEvent = await dataService.eventRep.create(event);
 
+    debug(`pre updating news eventId...`);
     await Promise.all(newsItems.map(item => dataService.newsRep.update({ id: item.id, set: { eventId: event.id } })));
 
     debug(`Created event: ${title}`);
@@ -156,6 +158,8 @@ async function createNewsEvent(dataService: DataService, imagesStorage: ImagesSt
 }
 
 async function addNewsToEvent(dataService: DataService, eventId: string, newsItem: NewsItem) {
+    debug(`Adding new news to event: ${eventId}`);
+
     const event = await dataService.eventRep.getById(eventId);
 
     if (!event) {

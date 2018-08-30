@@ -10,14 +10,15 @@ import { DataService } from "./services/data-service";
 import { ImagesStorageService } from "./services/images-storage-service";
 import { TextTopicsService } from "./services/text-topics-service";
 
-export async function processFeed(dataService: DataService, imagesStorage: ImagesStorageService,
-    topicsService: TextTopicsService, feed: NewsFeed, source: NewsSource) {
+export type ProcessFeedOptions = {
+    minDate: Date
+}
 
-    const minDate = new Date();
-    minDate.setHours(minDate.getHours() - 2);
+export async function processFeed(dataService: DataService, imagesStorage: ImagesStorageService,
+    topicsService: TextTopicsService, feed: NewsFeed, source: NewsSource, options: ProcessFeedOptions) {
     let newsFeedItems: NewsFeedItem[];
     try {
-        newsFeedItems = await readNewsFeed(feed, source, minDate)
+        newsFeedItems = await readNewsFeed(feed, source, options.minDate);
     } catch (e) {
         logger.error(`Error on reading news feed: ${feed.url}`, e);
         return []
