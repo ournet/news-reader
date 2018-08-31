@@ -12,7 +12,7 @@ import {
 } from "@ournet/news-domain";
 import { uniq, Dictionary, uniqByProperty } from "@ournet/domain";
 import { logger } from "../logger";
-import { isLetter, inTextSearch } from "../helpers";
+import { inTextSearch } from "../helpers";
 import { ImageHelper, ImageRepository } from "@ournet/images-domain";
 import { DataService } from "../services/data-service";
 import { ImagesStorageService } from "../services/images-storage-service";
@@ -309,16 +309,22 @@ function findBestEventTitle(newsItems: NewsItem[]) {
         return titles[0];
     }
 
+    const sympolsList = ['.', '?', '!', '(', ')', '[', ']', '{', '}', ';', ':', '"', '“', '”', '‘', '’', '«', '»', '/', '\\'];
+    const wordSlitRegex = /[\s,:;?!.()\[\]{}"“”‘’«»/\\-]+/g;
+
     const titlesData = titles.map(title => {
         let score = 0;
         for (const char of title) {
-            if (['.', '?', '!', '(', ')', '[', ']', '{', '}', ';'].includes(char)) {
-                score--;
-            }
-            else if (isLetter(char) && char.toUpperCase() === char) {
+            if (sympolsList.includes(char)) {
                 score--;
             }
         }
+        const words = title.trim().split(wordSlitRegex);
+        words.forEach(word => {
+            if (word.toUpperCase() === word && word.toLowerCase() !== word) {
+                score--;
+            }
+        });
 
         return {
             score, title,

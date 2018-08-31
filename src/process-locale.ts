@@ -8,11 +8,16 @@ import { Locale } from "./types";
 import { readSources } from 'news-sources';
 import { processFeed } from "./process-feed";
 import { createEvent } from "./steps/create-event";
-import { Config } from "./config";
+import { Config, isValidLocale } from "./config";
+import { logger } from "./logger";
 
 
 export async function processLocale(dataService: DataService, imagesStorage: ImagesStorageService,
     topicsService: TextTopicsService, locale: Locale, config: Config) {
+
+    if (!isValidLocale(locale)) {
+        throw new Error(`Invalid locale: ${locale.lang}-${locale.country}`);
+    }
 
     const sources = await readSources(locale.country);
     const processFeedMinDate = new Date();
@@ -29,11 +34,15 @@ export async function processLocale(dataService: DataService, imagesStorage: Ima
             });
             debug(`${items.length} items readed`);
             for (const item of items) {
-                await createEvent(dataService, imagesStorage, item,
-                    {
-                        minEventNews: config.MIN_EVENT_NEWS,
-                        minSearchScore: config.NEWS_SEARCH_MIN_SCORE
-                    });
+                try {
+                    await createEvent(dataService, imagesStorage, item,
+                        {
+                            minEventNews: config.MIN_EVENT_NEWS,
+                            minSearchScore: config.NEWS_SEARCH_MIN_SCORE
+                        });
+                } catch (e) {
+                    logger.error(`Error on createEvent: ${e.message}`, e);
+                }
             }
             debug(`Processed feed: ${source.id}, ${feed.url}`);
         }

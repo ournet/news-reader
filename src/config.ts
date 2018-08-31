@@ -1,3 +1,14 @@
+import { Dictionary } from "@ournet/domain";
+import { Locale } from "./types";
+
+const VALID_LOCALES: Dictionary<string[]> = {
+    ro: ['ro', 'md'],
+    ru: ['ru'],
+};
+
+export function isValidLocale(locale: Locale) {
+    return VALID_LOCALES[locale.lang] && VALID_LOCALES[locale.lang].includes(locale.country);
+}
 
 export interface Config {
     S3_IMAGES_NEWS_NAME: string
