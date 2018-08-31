@@ -108,8 +108,10 @@ async function createNewsEvent(dataService: DataService, imagesStorage: ImagesSt
     const { imagesIds, quotesIds, videosIds } = formatEventLists(newsItems);
 
     let items = newsItems.filter(item => item.title.length > MIN_TITLE_LENGTH && item.title.length < MAX_TITLE_LENGTH);
+    items = uniqByProperty(items, 'id');
     if (items.length < 3) {
         items = items.concat(newsItems).slice(0, 3);
+        items = uniqByProperty(items, 'id');
     }
 
 
