@@ -1,10 +1,11 @@
 
-import { ImageFormat, getImageSizeByName, getImageMasterSizeName } from '@ournet/images-domain';
+import { ImageFormat, getImageSizeByName, getImageMasterSizeName, ImageFormatHelper } from '@ournet/images-domain';
 import got = require('got');
-import sharp = require('sharp');
 import { URL } from 'url';
 const imghash = require('imghash');
 const rgbToHex = require('rgb-hex');
+const jimp = require('jimp');
+const colorThief = require('color-thief-jimp');
 
 export async function exploreWebImage(imageUrl: string) {
     const { body, url } = await got(new URL(imageUrl), {
@@ -27,34 +28,34 @@ export async function exploreWebImage(imageUrl: string) {
 }
 
 async function getWebImage(data: Buffer, url: string): Promise<WebImage> {
-    const image = sharp(data);
-    const metadata = await image.metadata();
-    if (!metadata.height || !metadata.width) {
-        throw new Error(`Invalid image. No metadata. ${url}`);
-    }
+    const length = data.byteLength;
+    let image = await jimp.read(data);
 
-    const height = metadata.height || 0;
-    const width = metadata.width || 0;
+    const height = image.getHeight();
+    const width = image.getWidth();
 
     const masterSize = getImageSizeByName(getImageMasterSizeName());
-
+    let resized = false;
     if (masterSize < width) {
-        data = await image.resize(masterSize, undefined).toBuffer();
+        image = await image.resize(masterSize, jimp.AUTO)
+        resized = true;
     } else if (masterSize < height) {
-        data = await image.resize(undefined, masterSize).toBuffer();
+        image = await image.resize(jimp.AUTO, masterSize);
+        resized = true;
     }
 
-    const length = data.byteLength;
-    const hash = await getImageHash(data);
-    let format: ImageFormat;
-    if (metadata.format === 'jpeg') {
-        format = 'jpg';
-    } else if (metadata.format === 'png') {
-        format = 'png';
-    } else {
-        throw new Error(`Invalid image format: ${metadata.format}`);
+    const mime = image.getMIME();
+    const format = ImageFormatHelper.getFormatByMime(mime);
+
+    if (resized) {
+        data = await image.getBufferAsync(mime);
     }
-    const color = await getDominantColor(data);
+
+
+    const hash = await getImageHash(data);
+
+    const rgbColor = colorThief.getColor(image);
+    const color = rgbToHex(rgbColor[0], rgbColor[1], rgbColor[2]);
 
     return {
         url,
@@ -66,24 +67,6 @@ async function getWebImage(data: Buffer, url: string): Promise<WebImage> {
         format,
         color,
     }
-}
-
-function getDominantColor(data: Buffer): Promise<string> {
-    return sharp(data)
-        .resize(5, 5)
-        .crop(sharp.strategy.attention)
-        .toBuffer()
-        .then(buffer => (<any>sharp(buffer)).stats())
-        .then(stats => {
-            const { channels: [r, g, b] } = stats;
-            const rgb = [
-                Math.round(r.max),
-                Math.round(g.max),
-                Math.round(b.max)
-            ];
-
-            return rgbToHex(rgb[0], rgb[1], rgb[2]);
-        });
 }
 
 function getImageHash(data: Buffer): Promise<string> {

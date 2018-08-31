@@ -83,5 +83,5 @@ export class S3ImagesStorage implements ImagesStorageService {
 
 function formatImageKeyFromId(id: string, size: ImageSizeName) {
     const format = ImageHelper.parseImageIdFormat(id);
-    return `${id.substr(0, 4)}/${size}/${id}.${format}`;
+    return `${id.substr(0, 3)}/${size}/${id}.${format}`;
 }
