@@ -3,9 +3,8 @@ import { ImageFormat, getImageSizeByName, getImageMasterSizeName, ImageFormatHel
 import got = require('got');
 import { URL } from 'url';
 const imghash = require('imghash');
-const rgbToHex = require('rgb-hex');
 const jimp = require('jimp');
-const colorThief = require('color-thief-jimp');
+import { getImageColor } from './image-colors';
 
 export async function exploreWebImage(imageUrl: string) {
     const { body, url } = await got(new URL(imageUrl), {
@@ -29,7 +28,7 @@ export async function exploreWebImage(imageUrl: string) {
 
 async function getWebImage(data: Buffer, url: string): Promise<WebImage> {
     const length = data.byteLength;
-    let image = await jimp.read(data);
+    let image = await jimp.create(data);
 
     const height = image.getHeight();
     const width = image.getWidth();
@@ -54,8 +53,7 @@ async function getWebImage(data: Buffer, url: string): Promise<WebImage> {
 
     const hash = await getImageHash(data);
 
-    const rgbColor = colorThief.getColor(image);
-    const color = rgbToHex(rgbColor[0], rgbColor[1], rgbColor[2]);
+    const color = getImageColor(image);
 
     return {
         url,

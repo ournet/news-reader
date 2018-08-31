@@ -82,7 +82,7 @@ export async function buildNewsData(feedItem: NewsFeedItem, options: BuildNewsDa
         try {
             newsData.image = await exploreWebImage(page.image);
         } catch (e) {
-            logger.error('Error on getting web image: ' + e.message);
+            logger.error('Error on getting web image: ' + e.message, e);
         }
         if (newsData.image && (newsData.image.width < IMAGE_MIN_WIDTH || newsData.image.height < IMAGE_MIN_HEIGHT)) {
             delete newsData.image;
