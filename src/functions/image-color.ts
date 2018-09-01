@@ -2,15 +2,17 @@
 // const jimp = require('jimp');
 const quantize = require('quantize');
 const rgbToHex = require('rgb-hex');
+import sharp = require('sharp');
+import { getImageBitmap } from './image-bitmap';
 
-export function getImageColor(image: any): string {
-    const palette = getImagePalette(image, 5);
+export async function getImageColor(image: sharp.SharpInstance): Promise<string> {
+    const palette = getImagePalette(await image.resize(24, 24).png().toBuffer(), 5);
     const dominantColor = palette[0];
     return rgbToHex(dominantColor[0], dominantColor[1], dominantColor[2]);
 }
 
-function getImagePalette(image: any, colorCount: number, quality: number = 10) {
-    const imageData = image.bitmap;
+function getImagePalette(pngBuffer: Buffer, colorCount: number, quality: number = 10) {
+    const imageData = getImageBitmap(pngBuffer);
     const pixels = imageData.data;
     const pixelCount = imageData.width * imageData.height;
 

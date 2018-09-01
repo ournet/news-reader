@@ -2,9 +2,10 @@
 import { ImageFormat, getImageSizeByName, getImageMasterSizeName, ImageFormatHelper } from '@ournet/images-domain';
 import got = require('got');
 import { URL } from 'url';
-const imghash = require('imghash');
-const jimp = require('jimp');
-import { getImageColor } from './image-colors';
+// const imghash = require('imghash');
+import sharp = require('sharp');
+import { getImageColor } from './image-color';
+import { getImageHash } from './image-hash';
 
 export async function exploreWebImage(imageUrl: string) {
     const { body, url } = await got(new URL(imageUrl), {
@@ -20,40 +21,46 @@ export async function exploreWebImage(imageUrl: string) {
     if (body.byteLength < 5000) {
         throw new Error('Image is too small: ' + body.byteLength);
     }
-
+    // console.time('image');
     const image = await getWebImage(body, url);
+    // console.timeEnd('image');
 
     return image;
 }
 
 async function getWebImage(data: Buffer, url: string): Promise<WebImage> {
     const length = data.byteLength;
-    let image = await jimp.create(data);
+    let image = sharp(data);
+    // console.time('image-meta');
+    const metadata = await image.metadata();
+    // console.timeEnd('image-meta');
 
-    const height = image.getHeight();
-    const width = image.getWidth();
+    const height = metadata.height || 0;
+    const width = metadata.width || 0;
 
     const masterSize = getImageSizeByName(getImageMasterSizeName());
     let resized = false;
     if (masterSize < width) {
-        image = await image.resize(masterSize, jimp.AUTO)
+        image = await image.resize(masterSize, undefined);
         resized = true;
     } else if (masterSize < height) {
-        image = await image.resize(jimp.AUTO, masterSize);
+        image = await image.resize(undefined, masterSize);
         resized = true;
     }
 
-    const mime = image.getMIME();
-    const format = ImageFormatHelper.getFormatByMime(mime);
+    const format = ImageFormatHelper.getFormatByExtension(metadata.format || '');
 
     if (resized) {
-        data = await image.getBufferAsync(mime);
+        data = await image.toBuffer();
     }
 
+    console.time('image-hash');
+    const hash = await getImageHash(image);
+    console.timeEnd('image-hash');
 
-    const hash = await getImageHash(data);
-
-    const color = getImageColor(image);
+    console.time('image-color');
+    const color = await getImageColor(sharp(data));
+    console.timeEnd('image-color');
 
     return {
         url,
@@ -67,9 +74,9 @@ async function getWebImage(data: Buffer, url: string): Promise<WebImage> {
     }
 }
 
-function getImageHash(data: Buffer): Promise<string> {
-    return imghash.hash(data);
-}
+// function getImageHash(data: Buffer): Promise<string> {
+//     return imghash.hash(data);
+// }
 
 export type WebImage = {
     url: string

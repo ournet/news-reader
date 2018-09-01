@@ -7,7 +7,7 @@ test('exploreWebImage', async t => {
     t.truthy(image);
     t.is(image.width, 150);
     t.is(image.height, 150);
-    t.is(image.hash, '00fe3703007ff604');
+    t.is(image.hash, 'bwrYfSOvMOM');
     t.is(image.format, 'jpg');
     console.log(image);
 })
