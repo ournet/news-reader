@@ -19,7 +19,9 @@ export async function readNewsFeed(feed: NewsFeed, source: NewsSource, minDate: 
         return [];
     }
 
-    const lastUrl = await getLastReadedFeedUrl({ lang: feed.language, country: source.country }, feed.url);
+    const lang = feed.language;
+
+    const lastUrl = await getLastReadedFeedUrl({ lang, country: source.country }, feed.url);
     if (lastUrl) {
         const lastUrlIndex = feedReaderItems.findIndex(item => item.link === lastUrl);
         if (lastUrlIndex > -1) {
@@ -32,7 +34,7 @@ export async function readNewsFeed(feed: NewsFeed, source: NewsSource, minDate: 
     const items: NewsFeedItem[] = [];
     for (const feedItem of feedReaderItems) {
         const newsItem: NewsFeedItem = {
-            title: sanitizeNewsTitle(extractTextFromHtml(feedItem.title)),
+            title: sanitizeNewsTitle(extractTextFromHtml(feedItem.title), lang),
             link: feedItem.link,
             pubdate: feedItem.pubdate || feedItem.date || new Date(),
         };
@@ -41,11 +43,11 @@ export async function readNewsFeed(feed: NewsFeed, source: NewsSource, minDate: 
             continue;
         }
 
-        const summary = sanitizeNewsText(extractTextFromHtml(feedItem.description || feedItem.summary || ''));
+        const summary = sanitizeNewsText(extractTextFromHtml(feedItem.description || feedItem.summary || ''), lang);
 
         newsItem.summary = summary && summary.trim();
         if (feedItem.content || feedItem.description) {
-            const content = sanitizeNewsText(extractTextFromHtml(feedItem.content || feedItem.description || ''));
+            const content = sanitizeNewsText(extractTextFromHtml(feedItem.content || feedItem.description || ''), lang);
             if (content !== summary) {
                 newsItem.content = content && content.trim();
             }

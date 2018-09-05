@@ -2598,6 +2598,10 @@ needle@^2.2.1:
     iconv-lite "^0.4.4"
     sax "^1.2.4"
 
+news-sanitizer@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/news-sanitizer/-/news-sanitizer-0.1.1.tgz#56c55144f7290f125eca4b0c17619f654cc9cd57"
+
 node-abi@^2.2.0:
   version "2.4.3"
   resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.4.3.tgz#43666b7b17e57863e572409edbb82115ac7af28b"

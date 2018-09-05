@@ -6,7 +6,7 @@ import { normalizeUrl } from '@ournet/domain';
 const metascraper = require('metascraper');
 const ascrape = require('ascrape');
 
-export async function exploreWebPage(webpageUrl: string, extractContent?: boolean) {
+export async function exploreWebPage(webpageUrl: string, lang: string, extractContent?: boolean) {
     const { body: html, url } = await fetchUrl(webpageUrl, {
         timeout: 1000 * 3,
         headers: {
@@ -24,16 +24,16 @@ export async function exploreWebPage(webpageUrl: string, extractContent?: boolea
     if (extractContent !== false) {
         const content = await scrapeArticleContent(html);
         if (content) {
-            text = sanitizeNewsText(extractTextFromHtml(content));
+            text = sanitizeNewsText(extractTextFromHtml(content), lang);
         }
     }
 
     const webpage: WebPage = {
-        title: metadata.title && sanitizeNewsTitle(extractTextFromHtml(metadata.title)),
+        title: metadata.title && sanitizeNewsTitle(extractTextFromHtml(metadata.title), lang),
         url: normalizeWebPageUrl(metadata.url || url),
         image: metadata.image,
         video: metadata.video,
-        description: metadata.description && sanitizeNewsTitle(extractTextFromHtml(metadata.description)),
+        description: metadata.description && sanitizeNewsTitle(extractTextFromHtml(metadata.description), lang),
         text,
     };
 

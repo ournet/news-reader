@@ -1,18 +1,10 @@
 
-export function sanitizeNewsTitle(text: string) {
-    if (!text) {
-        return text;
-    }
-    
+import { sanitizeTitle, sanitizeArticle } from 'news-sanitizer';
 
-    return text;
+export function sanitizeNewsTitle(text: string, lang: string) {
+    return sanitizeTitle(text, lang);
 }
 
-export function sanitizeNewsText(text: string) {
-    if (!text) {
-        return text;
-    }
-    
-
-    return text;
+export function sanitizeNewsText(text: string, lang: string) {
+    return sanitizeArticle(text, lang);
 }

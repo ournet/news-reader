@@ -33,7 +33,7 @@ export type BuildNewsDataOptions = {
 export async function buildNewsData(feedItem: NewsFeedItem, options: BuildNewsDataOptions) {
     // debug(`pre get web page ${feedItem.link}`);
 
-    const page = await getWebPage(feedItem);
+    const page = await getWebPage(feedItem, options.lang);
     if (!page) {
         return;
     }
@@ -93,10 +93,10 @@ export async function buildNewsData(feedItem: NewsFeedItem, options: BuildNewsDa
 }
 
 
-async function getWebPage(newsItem: NewsFeedItem): Promise<WebPage | undefined> {
+async function getWebPage(newsItem: NewsFeedItem, lang: string): Promise<WebPage | undefined> {
     let page: WebPage;
     try {
-        page = await exploreWebPage(newsItem.link);
+        page = await exploreWebPage(newsItem.link, lang);
     } catch (e) {
         logger.error(`Error on exploring web page: ${newsItem.link}`, e);
         return
