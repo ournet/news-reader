@@ -58,6 +58,12 @@ export function getConfigFromEnv(): Config {
             && parseInt(process.env.NEWS_PAST_MINUTES) || 60,
     };
 
+    validateConfig(config);
+
+    return config;
+}
+
+function validateConfig(config: Config) {
     if (!config.TOPICS_DB_CONNECTION) {
         throw new Error('TOPICS_DB_CONNECTION is required!');
     }
@@ -80,6 +86,4 @@ export function getConfigFromEnv(): Config {
     if (!config.ENTITIZER_KEY) {
         throw new Error('ENTITIZER_KEY is required!');
     }
-
-    return config;
 }

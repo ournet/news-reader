@@ -144,6 +144,7 @@ async function createNewsEvent(dataService: DataService, imagesStorage: ImagesSt
         content: contentItem.content,
         refId: event.id,
         refType: 'EVENT',
+        format: contentItem.format,
     }));
 
     await imagesStorage.copyImageToEventsById(eventImage.id);
@@ -228,6 +229,7 @@ async function findEventContentItem(contentRep: ArticleContentRepository, newsIt
         path: contentItem.urlPath,
         sourceId: contentItem.sourceId,
         content: content.content,
+        format: content.format,
     }
 }
 

@@ -27,6 +27,7 @@ export async function saveArticleContent(contentRep: ArticleContentRepository, c
         refId: ref.refId,
         refType: ref.refType,
         topicsMap: Object.keys(topicLocationMap).length > 0 ? topicLocationMap : undefined,
+        format: 'text',
     });
 
     return contentRep.put(articleContent);

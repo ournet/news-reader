@@ -6,7 +6,7 @@ import { WebImage, exploreWebImage } from "../functions/explore-web-image";
 import { NewsFeedItem } from "../functions/read-news-feed";
 import { WebPage, exploreWebPage } from "../functions/explore-web-page";
 import { IMAGE_MIN_WIDTH, IMAGE_MIN_HEIGHT } from "@ournet/images-domain";
-import { NEWS_MIN_SUMMARY_LENGTH } from "@ournet/news-domain";
+import { NEWS_MIN_SUMMARY_LENGTH, NEWS_MAX_SUMMARY_LENGTH } from "@ournet/news-domain";
 import { atonic } from "@ournet/domain";
 import { inTextSearch } from "../helpers";
 
@@ -26,8 +26,6 @@ export type BuildNewsDataOptions = {
     sourceId: string
     country: string
     lang: string
-    minContentLength: number
-    minSummaryLength: number
 }
 
 export async function buildNewsData(feedItem: NewsFeedItem, options: BuildNewsDataOptions) {
@@ -41,7 +39,7 @@ export async function buildNewsData(feedItem: NewsFeedItem, options: BuildNewsDa
     // debug(`post get web page ${page.url}`);
 
     let summary = page.description || '';
-    const minSummaryLength = options.minSummaryLength;
+    const minSummaryLength = NEWS_MIN_SUMMARY_LENGTH;
     if (summary.length < minSummaryLength) {
         if (feedItem.summary && feedItem.summary.length > minSummaryLength) {
             summary = feedItem.summary;
@@ -58,7 +56,7 @@ export async function buildNewsData(feedItem: NewsFeedItem, options: BuildNewsDa
     }
 
     let content = feedItem.content || '';
-    const minContentLength = options.minContentLength;
+    const minContentLength = NEWS_MAX_SUMMARY_LENGTH;
     if (page.text && content.length < minContentLength && page.text.length > content.length) {
         content = page.text;
     }
@@ -66,7 +64,7 @@ export async function buildNewsData(feedItem: NewsFeedItem, options: BuildNewsDa
         content = feedItem.summary;
     }
 
-    const title = page.title.length < 50 && feedItem.title.length > page.title.length ? feedItem.title : page.title;
+    const title = (page.title.length < 50 || page.title.length > 250) ? feedItem.title : page.title;
 
     const newsData: NewsData = {
         country: options.country,

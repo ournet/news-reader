@@ -30,8 +30,6 @@ export async function processFeedItem(dataService: DataService, imagesStorage: I
         country: info.country,
         lang: info.lang,
         sourceId: info.sourceId,
-        minContentLength: 800,
-        minSummaryLength: 400,
     });
 
     if (!newsData) {
