@@ -107,12 +107,11 @@ async function createNewsEvent(dataService: DataService, imagesStorage: ImagesSt
     const summary = findBestEventSummary(title, newsItems);
     const { imagesIds, quotesIds, videosIds } = formatEventLists(newsItems);
 
-    let items = newsItems.filter(item => isValidEventNewsItem(item, title));
+    let items = newsItems.filter(item => isValidEventNewsItem(item, title) && item.id !== contentItem.id);
     items = uniqByProperty(items, 'id');
-    if (items.length < 3) {
-        items = items.concat(newsItems).slice(0, 3);
-        items = uniqByProperty(items, 'id');
-    }
+    // if (items.length < 3) {
+    //     items = items.concat(newsItems).slice(0, 3);
+    // }
 
 
     const country = items[0].country;
@@ -196,7 +195,7 @@ async function addNewsToEvent(dataService: DataService, eventId: string, newsIte
         setEvent.videosIds = videosIds;
     }
 
-    if (event.items.length < 5 && isValidEventNewsItem(newsItem, event.title)) {
+    if (event.items.length < 5 && isValidEventNewsItem(newsItem, event.title) && newsItem.id !== event.source.id) {
         event.items.push(mapNewsItemToEventNewsItem(newsItem));
         event.items = uniqByProperty(event.items, 'id');
         setEvent.items = event.items;
