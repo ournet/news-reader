@@ -10,7 +10,7 @@ import {
     ArticleContentBuilder,
     NewsEventItem,
 } from "@ournet/news-domain";
-import { uniq, Dictionary, uniqByProperty } from "@ournet/domain";
+import { uniq, Dictionary, uniqByProperty, atonic } from "@ournet/domain";
 import { logger } from "../logger";
 import { inTextSearch } from "../helpers";
 import { ImageHelper, ImageRepository } from "@ournet/images-domain";
@@ -107,7 +107,7 @@ async function createNewsEvent(dataService: DataService, imagesStorage: ImagesSt
     const summary = findBestEventSummary(title, newsItems);
     const { imagesIds, quotesIds, videosIds } = formatEventLists(newsItems);
 
-    let items = newsItems.filter(item => item.title.length > MIN_TITLE_LENGTH && item.title.length < MAX_TITLE_LENGTH);
+    let items = newsItems.filter(item => isValidEventNewsItem(item, title));
     items = uniqByProperty(items, 'id');
     if (items.length < 3) {
         items = items.concat(newsItems).slice(0, 3);
@@ -196,7 +196,7 @@ async function addNewsToEvent(dataService: DataService, eventId: string, newsIte
         setEvent.videosIds = videosIds;
     }
 
-    if (event.items.length < 6 && newsItem.title.length > MIN_TITLE_LENGTH && newsItem.title.length < MAX_TITLE_LENGTH) {
+    if (event.items.length < 5 && isValidEventNewsItem(newsItem, event.title)) {
         event.items.push(mapNewsItemToEventNewsItem(newsItem));
         event.items = uniqByProperty(event.items, 'id');
         setEvent.items = event.items;
@@ -210,6 +210,11 @@ async function addNewsToEvent(dataService: DataService, eventId: string, newsIte
     debug(`Updated event: ${event.title}`);
 
     return updatedEvent;
+}
+
+function isValidEventNewsItem(item: NewsItem, eventTitle: string) {
+    return item.title.length > MIN_TITLE_LENGTH && item.title.length < MAX_TITLE_LENGTH
+        && !atonic(item.title.toLowerCase()).startsWith(atonic(eventTitle.slice(0, 30).toLowerCase()));
 }
 
 async function findEventContentItem(contentRep: ArticleContentRepository, newsItems: NewsItem[]) {
