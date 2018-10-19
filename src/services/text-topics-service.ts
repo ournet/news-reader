@@ -76,7 +76,7 @@ export class ApiTextTopicsService implements TextTopicsService {
 }
 
 function convertToTextTopic(locale: Locale, entity: EntitizerEntity, input: { text: string, index: number }[], wikiData?: WikidataEntity) {
-    const params = {
+    const params: BuildTopicParams = {
         abbr: entity.abbr,
         commonName: entity.commonName,
         country: locale.country,

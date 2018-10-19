@@ -30,6 +30,7 @@ test('order', async t => {
     t.truthy(topics);
     t.is(topics.length, 6);
     t.is(topics[0].topic.name, 'Statele Unite ale Americii');
+    t.is(topics[0].topic.abbr, 'SUA');
     t.is(topics[1].topic.name, 'Donald Trump');
     t.is(topics[2].topic.name, 'Phenian');
     t.is(topics[3].topic.name, 'Kim Jong-un');

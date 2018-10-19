@@ -2,7 +2,7 @@
 // const debug = require('debug')('ournet:news-reader');
 
 import {
-    NewsHelper,
+    NewsHelper, Topic,
 } from "@ournet/news-domain";
 import { NewsFeedItem } from "./functions/read-news-feed";
 import { buildNewsData } from "./steps/build-news-data";
@@ -61,11 +61,12 @@ export async function processFeedItem(dataService: DataService, imagesStorage: I
 
     if (newsTopics.topics.length) {
         newsItem.topics = newsTopics.topics.slice(0, 6)
-            .map(item => ({
+            .map<Topic>(item => ({
                 id: item.topic.id,
                 slug: item.topic.slug,
                 name: item.topic.commonName || item.topic.name,
                 type: item.topic.type,
+                abbr: item.topic.abbr,
             }));
     } else {
         logger.warn(`News without topics: ${newsData.url}`);
