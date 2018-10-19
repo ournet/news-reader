@@ -16,7 +16,7 @@ export interface Config {
 
     S3_IMAGES_BUCKET: string
 
-    TOPICS_DB_CONNECTION: string
+    MONGO_DB_CONNECTION: string
 
     NEWS_ES_HOST: string
     NEWS_SEARCH_MIN_SCORE: number
@@ -43,7 +43,7 @@ export function getConfigFromEnv(): Config {
         S3_IMAGES_EVENTS_NAME: process.env.S3_IMAGES_EVENTS_NAME || S3_IMAGES_EVENTS_NAME,
         S3_IMAGES_NEWS_NAME: process.env.S3_IMAGES_NEWS_NAME || S3_IMAGES_NEWS_NAME,
         S3_IMAGES_BUCKET: process.env.S3_IMAGES_BUCKET || S3_IMAGES_BUCKET,
-        TOPICS_DB_CONNECTION: process.env.TOPICS_DB_CONNECTION || '',
+        MONGO_DB_CONNECTION: process.env.MONGO_DB_CONNECTION || '',
         NEWS_ES_HOST: process.env.NEWS_ES_HOST || '',
         NEWS_SEARCH_MIN_SCORE: process.env.NEWS_SEARCH_MIN_SCORE
             && parseFloat(process.env.NEWS_SEARCH_MIN_SCORE) || 0,
@@ -64,7 +64,7 @@ export function getConfigFromEnv(): Config {
 }
 
 function validateConfig(config: Config) {
-    if (!config.TOPICS_DB_CONNECTION) {
+    if (!config.MONGO_DB_CONNECTION) {
         throw new Error('TOPICS_DB_CONNECTION is required!');
     }
     if (!config.NEWS_ES_HOST) {

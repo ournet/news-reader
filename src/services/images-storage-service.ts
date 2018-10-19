@@ -3,9 +3,7 @@
 
 import S3 = require('aws-sdk/clients/s3');
 import { delay } from '../helpers';
-import { ImageHelper, getImageMasterSizeName, ImageSizeName } from '@ournet/images-domain';
-
-const masterSizeName = getImageMasterSizeName();
+import { ImageStorageHelper } from '@ournet/images-domain';
 
 export interface ImagesStorageService {
     copyImageToEventsById(id: string): Promise<void>
@@ -34,13 +32,13 @@ export class S3ImagesStorage implements ImagesStorageService {
 
 
     copyImageToEventsById(id: string) {
-        const key = formatImageKeyFromId(id, masterSizeName);
+        const key = ImageStorageHelper.formatImageKeyFromId(id);
 
         return this.copyToEventsByKey(key);
     }
 
     putImageById(id: string, body: Buffer | Blob, contentType: string) {
-        const key = this.newsName + '/' + formatImageKeyFromId(id, masterSizeName);
+        const key = this.newsName + '/' + ImageStorageHelper.formatImageKeyFromId(id);
 
         return this.putImage(key, body, contentType);
     }
@@ -78,10 +76,4 @@ export class S3ImagesStorage implements ImagesStorageService {
             ACL: 'public-read'
         }).promise();
     }
-
-}
-
-function formatImageKeyFromId(id: string, size: ImageSizeName) {
-    const format = ImageHelper.parseImageIdFormat(id);
-    return `${id.substr(0, 3).toLowerCase()}/${size}/${id}.${format}`;
 }

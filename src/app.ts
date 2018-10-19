@@ -16,7 +16,7 @@ import { Locale } from "./types";
 
 async function start() {
     const config = getConfigFromEnv();
-    const connection = await DbDataConnection.create(config.TOPICS_DB_CONNECTION);
+    const connection = await DbDataConnection.create(config.MONGO_DB_CONNECTION);
 
     const newsReader = new NewsReader(config, connection.mongoClient);
 

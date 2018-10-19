@@ -145,6 +145,7 @@ async function createNewsEvent(dataService: DataService, imagesStorage: ImagesSt
         refId: event.id,
         refType: 'EVENT',
         format: contentItem.format,
+        topicsMap: contentItem.topicsMap,
     }));
 
     await imagesStorage.copyImageToEventsById(eventImage.id);
@@ -230,6 +231,7 @@ async function findEventContentItem(contentRep: ArticleContentRepository, newsIt
         sourceId: contentItem.sourceId,
         content: content.content,
         format: content.format,
+        topicsMap: content.topicsMap,
     }
 }
 
@@ -365,7 +367,7 @@ function mapNewsItemToEventNewsItem(item: NewsItem) {
         id: item.id,
         path: item.urlPath,
         publishedAt: item.publishedAt,
-        sourceId: item.publishedAt,
+        sourceId: item.sourceId,
         title: item.title,
     }
 
