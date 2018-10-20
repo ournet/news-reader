@@ -139,6 +139,8 @@ async function createNewsEvent(dataService: DataService, imagesStorage: ImagesSt
         },
     });
 
+    event.countNews = newsItems.length;
+
     await dataService.articleContentRep.put(ArticleContentBuilder.build({
         content: contentItem.content,
         refId: event.id,
