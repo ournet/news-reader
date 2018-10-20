@@ -20,7 +20,7 @@ export function extractTextFromHtml(html: string) {
     html = html.replace(/<\/(div|p|section)>/ig, '</$1>\n').trim();
     html = striptags(html);
     html = decodeHtml(html);
-    html = html.replace(/\n[\t\r ]+/g, '\n').replace(/[\t\r ]+\n/g, '\n').replace(/\n{2,}/g, '\n');
+    html = html.replace(/&nbsp;/g, ' ').replace(/[ ]{2,}/, ' ').replace(/\n[\t\r ]+/g, '\n').replace(/[\t\r ]+\n/g, '\n').replace(/\n{2,}/g, '\n');
     return html.trim();
 }
 
