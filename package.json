@@ -66,6 +66,7 @@
     "rgb-hex": "^2.1.0",
     "sanitize-html": "^1.18.4",
     "sharp": "^0.20.7",
+    "standard-text": "^0.1.1",
     "striptags": "^3.1.1",
     "winston": "^3.0.0"
   }

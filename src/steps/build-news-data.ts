@@ -7,8 +7,8 @@ import { NewsFeedItem } from "../functions/read-news-feed";
 import { WebPage, exploreWebPage } from "../functions/explore-web-page";
 import { IMAGE_MIN_WIDTH, IMAGE_MIN_HEIGHT } from "@ournet/images-domain";
 import { NEWS_MIN_SUMMARY_LENGTH, NEWS_MAX_SUMMARY_LENGTH } from "@ournet/news-domain";
-import { atonic } from "@ournet/domain";
-import { inTextSearch } from "../helpers";
+// import { atonic } from "@ournet/domain";
+// import { inTextSearch } from "../helpers";
 
 export interface NewsData {
     country: string
@@ -100,10 +100,14 @@ async function getWebPage(newsItem: NewsFeedItem, lang: string): Promise<WebPage
         return
     }
 
-    if (newsItem.link !== page.url && inTextSearch(atonic(newsItem.title))(atonic(page.title)) < 0.65) {
-        logger.error(`Inavlid page title: ${newsItem.title} <> ${page.title}`);
-        return
+    if (newsItem.title.length < page.title.length) {
+        page.title = newsItem.title;
     }
+
+    // if (newsItem.link !== page.url && inTextSearch(atonic(newsItem.title))(atonic(page.title)) < 0.65) {
+    //     logger.error(`Inavlid page title: ${newsItem.title} <> ${page.title}`);
+    //     return
+    // }
 
     if (newsItem.summary && (!page.description || page.description.length < newsItem.summary.length)) {
         page.description = newsItem.summary;

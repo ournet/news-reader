@@ -5,6 +5,11 @@ import entities = require('entities');
 import { Locale } from './types';
 const sanitizeHtml = require('sanitize-html');
 const inTextSearchFn = require('in-text-search');
+const standardTextFn = require('standard-text');
+
+export function standardText(text: string, lang: string): string {
+    return standardTextFn(text, lang);
+}
 
 export function inTextSearch(q: string): (text: string) => number {
     const textSearch = inTextSearchFn(q);

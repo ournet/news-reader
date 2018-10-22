@@ -54,15 +54,19 @@ export class S3ImagesStorage implements ImagesStorageService {
         }).promise();
     }
 
-    private copyToEventsByKey(key: string) {
-        return this.copyImage(this.newsName + '/' + key, this.eventsName + '/' + key)
-            .catch(async err => {
-                if (err.code === 'SlowDown' && err.retryable) {
-                    await delay(1000);
-                    await this.copyToEventsByKey(key);
-                }
+    private async copyToEventsByKey(key: string) {
+        try {
+            return this.copyImage(this.newsName + '/' + key, this.eventsName + '/' + key);
+        }
+        catch (err) {
+            if (err.code === 'SlowDown' && err.retryable) {
+                await delay(1000);
+                await this.copyToEventsByKey(key);
+            }
+            else {
                 throw err;
-            });
+            }
+        }
     }
 
     private async copyImage(sourceKey: string, targetKey: string) {
