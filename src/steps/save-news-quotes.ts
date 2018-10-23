@@ -77,6 +77,8 @@ export async function saveNewsQuotes(quoteRep: QuoteRepository, newsItem: NewsIt
         const topQuoteTopics = textTopics.slice(0, maxQuoteTopics - quote.topics.length);
         quote.topics = quote.topics.concat(topQuoteTopics.map(item => convertTextTopicToQuoteTopic(item)));
         quote.topics = uniqByProperty(quote.topics, 'id');
+        quote.topics = quote.topics.filter(item => item.id !== quote.author.id);
+        
         if (Object.keys(quote.topics).length === 0) {
             delete quote.topics;
         }
