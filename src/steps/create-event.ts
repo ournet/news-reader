@@ -86,7 +86,7 @@ async function createNewsEvent(dataService: DataService, imagesStorage: ImagesSt
     const allTopics = newsItems.reduce<Topic[]>((list, item) => list.concat(item.topics || []), []);
     const topics = extractEventTopics(allTopics, 5, 2);
 
-    if (!topics.length || topics.length < 2) {
+    if (!topics.length || topics.length < 1) {
         logger.warn(`No topics for the news creating event: ${title}`);
         return;
     }
