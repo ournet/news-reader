@@ -18,8 +18,9 @@ export async function processLocale(dataService: DataService, imagesStorage: Ima
     if (!isValidLocale(locale)) {
         throw new Error(`Invalid locale: ${locale.lang}-${locale.country}`);
     }
-
+    debug(`getting sources for ${locale.country}`)
     const sources = await readSources(locale.country);
+    debug(`got sources for ${locale.country}`)
     const processFeedMinDate = new Date();
     processFeedMinDate.setMinutes(processFeedMinDate.getMinutes() - config.NEWS_PAST_MINUTES);
 

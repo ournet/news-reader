@@ -1,5 +1,5 @@
 
-// const debug = require('debug')('ournet:news-reader');
+const debug = require('debug')('ournet:news-reader');
 
 import { logger } from "../logger";
 import { WebImage, exploreWebImage } from "../functions/explore-web-image";
@@ -33,6 +33,7 @@ export async function buildNewsData(feedItem: NewsFeedItem, options: BuildNewsDa
 
     const page = await getWebPage(feedItem, options.lang);
     if (!page) {
+        debug(`NO web page ${feedItem.link}`);
         return;
     }
 

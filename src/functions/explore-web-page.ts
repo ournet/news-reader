@@ -1,3 +1,4 @@
+// const debug = require('debug')('ournet:news-reader');
 
 import { fetchUrl } from './fetch-url';
 import { extractTextFromHtml } from '../helpers';
@@ -18,11 +19,14 @@ export async function exploreWebPage(webpageUrl: string, lang: string, extractCo
             // 'accept-encoding': 'gzip, deflate',
         },
     });
-
+    // debug(`pre metascraper wepage ${webpageUrl}`)
     const metadata = await metascraper({ html, url });
+    // debug(`post metascraper wepage ${webpageUrl}`)
     let text: string | undefined;
     if (extractContent !== false) {
+        // debug(`pre scrapeArticleContent ${webpageUrl}`)
         const content = await scrapeArticleContent(html);
+        // debug(`post scrapeArticleContent ${webpageUrl}`)
         if (content) {
             text = sanitizeNewsText(extractTextFromHtml(content), lang);
         }
