@@ -1,8 +1,8 @@
-import { SharpInstance } from "sharp";
+import { Sharp } from "sharp";
 import { getImageBitmap } from "./image-bitmap";
 const anyBase = require('any-base');
 
-export async function getImageHash(img: SharpInstance) {
+export async function getImageHash(img: Sharp) {
     const size = 32;
     const smallerSize = 8;
 

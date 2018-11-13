@@ -5,7 +5,7 @@ const rgbToHex = require('rgb-hex');
 import sharp = require('sharp');
 import { getImageBitmap } from './image-bitmap';
 
-export async function getImageColor(image: sharp.SharpInstance): Promise<string> {
+export async function getImageColor(image: sharp.Sharp): Promise<string> {
     const palette = getImagePalette(await image.resize(24, 24).png().toBuffer(), 5);
     const dominantColor = palette[0];
     return rgbToHex(dominantColor[0], dominantColor[1], dominantColor[2]);
