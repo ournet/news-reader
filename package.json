@@ -1,6 +1,6 @@
 {
   "name": "@ournet/news-reader",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Ournet news-reader app",
   "scripts": {
     "start": "node ./lib/app.js",
