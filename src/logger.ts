@@ -3,7 +3,7 @@ export const logger: ILogger = require('ournet.logger');
 
 if (process.env.NODE_ENV === 'production') {
     (<any>logger).loggly({
-        tags: ['ournet-api'],
+        tags: ['news-reader'],
         json: true
     });
     (<any>logger).removeConsole();
