@@ -3,7 +3,7 @@ import { Locale } from "./types";
 
 const VALID_LOCALES: Dictionary<string[]> = {
     ro: ['ro', 'md'],
-    ru: ['ru'],
+    ru: ['ru', 'md'],
 };
 
 export function isValidLocale(locale: Locale) {
