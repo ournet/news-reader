@@ -23,6 +23,7 @@ export function decodeHtml(html: string) {
 export function extractTextFromHtml(html: string) {
     html = sanitizeHtml(html);
     html = html.replace(/<\/(div|p|section)>/ig, '</$1>\n').trim();
+    html = html.replace(/<br>|<br\/>/ig, '\n').trim();
     html = striptags(html);
     html = decodeHtml(html);
     html = removeExtraSpaces(html.replace(/&nbsp;/g, ' '));
