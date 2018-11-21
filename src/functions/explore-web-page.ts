@@ -37,7 +37,7 @@ export async function exploreWebPage(webpageUrl: string, lang: string, extractCo
         url: normalizeWebPageUrl(metadata.url || url),
         image: metadata.image,
         video: metadata.video,
-        description: metadata.description && sanitizeNewsTitle(extractTextFromHtml(metadata.description), lang),
+        description: metadata.description && sanitizeNewsText(extractTextFromHtml(metadata.description), lang),
         text,
     };
 

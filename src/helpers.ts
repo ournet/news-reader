@@ -25,7 +25,7 @@ export function extractTextFromHtml(html: string) {
     html = html.replace(/<\/(div|p|section)>/ig, '</$1>\n').trim();
     html = striptags(html);
     html = decodeHtml(html);
-    html = html.replace(/&nbsp;/g, ' ').replace(/[ ]{2,}/, ' ').replace(/\n[\t\r ]+/g, '\n').replace(/[\t\r ]+\n/g, '\n').replace(/\n{2,}/g, '\n');
+    html = removeExtraSpaces(html.replace(/&nbsp;/g, ' '));
     return html.trim();
 }
 
@@ -53,4 +53,11 @@ export function isValidDate(d: Date) {
 
 export function isLetter(char: string) {
     return char.toLowerCase() !== char.toUpperCase();
+}
+
+export function removeExtraSpaces(text: string) {
+    if (text) {
+        text = text.replace(/\s*\n\s*/g, '\n').replace(/[ ]+/, ' ').trim();
+    }
+    return text;
 }
