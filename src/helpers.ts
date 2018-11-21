@@ -21,6 +21,7 @@ export function decodeHtml(html: string) {
 }
 
 export function extractTextFromHtml(html: string) {
+    html = html.replace(/\n+/g, ' ');
     html = sanitizeHtml(html);
     html = html.replace(/<\/(div|p|section)>/ig, '</$1>\n').trim();
     html = html.replace(/<br>|<br\/>/ig, '\n').trim();
