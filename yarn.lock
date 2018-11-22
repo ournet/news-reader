@@ -100,6 +100,14 @@
     "@ournet/domain" "^0.3.3"
     joi "^14.0.6"
 
+"@ournet/images-domain@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@ournet/images-domain/-/images-domain-0.1.2.tgz#9af9534f8e6bd848d626524344790163e7cefa99"
+  integrity sha512-CI5NKuisnk2NycsmLmEE01jaSAiIfP4viFXa737Z2nmy5XGJcRtlvQ1oGtNdrYKkjzb466G6w7gfzusUFFmtaw==
+  dependencies:
+    "@ournet/domain" "^0.3.3"
+    joi "^14.0.6"
+
 "@ournet/news-data@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@ournet/news-data/-/news-data-0.1.0.tgz#447fff0f2649adaff27a6d2485e33ec7ff8dea29"
