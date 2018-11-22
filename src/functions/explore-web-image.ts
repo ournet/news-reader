@@ -54,13 +54,13 @@ async function getWebImage(data: Buffer, url: string): Promise<WebImage> {
         data = await image.toBuffer();
     }
 
-    console.time('image-hash');
+    // console.time('image-hash');
     const hash = await getImageHash(image);
-    console.timeEnd('image-hash');
+    // console.timeEnd('image-hash');
 
-    console.time('image-color');
+    // console.time('image-color');
     const color = await getImageColor(sharp(data));
-    console.timeEnd('image-color');
+    // console.timeEnd('image-color');
 
     return {
         url,
