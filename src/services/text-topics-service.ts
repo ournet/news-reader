@@ -38,13 +38,17 @@ export class ApiTextTopicsService implements TextTopicsService {
         query.append('lang', locale.lang);
         query.append('country', locale.country);
         query.append('wikidata', 'true');
-        query.append('text', text);
+        // query.append('text', text);
 
         const { body } = await got(url, {
+            method: 'POST',
             json: true,
             timeout: 1000 * 3,
             throwHttpErrors: true,
             query,
+            body: {
+                text,
+            }
         });
 
         if (!body || !body.data) {
