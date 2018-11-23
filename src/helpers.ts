@@ -17,7 +17,10 @@ export function inTextSearch(q: string): (text: string) => number {
 }
 
 export function decodeHtml(html: string) {
-    return entities.decodeHTML(html);
+    if (html) {
+        return entities.decodeHTML(html);
+    }
+    return html;
 }
 
 export function extractTextFromHtml(html: string) {

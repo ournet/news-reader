@@ -2,7 +2,7 @@
 import FeedParser = require('feedparser');
 import { fetchUrl } from './fetch-url';
 import { Readable } from 'stream';
-import { isValidDate } from '../helpers';
+import { isValidDate, decodeHtml } from '../helpers';
 
 const ITEM_CONTENT_NAMES = ['yandex:full-text'];
 
@@ -47,7 +47,7 @@ export async function readFeed(feedUrl: string): Promise<FeedReaderItem[]> {
                     categories: item.categories || undefined,
                     comments: item.comments || undefined,
                     date: item.date || undefined,
-                    description: item.description || undefined,
+                    description: decodeHtml(item.description) || undefined,
                     enclosures: <any>item.enclosures || undefined,
                     guid: item.guid || undefined,
                     image: item.image || undefined,
@@ -55,9 +55,9 @@ export async function readFeed(feedUrl: string): Promise<FeedReaderItem[]> {
                     origlink: item.origlink || undefined,
                     permalink: (<any>item).permalink || undefined,
                     pubdate: item.pubdate || undefined,
-                    summary: item.summary || undefined,
+                    summary: decodeHtml(item.summary) || undefined,
                     title: item.title,
-                    content,
+                    content: decodeHtml(content || ''),
                 };
                 if (feedItem.pubdate && !isValidDate(feedItem.pubdate)) {
                     delete feedItem.pubdate;
