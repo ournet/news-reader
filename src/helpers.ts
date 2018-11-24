@@ -30,7 +30,7 @@ export function extractTextFromHtml(html: string) {
     html = html.replace(/<br>|<br[ ]*\/>/ig, '\n').trim();
     html = striptags(html);
     html = decodeHtml(html);
-    html = removeExtraSpaces(html.replace(/&nbsp;/g, ' '));
+    html = removeExtraSpaces(html);
     return html.trim();
 }
 
