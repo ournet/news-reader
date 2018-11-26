@@ -69,7 +69,7 @@
     "metascraper": "^3.12.1",
     "mongodb": "^3.1.9",
     "news-sanitizer": "^0.1.2",
-    "news-sources": "^0.0.1",
+    "news-sources": "^0.1.0",
     "ournet.logger": "^0.1.0",
     "pngjs": "^3.3.3",
     "quantize": "^1.0.2",
