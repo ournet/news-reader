@@ -4,6 +4,7 @@ import { fetchUrl } from './fetch-url';
 import { extractTextFromHtml } from '../helpers';
 import { sanitizeNewsText, sanitizeNewsTitle } from './sanitizer';
 import { normalizeUrl } from '@ournet/domain';
+import { isValidImageUrl } from '../invalid-images';
 const metascraper = require('metascraper');
 const ascrape = require('ascrape');
 
@@ -40,6 +41,10 @@ export async function exploreWebPage(webpageUrl: string, lang: string, extractCo
         description: metadata.description && sanitizeNewsText(extractTextFromHtml(metadata.description), lang),
         text,
     };
+
+    if (webpage.image && !isValidImageUrl(webpage.image)) {
+        delete webpage.image;
+    }
 
     return webpage;
 }
