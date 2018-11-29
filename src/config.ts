@@ -4,6 +4,7 @@ import { Locale } from "./types";
 const VALID_LOCALES: Dictionary<string[]> = {
     ro: ['ro', 'md'],
     ru: ['ru', 'md'],
+    bg: ['bg'],
 };
 
 export function isValidLocale(locale: Locale) {
