@@ -5,6 +5,7 @@ const VALID_LOCALES: Dictionary<string[]> = {
     ro: ['ro', 'md'],
     ru: ['ru', 'md'],
     bg: ['bg'],
+    en: ['in'],
 };
 
 export function isValidLocale(locale: Locale) {
