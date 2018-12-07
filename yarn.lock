@@ -3824,15 +3824,15 @@ needle@^2.2.1:
     iconv-lite "^0.4.4"
     sax "^1.2.4"
 
-news-sanitizer@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/news-sanitizer/-/news-sanitizer-0.1.4.tgz#69770d7f34cff1cbc359660613533af40e01bf1e"
-  integrity sha512-83jViU8fbN86ekNQSmE/qlRYVVTMAUlVTpvK8kTkG2S3gMA7VRq4hC9+K/prQ157lo2eHn6kNk6I3giQ4J6+FA==
+news-sanitizer@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/news-sanitizer/-/news-sanitizer-0.1.5.tgz#dea408fc9cd5798903e179c5fec2a6a677228d16"
+  integrity sha512-nh1HtFTDHTP/FfHbLI/MnljTwRDm2UhQryaOlpl+762Emvg4ZpBrU9txlfOQd4zLWFdv0+u9b4n1cZlEDoyKSw==
 
-news-sources@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/news-sources/-/news-sources-0.1.2.tgz#1682c1e7e0c6f5bb49496cb886ca244b7ffa99cd"
-  integrity sha512-WMEezeBdMSBZo1lt4Nvbei4fKKmM/IXSHnQYgXUV2mZ8CIAUcpBCL1kNW52TOd7pchDCJrfsp1Ao/QrzZ2TjKQ==
+news-sources@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/news-sources/-/news-sources-0.1.3.tgz#876cc8c4bf5b527fd9d2ac1cb6c81b598a3b32fe"
+  integrity sha512-Dnejbi9L1h2K4jYvr4g36kdkhCHoMIrjxwc3cwHtyW3QHN2H72lXasbqgtMmakncbPfOdSnLoKL2wcFl/U+Ayw==
 
 nice-try@^1.0.4:
   version "1.0.5"
