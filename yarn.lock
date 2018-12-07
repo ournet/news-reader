@@ -108,10 +108,10 @@
     "@ournet/domain" "^0.3.3"
     joi "^14.0.6"
 
-"@ournet/news-data@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@ournet/news-data/-/news-data-0.1.0.tgz#447fff0f2649adaff27a6d2485e33ec7ff8dea29"
-  integrity sha512-yM5s3I4w+wHQVd5ntVm/1jRkzqp74bYUeWcVCasQ29wJ++361hWu7Vjgx7vS50Tpwz5nzIIsO54YokW0TEFMdg==
+"@ournet/news-data@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@ournet/news-data/-/news-data-0.1.1.tgz#315642f4b7f32e5a6adaafb92bccf4d83a3dcdf6"
+  integrity sha512-r0tacdAkAP9IeYQNZJX7IHF/m+/XwDjjK9StK+GWShPHeL+uAu2HVu2oq2qCAdN/ma5g1cQAG31s4x5H+xl6Fg==
   dependencies:
     "@ournet/domain" "^0.3.3"
     "@ournet/news-domain" "^0.1.1"

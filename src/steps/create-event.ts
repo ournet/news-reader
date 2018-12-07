@@ -178,7 +178,10 @@ async function addNewsToEvent(dataService: DataService, eventId: string, newsIte
         }
     });
 
-    const eventNews = await dataService.newsRep.latestByEvent({ eventId, country: event.country, lang: event.lang, limit: event.countNews + 2 },
+    let limit = event.countNews + 2;
+    limit = limit > 100 ? 100 : limit;
+
+    const eventNews = await dataService.newsRep.latestByEvent({ eventId, country: event.country, lang: event.lang, limit },
         { fields: ['id', 'imagesIds', 'quotesIds', 'videoId'] });
 
     const { imagesIds, quotesIds, videosIds } = formatEventLists(eventNews);

@@ -49,7 +49,7 @@
     "@ournet/domain": "^0.3.3",
     "@ournet/images-data": "^0.1.0",
     "@ournet/images-domain": "^0.1.2",
-    "@ournet/news-data": "^0.1.0",
+    "@ournet/news-data": "^0.1.1",
     "@ournet/news-domain": "^0.1.1",
     "@ournet/quotes-data": "^0.1.0",
     "@ournet/quotes-domain": "^0.1.0",
