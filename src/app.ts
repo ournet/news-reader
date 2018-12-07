@@ -29,6 +29,12 @@ async function start() {
     }
 }
 
+const startDate = Date.now();
+
+function getSeconds() {
+    return Math.round((Date.now() - startDate) / 1000);
+}
+
 start()
-    .then(() => logger.warn(`END ${locale.lang}-${locale.country}`))
-    .catch(e => logger.warn(`ERROR ${locale.lang}-${locale.country}: ${e.message}`, e));
+    .catch(e => logger.warn(`ERROR ${locale.lang}-${locale.country}: ${e.message}`, e))
+    .then(() => logger.warn(`END ${locale.lang}-${locale.country} in ${getSeconds()}s`))
