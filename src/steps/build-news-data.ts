@@ -7,7 +7,7 @@ import { NewsFeedItem } from "../functions/read-news-feed";
 import { WebPage, exploreWebPage } from "../functions/explore-web-page";
 import { IMAGE_MIN_WIDTH, IMAGE_MIN_HEIGHT } from "@ournet/images-domain";
 import { NEWS_MIN_SUMMARY_LENGTH, NEWS_MAX_SUMMARY_LENGTH } from "@ournet/news-domain";
-import { inTextSearch } from "../helpers";
+import { inTextSearch, removeExtraSpaces } from "../helpers";
 // import { atonic } from "@ournet/domain";
 // import { inTextSearch } from "../helpers";
 
@@ -100,6 +100,13 @@ async function getWebPage(newsItem: NewsFeedItem, lang: string): Promise<WebPage
     } catch (e) {
         logger.error(`Error on exploring web page: ${newsItem.link}`, e);
         return
+    }
+    page.title = removeExtraSpaces(page.title);
+    if (page.description) {
+        page.description = removeExtraSpaces(page.description);
+    }
+    if (page.text) {
+        page.text = removeExtraSpaces(page.text);
     }
 
     if (newsItem.title.length < page.title.length) {

@@ -1,16 +1,16 @@
 
 require('dotenv').config();
 
-process.env.ENTITIZER_URL = 'http://free.entitizer.com/v0/extract';
-process.env.ENTITIZER_KEY = 'KEY';
+// process.env.ENTITIZER_URL = 'http://free.entitizer.com/v0/extract';
+// process.env.ENTITIZER_KEY = 'KEY';
 
 import test from 'ava';
 import { ApiTextTopicsService } from './text-topics-service';
 import { Locale } from '../types';
 
 const service = new ApiTextTopicsService({
-    entitizerUrl: 'http://free.entitizer.com/v0/extract',
-    entitizerKey: 'KEY',
+    entitizerUrl: process.env.ENTITIZER_URL || '',
+    entitizerKey: process.env.ENTITIZER_KEY || '',
 });
 
 test('invalid input', async t => {
