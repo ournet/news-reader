@@ -121,7 +121,7 @@ async function createNewsEvent(dataService: DataService, imagesStorage: ImagesSt
         title,
         summary,
         topics,
-        imagesIds,
+        countImages: imagesIds.length,
         quotesIds,
         videosIds,
         country,
@@ -200,7 +200,7 @@ async function addNewsToEvent(dataService: DataService, eventId: string, newsIte
         setEvent.videosIds = videosIds;
     }
     if (imagesIds.length) {
-        setEvent.imagesIds = imagesIds;
+        // setEvent.imagesIds = imagesIds;
     }
 
     if (event.items.length < 5 && isValidEventNewsItem(newsItem, event.title) && newsItem.id !== event.source.id) {

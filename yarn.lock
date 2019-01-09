@@ -2897,7 +2897,7 @@ lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
 
-lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.4, lodash@~4.17.11:
+lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.4, lodash@~4.17.10, lodash@~4.17.11:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
@@ -3011,6 +3011,37 @@ meow@^3.7.0:
     read-pkg-up "^1.0.1"
     redent "^1.0.0"
     trim-newlines "^1.0.0"
+
+metascraper-date@^4.8.5:
+  version "4.8.5"
+  resolved "https://registry.yarnpkg.com/metascraper-date/-/metascraper-date-4.8.5.tgz#9494ac9b4e99e9bd79d7e39972263c87a49f3054"
+  dependencies:
+    "@metascraper/helpers" "^4.8.5"
+
+metascraper-description@^4.8.5:
+  version "4.8.5"
+  resolved "https://registry.yarnpkg.com/metascraper-description/-/metascraper-description-4.8.5.tgz#9155b5c7f64e997f8f12209e0140e7de25614e01"
+  dependencies:
+    "@metascraper/helpers" "^4.8.5"
+
+metascraper-image@^4.8.5:
+  version "4.8.5"
+  resolved "https://registry.yarnpkg.com/metascraper-image/-/metascraper-image-4.8.5.tgz#f679fb4ca110e7aa84dab77813b1d18a7e9fb05d"
+  dependencies:
+    "@metascraper/helpers" "^4.8.5"
+
+metascraper-title@^4.8.5:
+  version "4.8.5"
+  resolved "https://registry.yarnpkg.com/metascraper-title/-/metascraper-title-4.8.5.tgz#406de3b443442b34cfffba207d4b53de9343ad98"
+  dependencies:
+    "@metascraper/helpers" "^4.8.5"
+    lodash "~4.17.10"
+
+metascraper-url@^4.8.5:
+  version "4.8.5"
+  resolved "https://registry.yarnpkg.com/metascraper-url/-/metascraper-url-4.8.5.tgz#37fe18af596da0e0b999a85dce1b30b6d8adb4fb"
+  dependencies:
+    "@metascraper/helpers" "^4.8.5"
 
 metascraper@^4.8.5:
   version "4.8.5"
