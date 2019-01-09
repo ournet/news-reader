@@ -7,7 +7,7 @@ import { WebImage } from "../functions/explore-web-image";
 import { uniq } from "@ournet/domain";
 import { ImagesStorageService } from "../services/images-storage-service";
 
-export async function saveNewsImage(imageRep: ImageRepository, imagesStorage: ImagesStorageService, webImage: WebImage, pageUrl: string, _lang: string) {
+export async function saveNewsImage(imageRep: ImageRepository, imagesStorage: ImagesStorageService, webImage: WebImage, pageUrl: string, lang: string) {
 
     const host = new URL(pageUrl).host;
 
@@ -19,6 +19,7 @@ export async function saveNewsImage(imageRep: ImageRepository, imagesStorage: Im
         host,
         length: webImage.length,
         width: webImage.width,
+        lang,
     });
 
     const id = image.id;

@@ -121,7 +121,7 @@ async function createNewsEvent(dataService: DataService, imagesStorage: ImagesSt
         title,
         summary,
         topics,
-        countImages: imagesIds.length,
+        imagesIds,
         quotesIds,
         videosIds,
         country,
