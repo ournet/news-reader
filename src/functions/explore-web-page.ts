@@ -5,7 +5,13 @@ import { extractTextFromHtml } from '../helpers';
 import { sanitizeNewsText, sanitizeNewsTitle } from './sanitizer';
 import { normalizeUrl } from '@ournet/domain';
 import { isValidImageUrl } from '../invalid-images';
-const metascraper = require('metascraper');
+const metascraper = require('metascraper')([
+    require('metascraper-date')(),
+    require('metascraper-description')(),
+    require('metascraper-image')(),
+    require('metascraper-title')(),
+    require('metascraper-url')()
+  ]);
 const ascrape = require('ascrape');
 
 export async function exploreWebPage(webpageUrl: string, lang: string, extractContent?: boolean) {
