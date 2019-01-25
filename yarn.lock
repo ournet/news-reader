@@ -3231,9 +3231,10 @@ needle@^2.2.1:
     iconv-lite "^0.4.4"
     sax "^1.2.4"
 
-news-sanitizer@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/news-sanitizer/-/news-sanitizer-0.1.5.tgz#dea408fc9cd5798903e179c5fec2a6a677228d16"
+news-sanitizer@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/news-sanitizer/-/news-sanitizer-0.1.6.tgz#27efbcc8002d27acb391313125a8d3960ef1ea6f"
+  integrity sha512-7AexGNMU3mukibCWQ2QjM6nHC/FWL6501HTfcxETyuUYFwQt3GBWutQcMpBfUTfr/zIlCB55559S7u0Pb5MJig==
 
 news-sources@^0.1.4:
   version "0.1.4"
