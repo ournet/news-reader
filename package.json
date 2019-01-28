@@ -34,6 +34,7 @@
   },
   "homepage": "https://github.com/ournet/news-reader#readme",
   "devDependencies": {
+    "@types/cheerio": "^0.22.10",
     "@types/entities": "^1.1.0",
     "@types/feedparser": "^2.2.1",
     "@types/got": "^9.3.0",
@@ -46,7 +47,7 @@
     "typescript": "3.2.2"
   },
   "dependencies": {
-    "@ournet/domain": "^0.3.3",
+    "@ournet/domain": "^0.3.4",
     "@ournet/images-data": "^0.1.0",
     "@ournet/images-domain": "^0.1.2",
     "@ournet/news-data": "^0.1.1",
@@ -61,6 +62,7 @@
     "ascrape": "^0.2.0",
     "aws-sdk": "^2.384.0",
     "charset": "^1.0.1",
+    "cheerio": "^1.0.0-rc.2",
     "dotenv": "^6.2.0",
     "ellipsize": "^0.1.0",
     "entities": "^1.1.2",
