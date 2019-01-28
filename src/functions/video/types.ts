@@ -12,6 +12,7 @@ export type HtmlExploredVideo = {
 export type HtmlExploredVideoInfo = {
     url: string
     contentType?: string
+    sourceType?: VideoSourceType
     width?: number
     height?: number
     image?: string

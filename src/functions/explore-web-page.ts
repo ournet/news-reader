@@ -11,7 +11,7 @@ const metascraper = require('metascraper')([
     require('metascraper-image')(),
     require('metascraper-title')(),
     require('metascraper-url')()
-  ]);
+]);
 const ascrape = require('ascrape');
 
 export async function exploreWebPage(webpageUrl: string, lang: string, extractContent?: boolean) {
@@ -30,12 +30,14 @@ export async function exploreWebPage(webpageUrl: string, lang: string, extractCo
     const metadata = await metascraper({ html, url });
     // debug(`post metascraper wepage ${webpageUrl}`)
     let text: string | undefined;
+    let articleHtml: string | undefined;
     if (extractContent !== false) {
         // debug(`pre scrapeArticleContent ${webpageUrl}`)
         const content = await scrapeArticleContent(html);
         // debug(`post scrapeArticleContent ${webpageUrl}`)
         if (content) {
             text = sanitizeNewsText(extractTextFromHtml(content), lang);
+            articleHtml = content;
         }
     }
 
@@ -46,6 +48,8 @@ export async function exploreWebPage(webpageUrl: string, lang: string, extractCo
         video: metadata.video,
         description: metadata.description && sanitizeNewsText(extractTextFromHtml(metadata.description), lang),
         text,
+        articleHtml,
+        html,
     };
 
     if (webpage.image && !isValidImageUrl(webpage.image)) {
@@ -90,4 +94,7 @@ export type WebPage = {
     video?: string
     lang?: string
     text?: string
+
+    articleHtml?: string
+    html: string
 }

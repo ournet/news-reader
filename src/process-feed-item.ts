@@ -14,6 +14,7 @@ import { saveNewsImage } from "./steps/save-news-image";
 import { DataService } from "./services/data-service";
 import { ImagesStorageService } from "./services/images-storage-service";
 import { logger } from "./logger";
+import { saveNewsVideo } from "./steps/save-news-video";
 
 export interface ProcessFeedItemInfo {
     sourceId: string
@@ -77,6 +78,13 @@ export async function processFeedItem(dataService: DataService, imagesStorage: I
         const image = await saveNewsImage(dataService.imageRep, imagesStorage, newsData.image, newsData.url, newsData.lang);
         if (image) {
             newsItem.imagesIds = [image.id];
+        }
+    }
+
+    if (newsData.video) {
+        const video = await saveNewsVideo(dataService.videoRep, newsData.video);
+        if (video) {
+            newsItem.videoId = video.id;
         }
     }
 

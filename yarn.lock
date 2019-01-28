@@ -83,6 +83,16 @@
     joi "^14.0.3"
     normalize-url "^3.2.0"
 
+"@ournet/domain@^0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@ournet/domain/-/domain-0.3.4.tgz#59a8fb3c13a38b3a82601e9c3fbde40eee9d7c93"
+  integrity sha512-PNpVFhgtOlgQGeRkjQWZjBkbP7edHzX6LZRNteXk2/sjO55kg/Bf7JahbxywZ6K+WQsjWpbUJgtHHHS7aoqaAQ==
+  dependencies:
+    atonic "^1.0.4"
+    ava "^0.25.0"
+    joi "^14.0.3"
+    normalize-url "^3.2.0"
+
 "@ournet/images-data@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@ournet/images-data/-/images-data-0.1.0.tgz#0876a248e1f244c91f6fc2e3439e65d4ebebac91"
@@ -115,6 +125,16 @@
   resolved "https://registry.yarnpkg.com/@ournet/news-domain/-/news-domain-0.1.1.tgz#cf738e3929110fb7abf6731c3e0e576bb94ccbfa"
   dependencies:
     "@ournet/domain" "^0.3.3"
+    ellipsize "^0.1.0"
+    joi "^13.6.0"
+    transliteration "^1.6.6"
+
+"@ournet/news-domain@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@ournet/news-domain/-/news-domain-0.1.2.tgz#fce8103fc8d16f8274c5046ca5b1bcb1c9558ff2"
+  integrity sha512-unO2F3yqDB+2+7ffELKlj97GBZSOHwPos8X6RWcH+9vLFojr15D3PFrTWEFbG5nFzwuEtpQUxhsbwcyM+oZqYQ==
+  dependencies:
+    "@ournet/domain" "^0.3.4"
     ellipsize "^0.1.0"
     joi "^13.6.0"
     transliteration "^1.6.6"
@@ -1996,6 +2016,11 @@ get-port@^3.0.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/get-port/-/get-port-3.2.0.tgz#dd7ce7de187c06c8bf353796ac71e099f0980ebc"
 
+get-src@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/get-src/-/get-src-1.0.1.tgz#ca11dbe4a93c7f3aa85cec95fcb0b2dfaa9539ee"
+  integrity sha1-yhHb5Kk8fzqoXOyV/LCy36qVOe4=
+
 get-stdin@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/get-stdin/-/get-stdin-4.0.1.tgz#b968c6b0a04384324902e8bf1a5df32579a450fe"
@@ -2013,6 +2038,13 @@ get-stream@^4.0.0, get-stream@^4.1.0:
 get-value@^2.0.3, get-value@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/get-value/-/get-value-2.0.6.tgz#dc15ca1c672387ca76bd37ac0a395ba2042a2c28"
+
+get-video-id@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/get-video-id/-/get-video-id-3.1.0.tgz#44f025a99f824f8f54789dd5d0bf55d122531940"
+  integrity sha512-dWjLwCBtvGB8aP5S91Vs5W01dTaEykY43whz+wSS9G0zkuTmh7FZ1rZ4A5M33vf/8vvHPlMhLreUSdEJ4yW7Dw==
+  dependencies:
+    get-src "^1.0.1"
 
 getpass@^0.1.1:
   version "0.1.7"

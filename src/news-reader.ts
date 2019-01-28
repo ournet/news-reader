@@ -53,6 +53,7 @@ export class NewsReader {
         await this.dataService.newsRep.createStorage();
         await this.dataService.quoteRep.createStorage();
         await this.dataService.topicRep.createStorage();
+        await this.dataService.videoRep.createStorage();
         this.inited = true;
         logger.info('Inited NewsReader');
     }

@@ -3,6 +3,7 @@ import { resolve as resolveUrl } from 'url';
 import { normalizeUrl, uniqByProperty } from "@ournet/domain";
 import headVideoFinder from "./finders/head-finder";
 import * as cheerio from 'cheerio';
+const getVideoId = require('get-video-id');
 
 export type ExploreVideoOptions = {
     url: string
@@ -28,10 +29,12 @@ export function exploreVideo(options: ExploreVideoOptions): HtmlExploredVideo[] 
 function mapVideo(info: HtmlExploredVideoInfo) {
     const video: HtmlExploredVideo = {
         sourceId: info.url,
-        sourceType: 'URL',
+        sourceType: getSourceType(info),
         height: info.height,
         width: info.width,
     };
+
+    setVideoSource(video);
 
     return video;
 }
@@ -73,5 +76,45 @@ function normalizeVideos(videos: HtmlExploredVideoInfo[], url: string) {
 function getSize(n: number | undefined) {
     if (n && Number.isSafeInteger(n) && n > 0 && n < 10000) {
         return n;
+    }
+}
+
+function getSourceType(info: HtmlExploredVideoInfo) {
+    if (info.sourceType) {
+        return info.sourceType;
+    }
+
+    if (info.contentType) {
+        const contentType = info.contentType.trim().toLowerCase();
+
+        if (contentType.startsWith('video')) {
+            return 'URL';
+        }
+
+        if (contentType.startsWith('html')) {
+            return 'IFRAME';
+        }
+    }
+
+    const url = info.url.trim().toLowerCase();
+
+    if (/\.(flv|webm|mp4|ogg)$/.test(url)) {
+        return 'URL';
+    }
+
+    return 'IFRAME';
+}
+
+function setVideoSource(video: HtmlExploredVideo) {
+    const { id, service } = getVideoId(video.sourceId) as { id: string, service: string };
+
+    if (id && service) {
+        if (service === 'youtube') {
+            video.sourceType = 'YOUTUBE';
+            video.sourceId = id;
+        } else if (service === 'vimeo') {
+            video.sourceType = 'VIMEO';
+            video.sourceId = id;
+        }
     }
 }

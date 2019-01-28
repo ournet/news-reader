@@ -9,6 +9,8 @@ import { IMAGE_MIN_WIDTH, IMAGE_MIN_HEIGHT } from "@ournet/images-domain";
 import { NEWS_MIN_SUMMARY_LENGTH, NEWS_MAX_SUMMARY_LENGTH } from "@ournet/news-domain";
 import { inTextSearch } from "../helpers";
 import { sanitizeNewsTitle, sanitizeNewsText } from "../functions/sanitizer";
+import { exploreVideo } from "../functions/video/explore-video";
+import { Video, VideoHelper } from "@ournet/videos-domain";
 // import { atonic } from "@ournet/domain";
 // import { inTextSearch } from "../helpers";
 
@@ -22,6 +24,7 @@ export interface NewsData {
     url: string
     content?: string
     image?: WebImage
+    video?: Video
 }
 
 export type BuildNewsDataOptions = {
@@ -79,6 +82,26 @@ export async function buildNewsData(feedItem: NewsFeedItem, options: BuildNewsDa
         url: page.url,
         content: content.length > minContentLength ? content : undefined,
     };
+    const exploredVideos = exploreVideo({
+        html: page.html,
+        articleHtml: page.articleHtml,
+        url: newsData.url,
+    });
+
+    if (exploredVideos.length) {
+        const exploredVideo = exploredVideos[0];
+        if (exploredVideo.image && !page.image) {
+            page.image = exploredVideo.image;
+        }
+
+        newsData.video = VideoHelper.build({
+            sourceId: exploredVideo.sourceId,
+            sourceType: exploredVideo.sourceType,
+            width: exploredVideo.width,
+            height: exploredVideo.height,
+            websites: [options.sourceId],
+        });
+    }
     if (page.image) {
         try {
             newsData.image = await exploreWebImage(page.image);
