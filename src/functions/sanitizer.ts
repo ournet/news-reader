@@ -9,6 +9,9 @@ export function sanitizeNewsTitle(text: string, lang: string) {
 }
 
 export function sanitizeNewsText(text: string, lang: string) {
+    if (!text) {
+        return text;
+    }
     text = standardText(text, lang);
     text = removeExtraSpaces(text);
     text = text.split(/\s*\n\s*/g).filter(line => line.length > 30).join('\n');
