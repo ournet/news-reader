@@ -70,7 +70,8 @@ function getKnownVideoImage(video: HtmlExploredVideo) {
 
 function filterVideos(videos: HtmlExploredVideoInfo[]) {
     return videos.filter(item =>
-        item && item.url && item.url.trim().length > 10
+        item && item.url && item.url.trim().length > 10 &&
+        (!item.width || item.width >= 400)
     );
 }
 

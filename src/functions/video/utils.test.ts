@@ -12,4 +12,5 @@ test('parseHtmlSize', t => {
     t.is(parseHtmlSize(' px'), undefined)
     t.is(parseHtmlSize('10px'), 10)
     t.is(parseHtmlSize('10'), 10)
+    t.is(parseHtmlSize('100%'), undefined)
 })

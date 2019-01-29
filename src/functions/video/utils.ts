@@ -17,8 +17,11 @@ export function getKnownVideoSource(url: string) {
 }
 
 export function parseHtmlSize(value: string) {
-    const result = /^\s*(\d+)/.exec(value);
+    const result = /^\s*(\d+)\s*([a-z%]+)?\s*$/i.exec(value);
     if (result) {
+        if (result[2] && result[2].toLowerCase() !== 'px') {
+            return;
+        }
         return parseInt(result[1]);
     }
 }

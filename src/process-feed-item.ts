@@ -47,6 +47,7 @@ export async function processFeedItem(dataService: DataService, imagesStorage: I
         summary: newsData.summary,
         title: newsData.title,
         url: newsData.url,
+        videoId: newsData.video && newsData.video.id,
     });
 
     const id = newsItem.id;
