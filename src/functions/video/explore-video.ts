@@ -1,6 +1,6 @@
 import { HtmlExploredVideo, HtmlExploredVideoInfo } from "./types";
 import { resolve as resolveUrl } from 'url';
-import { normalizeUrl, uniqByProperty } from "@ournet/domain";
+import { uniqByProperty } from "@ournet/domain";
 import headVideoFinder from "./finders/head-finder";
 import * as cheerio from 'cheerio';
 import got = require("got");
@@ -80,7 +80,7 @@ function normalizeVideos(videos: HtmlExploredVideoInfo[], url: string) {
             url: resolveUrl(url, item.url.trim()),
         };
 
-        video.url = normalizeUrl(video.url, { normalizeHttp: false, normalizeHttps: false });
+        // video.url = normalizeUrl(video.url, { normalizeHttp: false, normalizeHttps: false, });
 
         const width = getSize(item.width);
         const height = getSize(item.height);
@@ -117,14 +117,16 @@ async function getVideoSourceType(info: HtmlExploredVideoInfo) {
     })
 
     if (!response.statusCode || response.statusCode >= 400) {
+        logger.warn(`Video HEAD ${response.statusCode}`);
         return;
     }
 
     const contentType = (response.headers["content-type"] || '').trim().toLowerCase();
-    if (contentType === 'text/html') {
+
+    if (contentType.includes('text/html')) {
         return 'IFRAME';
     }
-    if (contentType.startsWith('video/')) {
+    if (contentType.includes('video/')) {
         return 'URL';
     }
 }
