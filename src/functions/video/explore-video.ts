@@ -3,7 +3,11 @@ import { resolve as resolveUrl } from 'url';
 import { normalizeUrl, uniqByProperty } from "@ournet/domain";
 import headVideoFinder from "./finders/head-finder";
 import * as cheerio from 'cheerio';
-const getVideoId = require('get-video-id');
+import got = require("got");
+import { logger } from "../../logger";
+import { VideoSourceType } from "@ournet/videos-domain";
+import { getKnownVideoSource } from "./utils";
+import iframeVideoFinder from "./finders/iframe-finder";
 
 export type ExploreVideoOptions = {
     url: string
@@ -11,38 +15,62 @@ export type ExploreVideoOptions = {
     articleHtml?: string
 }
 
-export function exploreVideo(options: ExploreVideoOptions): HtmlExploredVideo[] {
+export async function exploreVideo(options: ExploreVideoOptions): Promise<HtmlExploredVideo | undefined> {
     const $ = cheerio.load(options.html);
     let videos: HtmlExploredVideoInfo[] = [];
 
     const $head = $('head');
+    const $body = $('body');
 
     videos = videos.concat(headVideoFinder($head));
+    videos = videos.concat(iframeVideoFinder($body));
 
     videos = filterVideos(videos);
     videos = normalizeVideos(videos, options.url);
     videos = uniqByProperty(videos, 'url');
 
-    return videos.map(mapVideo);
+    for (const info of videos) {
+        let sourceType: VideoSourceType | undefined;
+        try {
+            sourceType = await getVideoSourceType(info);
+        } catch (e) {
+            logger.error(`Video HEAD response: ` + e.message, { url: info.url });
+        }
+
+        if (!sourceType) {
+            continue;
+        }
+
+        let sourceId = info.url;
+
+        const source = getKnownVideoSource(info.url);
+        if (source.sourceId && source.sourceType) {
+            sourceId = source.sourceId;
+            sourceType = source.sourceType;
+        }
+
+        const video: HtmlExploredVideo = {
+            sourceId,
+            sourceType,
+            height: info.height,
+            width: info.width,
+        };
+
+        video.image = getKnownVideoImage(video);
+
+        return video;
+    }
 }
 
-function mapVideo(info: HtmlExploredVideoInfo) {
-    const video: HtmlExploredVideo = {
-        sourceId: info.url,
-        sourceType: getSourceType(info),
-        height: info.height,
-        width: info.width,
-    };
-
-    setVideoSource(video);
-
-    return video;
+function getKnownVideoImage(video: HtmlExploredVideo) {
+    if (video.sourceType === 'YOUTUBE') {
+        return `https://i.ytimg.com/vi/${video.sourceId}/maxresdefault.jpg`;
+    }
 }
 
 function filterVideos(videos: HtmlExploredVideoInfo[]) {
     return videos.filter(item =>
-        item && item.url && item.url.trim().length > 10 &&
-        (!item.contentType || item.contentType.trim().toLowerCase().startsWith('video'))
+        item && item.url && item.url.trim().length > 10
     );
 }
 
@@ -52,11 +80,7 @@ function normalizeVideos(videos: HtmlExploredVideoInfo[], url: string) {
             url: resolveUrl(url, item.url.trim()),
         };
 
-        video.url = normalizeUrl(video.url);
-
-        if (item.contentType) {
-            video.contentType = item.contentType.trim().toLowerCase();
-        }
+        video.url = normalizeUrl(video.url, { normalizeHttp: false, normalizeHttps: false });
 
         const width = getSize(item.width);
         const height = getSize(item.height);
@@ -79,42 +103,28 @@ function getSize(n: number | undefined) {
     }
 }
 
-function getSourceType(info: HtmlExploredVideoInfo) {
-    if (info.sourceType) {
-        return info.sourceType;
+async function getVideoSourceType(info: HtmlExploredVideoInfo) {
+    // if (info.sourceType) {
+    //     return info.sourceType;
+    // }
+
+    const response = await got(info.url, {
+        timeout: 1000 * 2,
+        method: 'HEAD',
+        headers: {
+            accept: 'text/html,q=0.9,video/*;q=0.8'
+        }
+    })
+
+    if (!response.statusCode || response.statusCode >= 400) {
+        return;
     }
 
-    if (info.contentType) {
-        const contentType = info.contentType.trim().toLowerCase();
-
-        if (contentType.startsWith('video')) {
-            return 'URL';
-        }
-
-        if (contentType.startsWith('html')) {
-            return 'IFRAME';
-        }
+    const contentType = (response.headers["content-type"] || '').trim().toLowerCase();
+    if (contentType === 'text/html') {
+        return 'IFRAME';
     }
-
-    const url = info.url.trim().toLowerCase();
-
-    if (/\.(flv|webm|mp4|ogg)$/.test(url)) {
+    if (contentType.startsWith('video/')) {
         return 'URL';
-    }
-
-    return 'IFRAME';
-}
-
-function setVideoSource(video: HtmlExploredVideo) {
-    const { id, service } = getVideoId(video.sourceId) as { id: string, service: string };
-
-    if (id && service) {
-        if (service === 'youtube') {
-            video.sourceType = 'YOUTUBE';
-            video.sourceId = id;
-        } else if (service === 'vimeo') {
-            video.sourceType = 'VIMEO';
-            video.sourceId = id;
-        }
     }
 }

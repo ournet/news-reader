@@ -18,7 +18,7 @@ export async function saveNewsVideo(videoRep: VideoRepository, video: Video) {
         return videoRep.update({
             id,
             set: {
-                websites: existingImage.websites.concat(video.websites),
+                websites: existingImage.websites.concat([source]),
                 expiresAt: VideoHelper.expiresAt(new Date()),
             }
         });

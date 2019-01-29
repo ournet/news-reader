@@ -16,12 +16,8 @@ export default function headVideoFinder ($: Cheerio): HtmlExploredVideoInfo[] {
         height,
     });
 
-    const twitterContentType = $.find('meta[property="twitter:player:stream:content_type"]').first().attr('content');
-    const twitterStream = $.find('meta[property="twitter:player:stream"]').first().attr('content');
-
     list.push({
-        url: twitterStream,
-        contentType: twitterContentType,
+        url: $.find('meta[property="twitter:player:stream"]').first().attr('content'),
     });
 
     return list.filter(item => item.url && item.url.trim().length > 2);

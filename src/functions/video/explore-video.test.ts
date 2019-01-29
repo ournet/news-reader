@@ -4,31 +4,34 @@ import { exploreVideo } from './explore-video';
 
 
 
-test('no head', t => {
-    const videos = exploreVideo({
+test('no head', async t => {
+    const video = await exploreVideo({
         html: `<html></html>`,
         url: 'http://url.ur',
     });
 
-    t.is(videos.length, 0);
+    t.is(video, undefined);
 })
 
-test('no videos', t => {
-    const videos = exploreVideo({
+test('no videos', async t => {
+    const video = await exploreVideo({
         html: `<html><head></head></html>`,
         url: 'http://url.ur',
     });
 
-    t.is(videos.length, 0);
+    t.is(video, undefined);
 })
 
-test('head video', t => {
-    const videos = exploreVideo({
+test('head video', async t => {
+    const video = await exploreVideo({
         html: `<html><head><meta property="og:video" content="http://example.com/movie.swf" /></head></html>`,
         url: 'http://url.ur',
     });
 
-    t.is(videos.length, 1);
-    t.is(videos[0].sourceId, 'http://example.com/movie.swf');
-    t.is(videos[0].sourceType, 'IFRAME');
+    t.is(!!video, false);
+    if (!video) {
+        return;
+    }
+    t.is(video.sourceId, 'http://example.com/movie.swf');
+    t.is(video.sourceType, 'IFRAME');
 })

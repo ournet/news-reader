@@ -6,6 +6,21 @@ import { Locale } from './types';
 const sanitizeHtml = require('sanitize-html');
 const inTextSearchFn = require('in-text-search');
 const standardTextFn = require('standard-text');
+import { parse as parseUrl } from 'url';
+
+export function getUrlHost(url: string, removeWWW: boolean = false) {
+    const data = parseUrl(url);
+    if (!data.hostname) {
+        return;
+    }
+    const host = data.hostname.trim().toLowerCase();
+
+    if (removeWWW && host.startsWith('www.')) {
+        return host.substr(4);
+    }
+
+    return host;
+}
 
 export function standardText(text: string, lang: string): string {
     return standardTextFn(text, lang);

@@ -1,6 +1,6 @@
 
 import test from 'ava';
-import { extractTextFromHtml, removeExtraSpaces } from './helpers';
+import { extractTextFromHtml, removeExtraSpaces, getUrlHost } from './helpers';
 
 test('extractTextFromHtml stript', t => {
     t.is(extractTextFromHtml('<script>console.log("log")</script>'), '');
@@ -27,4 +27,11 @@ test('removeExtraSpaces', t => {
     w     
         w`), 'w\nw\nw\nw', 'multi lines');
     t.is(removeExtraSpaces(` w\t\n\r\r\n\n\t \nw\n\r\r\nw\t\tw`), 'w\nw\nw\tw', 'multi new lines');
+})
+
+test('getUrlHost', t => {
+    t.is(getUrlHost('http://some.ex'), 'some.ex')
+    t.is(getUrlHost('/some.ex'), undefined)
+    t.is(getUrlHost('http://www.some.ex'), 'www.some.ex')
+    t.is(getUrlHost('http://www.some.ex', true), 'some.ex')
 })
