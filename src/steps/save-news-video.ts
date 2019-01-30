@@ -14,7 +14,7 @@ export async function saveNewsVideo(videoRep: VideoRepository, video: Video) {
             debug(`The video already used the source: ${source}`);
             return;
         }
-
+        debug(`Updating video: ${video.id}`);
         return videoRep.update({
             id,
             set: {
@@ -23,6 +23,6 @@ export async function saveNewsVideo(videoRep: VideoRepository, video: Video) {
             }
         });
     }
-
+    debug(`Creating new video: ${video.id}`);
     return videoRep.create(video);
 }

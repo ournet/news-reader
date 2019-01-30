@@ -83,7 +83,7 @@
     joi "^14.0.3"
     normalize-url "^3.2.0"
 
-"@ournet/domain@^0.3.4":
+"@ournet/domain@^0.3.4", "@ournet/domain@~0.3.4":
   version "0.3.4"
   resolved "https://registry.yarnpkg.com/@ournet/domain/-/domain-0.3.4.tgz#59a8fb3c13a38b3a82601e9c3fbde40eee9d7c93"
   integrity sha512-PNpVFhgtOlgQGeRkjQWZjBkbP7edHzX6LZRNteXk2/sjO55kg/Bf7JahbxywZ6K+WQsjWpbUJgtHHHS7aoqaAQ==
@@ -93,43 +93,36 @@
     joi "^14.0.3"
     normalize-url "^3.2.0"
 
-"@ournet/images-data@^0.1.0":
+"@ournet/images-data@~0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@ournet/images-data/-/images-data-0.1.0.tgz#0876a248e1f244c91f6fc2e3439e65d4ebebac91"
+  integrity sha512-tBhq9I3s9rju7yFzFvRno9E0CSe8v6R1jj0dwHP5fEOZiKmeyoy7W6u1Bm25WkUOsj4KlExtbVjvElidI5Uj2A==
   dependencies:
     "@ournet/domain" "^0.3.3"
     "@ournet/images-domain" "^0.1.1"
     aws-sdk "^2.291.0"
     dynamo-item "^0.1.1"
 
-"@ournet/images-domain@^0.1.1", "@ournet/images-domain@^0.1.2":
+"@ournet/images-domain@^0.1.1", "@ournet/images-domain@~0.1.2":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@ournet/images-domain/-/images-domain-0.1.2.tgz#9af9534f8e6bd848d626524344790163e7cefa99"
   dependencies:
     "@ournet/domain" "^0.3.3"
     joi "^14.0.6"
 
-"@ournet/news-data@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@ournet/news-data/-/news-data-0.1.1.tgz#315642f4b7f32e5a6adaafb92bccf4d83a3dcdf6"
+"@ournet/news-data@~0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@ournet/news-data/-/news-data-0.1.2.tgz#94cd6901033c5757b8e24fc7f1933ce5b2cc800d"
+  integrity sha512-YExkW1T8tUbGCbAbEBG685PjuUVDbHxtP6IQbNT+olOZuWMVtdbp3Y1j9gn4X1QVzcHmMhR+dlmzggoJU6cv3Q==
   dependencies:
-    "@ournet/domain" "^0.3.3"
-    "@ournet/news-domain" "^0.1.1"
-    aws-sdk "^2.354.0"
-    dynamo-item "^0.1.1"
-    elasticsearch "^15.2.0"
+    "@ournet/domain" "~0.3.4"
+    "@ournet/news-domain" "~0.1.2"
+    aws-sdk "^2.395.0"
+    dynamo-item "~0.1.1"
+    elasticsearch "^15.3.1"
     ms "^2.1.1"
 
-"@ournet/news-domain@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@ournet/news-domain/-/news-domain-0.1.1.tgz#cf738e3929110fb7abf6731c3e0e576bb94ccbfa"
-  dependencies:
-    "@ournet/domain" "^0.3.3"
-    ellipsize "^0.1.0"
-    joi "^13.6.0"
-    transliteration "^1.6.6"
-
-"@ournet/news-domain@^0.1.2":
+"@ournet/news-domain@~0.1.2":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@ournet/news-domain/-/news-domain-0.1.2.tgz#fce8103fc8d16f8274c5046ca5b1bcb1c9558ff2"
   integrity sha512-unO2F3yqDB+2+7ffELKlj97GBZSOHwPos8X6RWcH+9vLFojr15D3PFrTWEFbG5nFzwuEtpQUxhsbwcyM+oZqYQ==
@@ -139,16 +132,17 @@
     joi "^13.6.0"
     transliteration "^1.6.6"
 
-"@ournet/quotes-data@^0.1.0":
+"@ournet/quotes-data@~0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@ournet/quotes-data/-/quotes-data-0.1.0.tgz#4cb13b36e276363375ffdec74af4f924a3afa9c4"
+  integrity sha512-HO5RyPWIoN890MSWkrrsajRqM0p+Bb3xiBZpIjeK2GJo0zAs3o3rIE8ZVaW1ORK+WKHXHY6VPOBnwaPfZ8ffPQ==
   dependencies:
     "@ournet/domain" "^0.3.3"
     "@ournet/quotes-domain" "^0.1.0"
     aws-sdk "^2.354.0"
     dynamo-item "^0.1.1"
 
-"@ournet/quotes-domain@^0.1.0":
+"@ournet/quotes-domain@^0.1.0", "@ournet/quotes-domain@~0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@ournet/quotes-domain/-/quotes-domain-0.1.0.tgz#8c15377d2d44d5caa7b6f8effb1b0401b8ed3c87"
   dependencies:
@@ -156,16 +150,17 @@
     ellipsize "^0.1.0"
     joi "^14.0.6"
 
-"@ournet/topics-data@^0.1.0":
+"@ournet/topics-data@~0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@ournet/topics-data/-/topics-data-0.1.0.tgz#7065c058723b2767ba0ec2fd2c1dccef39bc3fcf"
+  integrity sha512-35M1t/FoJDQHHCoW/3ypIChX7uWUiykJWKgsgaA/Af2XuCP+qcSOCdvOQM0YTiEwGrkKObt2yu6pJInPuyp9xA==
   dependencies:
     "@ournet/domain" "^0.3.3"
     "@ournet/topics-domain" "^0.1.0"
     mongodb "^3.1.9"
     nanoid "^2.0.0"
 
-"@ournet/topics-domain@^0.1.0":
+"@ournet/topics-domain@^0.1.0", "@ournet/topics-domain@~0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@ournet/topics-domain/-/topics-domain-0.1.0.tgz#56ae79cc74fb1fba503dbefa5d55eb6ade4b93db"
   dependencies:
@@ -173,7 +168,7 @@
     joi "^14.0.6"
     transliteration "^1.6.6"
 
-"@ournet/videos-data@^0.1.0":
+"@ournet/videos-data@~0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@ournet/videos-data/-/videos-data-0.1.0.tgz#6a6a03feb1f99790098c18608a85a461543558f2"
   integrity sha512-w/t+LjsbqtDw5KgFy1Was0zOLQoRUjapGMrZSDIs/NAgaiQMdk2IBNgACWuutrsjt2VBVW/2lqDbAVE+ZMZmDQ==
@@ -183,7 +178,7 @@
     aws-sdk "^2.354.0"
     dynamo-item "^0.1.1"
 
-"@ournet/videos-domain@^0.1.0":
+"@ournet/videos-domain@^0.1.0", "@ournet/videos-domain@~0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@ournet/videos-domain/-/videos-domain-0.1.0.tgz#a118fb68db3b31f5bc1991db6f7dc67307a66f1c"
   integrity sha512-9fhcuo6LSb+gOviXQ9vArtNYNZ/dmpSKcVzmmLK/bgj28oO1loq4lbTVtF0C5wTw/IET1It0Z18kpB7NrSUcMA==
@@ -569,6 +564,21 @@ aws-sdk@^2.286.2, aws-sdk@^2.291.0, aws-sdk@^2.354.0, aws-sdk@^2.384.0:
     sax "1.2.1"
     url "0.10.3"
     uuid "3.1.0"
+    xml2js "0.4.19"
+
+aws-sdk@^2.395.0:
+  version "2.395.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.395.0.tgz#637e5fa06d69bfb923b17bde24a8bd2a74dedab3"
+  integrity sha512-ldTTjctniZT4E2lq2z3D8Y2u+vpkp+laoEnDkXgjKXTKbiJ0QEtfWsUdx/IQ7awCt8stoxyqZK47DJOxIbRNoA==
+  dependencies:
+    buffer "4.9.1"
+    events "1.1.1"
+    ieee754 "1.1.8"
+    jmespath "0.15.0"
+    querystring "0.2.0"
+    sax "1.2.1"
+    url "0.10.3"
+    uuid "3.3.2"
     xml2js "0.4.19"
 
 aws-sign2@~0.6.0:
@@ -1618,7 +1628,7 @@ dynamo-input@^0.1.0:
   dependencies:
     aws-sdk "^2.286.2"
 
-dynamo-item@^0.1.1:
+dynamo-item@^0.1.1, dynamo-item@~0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/dynamo-item/-/dynamo-item-0.1.1.tgz#c69e39d490a8c5dcee90aaae7f6c50f153ad862a"
   dependencies:
@@ -1632,9 +1642,10 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-elasticsearch@^15.2.0:
-  version "15.2.0"
-  resolved "https://registry.yarnpkg.com/elasticsearch/-/elasticsearch-15.2.0.tgz#234362b5aa743d9c0a925566569ea7813b8f2569"
+elasticsearch@^15.3.1:
+  version "15.3.1"
+  resolved "https://registry.yarnpkg.com/elasticsearch/-/elasticsearch-15.3.1.tgz#5d826606a4b7be4acd59f102716cf03ed142b2bf"
+  integrity sha512-+fdf2yRlcJChMYq+sw+RyhXidzjdILq+zV25aK/bn8k4Elwa6Stlbua0I2nM7swVeTBFxTpsMZIOolWRcx59hA==
   dependencies:
     agentkeepalive "^3.4.1"
     chalk "^1.0.0"
@@ -4816,9 +4827,10 @@ uuid@3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.1.0.tgz#3dd3d3e790abc24d7b0d3a034ffababe28ebbc04"
 
-uuid@^3.3.2:
+uuid@3.3.2, uuid@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
+  integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
 
 validate-npm-package-license@^3.0.1:
   version "3.0.4"

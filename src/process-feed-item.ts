@@ -1,5 +1,5 @@
 
-// const debug = require('debug')('ournet:news-reader');
+const debug = require('debug')('ournet:news-reader');
 
 import {
     NewsHelper, Topic,
@@ -47,7 +47,6 @@ export async function processFeedItem(dataService: DataService, imagesStorage: I
         summary: newsData.summary,
         title: newsData.title,
         url: newsData.url,
-        videoId: newsData.video && newsData.video.id,
     });
 
     const id = newsItem.id;
@@ -86,6 +85,8 @@ export async function processFeedItem(dataService: DataService, imagesStorage: I
         const video = await saveNewsVideo(dataService.videoRep, newsData.video);
         if (video) {
             newsItem.videoId = video.id;
+        } else {
+            debug(`Not saved video`, newsData.video);
         }
     }
 
@@ -102,5 +103,15 @@ export async function processFeedItem(dataService: DataService, imagesStorage: I
         }, newsTopics);
     }
 
-    return dataService.newsRep.create(newsItem);
+    const createdItem = await dataService.newsRep.create(newsItem);
+
+    if (newsItem.videoId) {
+        if (!createdItem.videoId) {
+            debug(`Not video on create`, newsData.video);
+        } else {
+            debug(`News with video`, createdItem.id);
+        }
+    }
+
+    return createdItem;
 }

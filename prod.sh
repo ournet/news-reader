@@ -10,6 +10,8 @@ yarn unlink @ournet/quotes-domain
 yarn unlink @ournet/quotes-data
 yarn unlink @ournet/images-domain
 yarn unlink @ournet/images-data
+yarn unlink @ournet/videos-domain
+yarn unlink @ournet/videos-data
 
 yarn add @ournet/domain
 yarn add news-sources
@@ -21,5 +23,7 @@ yarn add @ournet/quotes-domain
 yarn add @ournet/quotes-data
 yarn add @ournet/images-domain
 yarn add @ournet/images-data
+yarn add @ournet/videos-domain
+yarn add @ournet/videos-data
 
 yarn test
