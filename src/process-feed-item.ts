@@ -74,10 +74,13 @@ export async function processFeedItem(dataService: DataService, imagesStorage: I
         return;
     }
 
-    if (newsData.image) {
-        const image = await saveNewsImage(dataService.imageRep, imagesStorage, newsData.image, newsData.url, newsData.lang);
-        if (image) {
-            newsItem.imagesIds = [image.id];
+    if (newsData.images.length) {
+        for (const image of newsData.images) {
+            const savedImage = await saveNewsImage(dataService.imageRep, imagesStorage, image, newsData.url, newsData.lang);
+            if (savedImage) {
+                newsItem.imagesIds = [savedImage.id];
+                break;
+            }
         }
     }
 

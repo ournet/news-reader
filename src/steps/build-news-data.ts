@@ -11,6 +11,7 @@ import { inTextSearch, getUrlHost } from "../helpers";
 import { sanitizeNewsTitle, sanitizeNewsText } from "../functions/sanitizer";
 import { exploreVideo } from "../functions/video/explore-video";
 import { Video, VideoHelper } from "@ournet/videos-domain";
+import { uniq } from "@ournet/domain";
 // import { atonic } from "@ournet/domain";
 // import { inTextSearch } from "../helpers";
 
@@ -23,7 +24,7 @@ export interface NewsData {
     title: string
     url: string
     content?: string
-    image?: WebImage
+    images: WebImage[]
     video?: Video
 }
 
@@ -81,6 +82,7 @@ export async function buildNewsData(feedItem: NewsFeedItem, options: BuildNewsDa
         title,
         url: page.url,
         content: content.length > minContentLength ? content : undefined,
+        images: [],
     };
     const exploredVideo = await exploreVideo({
         html: page.html,
@@ -89,8 +91,8 @@ export async function buildNewsData(feedItem: NewsFeedItem, options: BuildNewsDa
     });
 
     if (exploredVideo) {
-        if (exploredVideo.image && !page.image) {
-            page.image = exploredVideo.image;
+        if (exploredVideo.image) {
+            page.images.push(exploredVideo.image);
         }
 
         newsData.video = VideoHelper.build({
@@ -101,15 +103,20 @@ export async function buildNewsData(feedItem: NewsFeedItem, options: BuildNewsDa
             websites: [getUrlHost(newsData.url, true) || options.sourceId],
         });
     }
-    if (page.image) {
-        try {
-            newsData.image = await exploreWebImage(page.image);
-        } catch (e) {
-            logger.error('Error on getting web image: ' + e.message, e);
+
+    if (page.images.length) {
+        page.images = uniq(page.images);
+
+        for (const imageUrl of page.images) {
+            try {
+                const image = await exploreWebImage(imageUrl);
+                newsData.images.push(image);
+            } catch (e) {
+                logger.error('Error on getting web image: ' + e.message, e);
+            }
         }
-        if (newsData.image && (newsData.image.width < IMAGE_MIN_WIDTH || newsData.image.height < IMAGE_MIN_HEIGHT)) {
-            delete newsData.image;
-        }
+
+        newsData.images = newsData.images.filter(image => image.width >= IMAGE_MIN_WIDTH && image.height >= IMAGE_MIN_HEIGHT);
     }
 
     return newsData;

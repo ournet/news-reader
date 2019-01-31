@@ -44,7 +44,7 @@ export async function exploreWebPage(webpageUrl: string, lang: string, extractCo
     const webpage: WebPage = {
         title: metadata.title && sanitizeNewsTitle(extractTextFromHtml(metadata.title), lang),
         url: normalizeWebPageUrl(metadata.url || url),
-        image: metadata.image,
+        images: metadata.image && [metadata.image] || [],
         video: metadata.video,
         description: metadata.description && sanitizeNewsText(extractTextFromHtml(metadata.description), lang),
         text,
@@ -52,8 +52,8 @@ export async function exploreWebPage(webpageUrl: string, lang: string, extractCo
         html,
     };
 
-    if (webpage.image && !isValidImageUrl(webpage.image)) {
-        delete webpage.image;
+    if (webpage.images) {
+        webpage.images = webpage.images.filter(isValidImageUrl);
     }
 
     return webpage;
@@ -90,7 +90,7 @@ export type WebPage = {
     title: string
     url: string
     description?: string
-    image?: string
+    images: string[]
     video?: string
     lang?: string
     text?: string
