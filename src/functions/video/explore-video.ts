@@ -1,13 +1,11 @@
 import { HtmlExploredVideo, HtmlExploredVideoInfo } from "./types";
 import { resolve as resolveUrl } from 'url';
 import { uniqByProperty } from "@ournet/domain";
-import headVideoFinder from "./finders/head-finder";
 import * as cheerio from 'cheerio';
 import got = require("got");
 import { logger } from "../../logger";
 import { VideoSourceType } from "@ournet/videos-domain";
 import { getKnownVideoSource } from "./utils";
-import iframeVideoFinder from "./finders/iframe-finder";
 
 export type ExploreVideoOptions = {
     url: string
@@ -15,15 +13,24 @@ export type ExploreVideoOptions = {
     articleHtml?: string
 }
 
+interface VideoFinderHandler {
+    ($: CheerioStatic): HtmlExploredVideoInfo[]
+}
+
+function getFinders(): VideoFinderHandler[] {
+    return ['head-finder', 'iframe-finder', 'script-finder']
+        .map<VideoFinderHandler>(name => require('./finders/' + name).default);
+}
+
 export async function exploreVideo(options: ExploreVideoOptions): Promise<HtmlExploredVideo | undefined> {
     const $ = cheerio.load(options.html);
     let videos: HtmlExploredVideoInfo[] = [];
 
-    const $head = $('head');
-    const $body = $('body');
+    const finders = getFinders();
 
-    videos = videos.concat(headVideoFinder($head));
-    videos = videos.concat(iframeVideoFinder($body));
+    for (const finder of finders) {
+        videos = videos.concat(finder($));
+    }
 
     videos = filterVideos(videos);
     videos = normalizeVideos(videos, options.url);

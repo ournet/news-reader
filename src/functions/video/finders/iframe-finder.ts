@@ -1,8 +1,8 @@
 import { HtmlExploredVideoInfo } from "../types";
 import { getKnownVideoSource, parseHtmlSize } from "../utils";
 
-export default function iframeVideoFinder($: Cheerio): HtmlExploredVideoInfo[] {
-    const list = $.find('iframe').toArray()
+export default function iframeVideoFinder($: CheerioStatic): HtmlExploredVideoInfo[] {
+    const list = $('iframe').toArray()
         .map(item => ({
             url: item.attribs['src'],
             width: item.attribs['width'],
