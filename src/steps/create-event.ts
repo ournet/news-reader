@@ -75,6 +75,10 @@ async function createNewsEvent(dataService: DataService, imagesStorage: ImagesSt
 
     newsItems = uniqByProperty(newsItems, 'id');
 
+    if (!newsItems.length) {
+        throw new Error(`An evvent cannot be created from 0 news`);
+    }
+
     const title = findBestEventTitle(newsItems) as string;
     if (!title) {
         logger.warn(`Not found a goot event title`);
@@ -109,13 +113,13 @@ async function createNewsEvent(dataService: DataService, imagesStorage: ImagesSt
 
     let items = newsItems.filter(item => isValidEventNewsItem(item, title) && item.id !== contentItem.id);
     items = uniqByProperty(items, 'id');
-    // if (items.length < 3) {
-    //     items = items.concat(newsItems).slice(0, 3);
-    // }
+    if (items.length < 1) {
+        items = newsItems.slice(0, 1);
+    }
 
 
-    const country = items[0].country;
-    const lang = items[0].lang;
+    const country = newsItems[0].country;
+    const lang = newsItems[0].lang;
 
     const event = EventHelper.build({
         title,
@@ -351,7 +355,13 @@ function findBestEventTitle(newsItems: NewsItem[]) {
 
     debug(`select 1st from titles`, titlesData);
 
-    return titlesData[0].title;
+    const title = titlesData[0].title;
+
+    if (title === title.toUpperCase()) {
+        return undefined;
+    }
+
+    return title;
 }
 
 function extractEventTopics(topics: Topic[], limit: number, minScore: number = 2) {

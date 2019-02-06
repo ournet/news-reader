@@ -1,28 +1,24 @@
 
-import { DbDataService, DataService } from "./services/data-service";
+import { DataService } from "./services/data-service";
 import { S3ImagesStorage, ImagesStorageService } from "./services/images-storage-service";
 import { ApiTextTopicsService, TextTopicsService } from "./services/text-topics-service";
 import { processLocale } from "./process-locale";
 import { logger } from "./logger";
 import { Config } from "./config";
-import { MongoClient } from "mongodb";
 import { Locale } from "./types";
 
 export class NewsReader {
-    private dataService: DataService
     private imagesService: ImagesStorageService
     private textTopicsService: TextTopicsService
     private inited = false
 
-    constructor(private config: Config, mongoClient: MongoClient) {
+    constructor(private config: Config, private dataService: DataService) {
 
         const awsOptions = {
             accessKeyId: config.AWS_ACCESS_KEY_ID,
             secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
             region: config.AWS_REGION,
         };
-
-        this.dataService = new DbDataService(mongoClient.db(), this.config.NEWS_ES_HOST, awsOptions);
 
         this.imagesService = new S3ImagesStorage({
             bucket: config.S3_IMAGES_BUCKET,

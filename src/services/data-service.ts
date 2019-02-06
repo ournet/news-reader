@@ -22,6 +22,8 @@ export interface DataService {
     readonly imageRep: ImageRepository
     readonly quoteRep: QuoteRepository
     readonly videoRep: VideoRepository
+
+    init(): Promise<void>
 }
 
 export class DbDataService implements DataService {
@@ -42,6 +44,16 @@ export class DbDataService implements DataService {
         this.imageRep = ImageRepositoryBuilder.build(dynamoClient);
         this.quoteRep = QuoteRepositoryBuilder.build(dynamoClient);
         this.videoRep = VideoRepositoryBuilder.build(dynamoClient);
+    }
+
+    async init(){
+        await this.topicRep.createStorage();
+        await this.newsRep.createStorage();
+        await this.eventRep.createStorage();
+        await this.articleContentRep.createStorage();
+        await this.imageRep.createStorage();
+        await this.quoteRep.createStorage();
+        await this.videoRep.createStorage();
     }
 }
 

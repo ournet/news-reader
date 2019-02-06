@@ -13,12 +13,23 @@ import { DbDataConnection } from "./services/data-connection";
 import { getConfigFromEnv } from "./config";
 import { NewsReader } from "./news-reader";
 import { Locale } from "./types";
+import { DbDataService } from "./services/data-service";
 
 async function start() {
     const config = getConfigFromEnv();
     const connection = await DbDataConnection.create(config.MONGO_DB_CONNECTION);
 
-    const newsReader = new NewsReader(config, connection.mongoClient);
+    const awsOptions = {
+        accessKeyId: config.AWS_ACCESS_KEY_ID,
+        secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
+        region: config.AWS_REGION,
+    };
+
+    const dataService = new DbDataService(connection.mongoClient.db(), config.NEWS_ES_HOST, awsOptions);
+
+    await dataService.init();
+
+    const newsReader = new NewsReader(config, dataService);
 
     try {
         await newsReader.start(locale);
