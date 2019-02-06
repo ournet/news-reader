@@ -8,15 +8,24 @@ import { getImageColor } from './image-color';
 import { getImageHash } from './image-hash';
 
 export async function exploreWebImage(imageUrl: string) {
-    const { body, url } = await got(new URL(imageUrl), {
-        encoding: null,
-        timeout: 1000 * 3,
-        headers: {
-            'user-agent': 'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)',
-            // 'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
-            'accept': 'image/jpeg,image/png,image/webp',
-        },
-    });
+    let body: Buffer;
+    let url: string;
+
+    try {
+        const data = await got(new URL(imageUrl), {
+            encoding: null,
+            timeout: 1000 * 3,
+            headers: {
+                'user-agent': 'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)',
+                // 'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
+                'accept': 'image/jpeg,image/png,image/webp',
+            },
+        });
+        body = data.body;
+        url = data.url;
+    } catch (e) {
+        throw new Error(e.message || 'Error GET ' + imageUrl);
+    }
 
     if (body.byteLength < 5000) {
         throw new Error('Image is too small: ' + body.byteLength);

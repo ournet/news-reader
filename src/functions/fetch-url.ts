@@ -3,10 +3,22 @@ import got = require('got');
 import iconv = require('iconv-lite');
 import { Dictionary } from '@ournet/domain';
 import { URL } from 'url';
+import { IncomingHttpHeaders } from 'http';
 const charset = require('charset');
 
 export async function fetchUrl(webUrl: string, options?: { headers?: Dictionary<string>, timeout?: number }) {
-    const { body: buffer, url, headers } = await got(new URL(webUrl), { ...options, encoding: null });
+    let headers: IncomingHttpHeaders;
+    let buffer: Buffer;
+    let url: string;
+
+    try {
+        const data = await got(new URL(webUrl), { ...options, encoding: null });
+        headers = data.headers;
+        buffer = data.body;
+        url = data.url;
+    } catch (e) {
+        throw new Error(e.message || 'Error GET ' + webUrl);
+    }
     const encoding = detectEncoding(headers['content-type'] as string, buffer);
 
     if (encoding) {

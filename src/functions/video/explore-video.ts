@@ -112,17 +112,19 @@ function getSize(n: number | undefined) {
 }
 
 async function getVideoSourceType(info: HtmlExploredVideoInfo) {
-    // if (info.sourceType) {
-    //     return info.sourceType;
-    // }
+    let response: got.Response<string>;
 
-    const response = await got(info.url, {
-        timeout: 1000 * 2,
-        method: 'HEAD',
-        headers: {
-            accept: 'text/html,q=0.9,video/*;q=0.8'
-        }
-    })
+    try {
+        response = await got(info.url, {
+            timeout: 1000 * 2,
+            method: 'HEAD',
+            headers: {
+                accept: 'text/html,q=0.9,video/*;q=0.8'
+            }
+        })
+    } catch (e) {
+        throw new Error(e.message || 'Error HEAD ' + info.url);
+    }
 
     if (!response.statusCode || response.statusCode >= 400) {
         logger.warn(`Video HEAD ${response.statusCode}`);
