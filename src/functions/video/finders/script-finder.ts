@@ -5,10 +5,13 @@ export default function scriptVideoFinder($: CheerioStatic): HtmlExploredVideoIn
     const list = $('script[type="application/ld+json"]').toArray()
         .map<{ '@type': string, contentUrl?: string, thumbnailUrl?: string }>(item => {
             const text = $(item).contents().text();
+            if (!text) {
+                return;
+            }
             try {
                 return JSON.parse(text);
             } catch (e) {
-                logger.error(e);
+                logger.info(e);
             }
         })
         .filter(item => item && item['@type'] === 'VideoObject' && item.contentUrl)
@@ -22,3 +25,12 @@ export default function scriptVideoFinder($: CheerioStatic): HtmlExploredVideoIn
 
     return list as HtmlExploredVideoInfo[];
 }
+
+// const encodeJson = (json: string) =>json.replace(/\\n/g, "\\n")
+//     .replace(/\\'/g, "\\'")
+//     .replace(/\\"/g, '\\"')
+//     .replace(/\\&/g, "\\&")
+//     .replace(/\\r/g, "\\r")
+//     .replace(/\\t/g, "\\t")
+//     .replace(/\\b/g, "\\b")
+//     .replace(/\\f/g, "\\f")

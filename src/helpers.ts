@@ -38,6 +38,13 @@ export function decodeHtml(html: string) {
     return html;
 }
 
+export function encodeHtml(html: string) {
+    if (html) {
+        return entities.encodeHTML(html);
+    }
+    return html;
+}
+
 export function extractTextFromHtml(html: string) {
     html = html.replace(/\n+/g, ' ');
     html = sanitizeHtml(html);
