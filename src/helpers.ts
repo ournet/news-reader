@@ -77,7 +77,9 @@ export function isLetter(char: string) {
 
 export function removeExtraSpaces(text: string) {
     if (text) {
-        text = text.replace(/\s*\n\s*/g, '\n')
+        text = text
+            .replace(/&nbsp;/g, ' ')
+            .replace(/\s*\n\s*/g, '\n')
             .replace(/\s*\t\s*/g, '\t')
             .replace(/[\r]+/g, ' ')
             .replace(/ {2,}/g, ' ')

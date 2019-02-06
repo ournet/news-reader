@@ -56,11 +56,15 @@ export async function saveNewsQuotes(quoteRep: QuoteRepository, newsItem: NewsIt
 
         const existingQuote = await quoteRep.getById(quote.id);
         if (existingQuote) {
+            const sourcesIds = uniq(existingQuote.sourcesIds.concat([quote.source.id]));
             await quoteRep.update({
                 id: quote.id,
                 set: {
                     lastFoundAt: quote.createdAt,
                     expiresAt: quote.expiresAt,
+                    sourcesIds,
+                    countSources: sourcesIds.length,
+                    popularity: sourcesIds.length,
                 }
             });
             continue;
@@ -78,7 +82,7 @@ export async function saveNewsQuotes(quoteRep: QuoteRepository, newsItem: NewsIt
         quote.topics = quote.topics.concat(topQuoteTopics.map(item => convertTextTopicToQuoteTopic(item)));
         quote.topics = uniqByProperty(quote.topics, 'id');
         quote.topics = quote.topics.filter(item => item.id !== quote.author.id);
-        
+
         if (Object.keys(quote.topics).length === 0) {
             delete quote.topics;
         }

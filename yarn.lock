@@ -83,7 +83,7 @@
     joi "^14.0.3"
     normalize-url "^3.2.0"
 
-"@ournet/domain@^0.3.4", "@ournet/domain@~0.3.4":
+"@ournet/domain@^0.3.4", "@ournet/domain@~0.3.4", "@ournet/domain@~0.3.x":
   version "0.3.4"
   resolved "https://registry.yarnpkg.com/@ournet/domain/-/domain-0.3.4.tgz#59a8fb3c13a38b3a82601e9c3fbde40eee9d7c93"
   integrity sha512-PNpVFhgtOlgQGeRkjQWZjBkbP7edHzX6LZRNteXk2/sjO55kg/Bf7JahbxywZ6K+WQsjWpbUJgtHHHS7aoqaAQ==
@@ -132,21 +132,22 @@
     joi "^13.6.0"
     transliteration "^1.6.6"
 
-"@ournet/quotes-data@~0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@ournet/quotes-data/-/quotes-data-0.1.0.tgz#4cb13b36e276363375ffdec74af4f924a3afa9c4"
-  integrity sha512-HO5RyPWIoN890MSWkrrsajRqM0p+Bb3xiBZpIjeK2GJo0zAs3o3rIE8ZVaW1ORK+WKHXHY6VPOBnwaPfZ8ffPQ==
+"@ournet/quotes-data@~0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@ournet/quotes-data/-/quotes-data-0.2.0.tgz#f53126fa9f54c9dd9a41f86e71be15ebb30a7e43"
+  integrity sha512-ZEmBccCTmaPloZtsWI8wjlu/Fby6c3y3J9WfoZtP0EeT3YbOnuUxpToNukE7sKaZUnQha1ensr/Zye8waVCoag==
   dependencies:
-    "@ournet/domain" "^0.3.3"
-    "@ournet/quotes-domain" "^0.1.0"
+    "@ournet/domain" "~0.3.x"
+    "@ournet/quotes-domain" "~0.2.x"
     aws-sdk "^2.354.0"
-    dynamo-item "^0.1.1"
+    dynamo-item "~0.1.x"
 
-"@ournet/quotes-domain@^0.1.0", "@ournet/quotes-domain@~0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@ournet/quotes-domain/-/quotes-domain-0.1.0.tgz#8c15377d2d44d5caa7b6f8effb1b0401b8ed3c87"
+"@ournet/quotes-domain@~0.2.0", "@ournet/quotes-domain@~0.2.x":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@ournet/quotes-domain/-/quotes-domain-0.2.0.tgz#44d923600feed4dca50356752f1594d60e0a867c"
+  integrity sha512-+DXzuhLY+sooBE6aMg8hd9swDelQLAjX5T2jzocTgOUv3IT1owtKVTtsZevo8Q1KhGsgB6zg6UQi/EH36FqaVQ==
   dependencies:
-    "@ournet/domain" "^0.3.3"
+    "@ournet/domain" "~0.3.x"
     ellipsize "^0.1.0"
     joi "^14.0.6"
 
@@ -1628,7 +1629,7 @@ dynamo-input@^0.1.0:
   dependencies:
     aws-sdk "^2.286.2"
 
-dynamo-item@^0.1.1, dynamo-item@~0.1.1:
+dynamo-item@^0.1.1, dynamo-item@~0.1.1, dynamo-item@~0.1.x:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/dynamo-item/-/dynamo-item-0.1.1.tgz#c69e39d490a8c5dcee90aaae7f6c50f153ad862a"
   dependencies:
