@@ -4,7 +4,7 @@ import got = require('got');
 import { URL } from 'url';
 // const imghash = require('imghash');
 import sharp = require('sharp');
-import { getImageColor } from './image-color';
+import { getImageColor } from './image-color2';
 import { getImageHash } from './image-hash';
 
 export async function exploreWebImage(imageUrl: string) {
@@ -68,7 +68,7 @@ async function getWebImage(data: Buffer, url: string): Promise<WebImage> {
     // console.timeEnd('image-hash');
 
     // console.time('image-color');
-    const color = await getImageColor(sharp(data));
+    const color = await getImageColor(data, ImageFormatHelper.getMimeByFormat(format));
     // console.timeEnd('image-color');
 
     return {
