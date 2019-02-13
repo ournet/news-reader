@@ -64,7 +64,7 @@ async function getWebImage(data: Buffer, url: string): Promise<WebImage> {
     }
 
     // console.time('image-hash');
-    const hash = await getImageHash(image);
+    const hash = await getImageHash(data);
     // console.timeEnd('image-hash');
 
     // console.time('image-color');
