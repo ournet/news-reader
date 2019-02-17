@@ -2,12 +2,14 @@
 // const debug = require('debug')('ournet:news-reader');
 
 // import { logger } from "../logger";
-import { QuoteRepository, QuoteHelper, QuoteTopicRelation, QuoteTopic } from "@ournet/quotes-domain";
+import { QuoteRepository, QuoteHelper, QuoteTopicRelation, QuoteTopic, Quote } from "@ournet/quotes-domain";
 import { NewsTextTopics } from "./save-news-topics";
-import { NewsItem } from "@ournet/news-domain";
+import { NewsItem, NewsEvent } from "@ournet/news-domain";
 import { extractTextQuotes } from "../functions/extract-text-quotes";
 import { uniqByProperty, uniq } from "@ournet/domain";
 import { TextTopic } from "../services/text-topics-service";
+import { logger } from "../logger";
+import { delay } from "../helpers";
 
 export type SaveQuotesInfo = {
     lang: string
@@ -51,21 +53,26 @@ export async function saveNewsQuotes(quoteRep: QuoteRepository, newsItem: NewsIt
             },
             text: textQuote.text,
         });
+        if (newsItem.imagesIds && newsItem.imagesIds.length) {
+            quote.source.imageId = newsItem.imagesIds[0];
+        }
 
         quoteIds.push(quote.id);
 
         const existingQuote = await quoteRep.getById(quote.id);
         if (existingQuote) {
             const sourcesIds = uniq(existingQuote.sourcesIds.concat([quote.source.id]));
+            const set: Partial<Quote> = {
+                lastFoundAt: quote.createdAt,
+                expiresAt: quote.expiresAt,
+                sourcesIds,
+                countSources: sourcesIds.length,
+                popularity: sourcesIds.length,
+            };
+
             await quoteRep.update({
                 id: quote.id,
-                set: {
-                    lastFoundAt: quote.createdAt,
-                    expiresAt: quote.expiresAt,
-                    sourcesIds,
-                    countSources: sourcesIds.length,
-                    popularity: sourcesIds.length,
-                }
+                set: set,
             });
             continue;
         }
@@ -91,6 +98,33 @@ export async function saveNewsQuotes(quoteRep: QuoteRepository, newsItem: NewsIt
     }
 
     return uniq(quoteIds);
+}
+
+export async function setQuotesEvent(quoteRep: QuoteRepository, quotesIds: string[], event: NewsEvent) {
+    for (const id of quotesIds) {
+        try {
+            const quote = await quoteRep.getById(id, { fields: ['id', 'events'] });
+            if (!quote) {
+                continue;
+            }
+            const events = quote.events || [];
+            if (events.find(item => item.id === event.id)) {
+                continue;
+            }
+            events.push({
+                id: event.id,
+                title: event.title,
+                imageId: event.imageId,
+            });
+            await quoteRep.update({
+                id,
+                set: { events }
+            });
+        } catch (e) {
+            logger.error(e);
+            await delay(1000 * 2);
+        }
+    }
 }
 
 function convertTextTopicToQuoteTopic(textTopic: TextTopic, rel?: QuoteTopicRelation) {

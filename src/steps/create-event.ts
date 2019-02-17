@@ -16,6 +16,7 @@ import { inTextSearch } from "../helpers";
 import { ImageHelper, ImageRepository } from "@ournet/images-domain";
 import { DataService } from "../services/data-service";
 import { ImagesStorageService } from "../services/images-storage-service";
+import { setQuotesEvent } from "./save-news-quotes";
 
 const MIN_TITLE_LENGTH = 25;
 const MAX_TITLE_LENGTH = 140;
@@ -161,6 +162,8 @@ async function createNewsEvent(dataService: DataService, imagesStorage: ImagesSt
     debug(`pre updating news eventId...`);
     await Promise.all(newsItems.map(item => dataService.newsRep.update({ id: item.id, set: { eventId: event.id } })));
 
+    await setQuotesEvent(dataService.quoteRep, quotesIds, event);
+
     debug(`Created event: ${title}`);
 
     return createdEvent;
@@ -217,6 +220,8 @@ async function addNewsToEvent(dataService: DataService, eventId: string, newsIte
         id: eventId,
         set: setEvent,
     });
+
+    await setQuotesEvent(dataService.quoteRep, quotesIds, event);
 
     debug(`Updated event: ${event.title}`);
 

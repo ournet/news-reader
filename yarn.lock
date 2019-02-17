@@ -83,7 +83,7 @@
     joi "^14.0.3"
     normalize-url "^3.2.0"
 
-"@ournet/domain@^0.3.4", "@ournet/domain@~0.3.4", "@ournet/domain@~0.3.x":
+"@ournet/domain@^0.3.4", "@ournet/domain@~0.3.4", "@ournet/domain@~0.x.x":
   version "0.3.4"
   resolved "https://registry.yarnpkg.com/@ournet/domain/-/domain-0.3.4.tgz#59a8fb3c13a38b3a82601e9c3fbde40eee9d7c93"
   integrity sha512-PNpVFhgtOlgQGeRkjQWZjBkbP7edHzX6LZRNteXk2/sjO55kg/Bf7JahbxywZ6K+WQsjWpbUJgtHHHS7aoqaAQ==
@@ -93,7 +93,7 @@
     joi "^14.0.3"
     normalize-url "^3.2.0"
 
-"@ournet/images-data@~0.1.0":
+"@ournet/images-data@~0.1.x":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@ournet/images-data/-/images-data-0.1.0.tgz#0876a248e1f244c91f6fc2e3439e65d4ebebac91"
   integrity sha512-tBhq9I3s9rju7yFzFvRno9E0CSe8v6R1jj0dwHP5fEOZiKmeyoy7W6u1Bm25WkUOsj4KlExtbVjvElidI5Uj2A==
@@ -103,14 +103,14 @@
     aws-sdk "^2.291.0"
     dynamo-item "^0.1.1"
 
-"@ournet/images-domain@^0.1.1", "@ournet/images-domain@~0.1.2":
+"@ournet/images-domain@^0.1.1", "@ournet/images-domain@~0.1.x":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@ournet/images-domain/-/images-domain-0.1.2.tgz#9af9534f8e6bd848d626524344790163e7cefa99"
   dependencies:
     "@ournet/domain" "^0.3.3"
     joi "^14.0.6"
 
-"@ournet/news-data@~0.1.2":
+"@ournet/news-data@~0.1.x":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@ournet/news-data/-/news-data-0.1.2.tgz#94cd6901033c5757b8e24fc7f1933ce5b2cc800d"
   integrity sha512-YExkW1T8tUbGCbAbEBG685PjuUVDbHxtP6IQbNT+olOZuWMVtdbp3Y1j9gn4X1QVzcHmMhR+dlmzggoJU6cv3Q==
@@ -122,7 +122,7 @@
     elasticsearch "^15.3.1"
     ms "^2.1.1"
 
-"@ournet/news-domain@~0.1.2":
+"@ournet/news-domain@~0.1.2", "@ournet/news-domain@~0.1.x":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@ournet/news-domain/-/news-domain-0.1.2.tgz#fce8103fc8d16f8274c5046ca5b1bcb1c9558ff2"
   integrity sha512-unO2F3yqDB+2+7ffELKlj97GBZSOHwPos8X6RWcH+9vLFojr15D3PFrTWEFbG5nFzwuEtpQUxhsbwcyM+oZqYQ==
@@ -132,26 +132,26 @@
     joi "^13.6.0"
     transliteration "^1.6.6"
 
-"@ournet/quotes-data@~0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@ournet/quotes-data/-/quotes-data-0.2.0.tgz#f53126fa9f54c9dd9a41f86e71be15ebb30a7e43"
-  integrity sha512-ZEmBccCTmaPloZtsWI8wjlu/Fby6c3y3J9WfoZtP0EeT3YbOnuUxpToNukE7sKaZUnQha1ensr/Zye8waVCoag==
+"@ournet/quotes-data@~0.3.x":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@ournet/quotes-data/-/quotes-data-0.3.0.tgz#de00ed18abc71e8f52a53e4c6fe99ed5982af4cc"
+  integrity sha512-49MiOAHooBk7qvsriZOkQG9gpZ8myYTXV83JrWx/tANpKEHFo0xQEn9wTmObWLpJey6gUVUyoFTFBZeDRxXQ8A==
   dependencies:
-    "@ournet/domain" "~0.3.x"
-    "@ournet/quotes-domain" "~0.2.x"
+    "@ournet/domain" "~0.x.x"
+    "@ournet/quotes-domain" "~0.x.x"
     aws-sdk "^2.354.0"
     dynamo-item "~0.1.x"
 
-"@ournet/quotes-domain@~0.2.0", "@ournet/quotes-domain@~0.2.x":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@ournet/quotes-domain/-/quotes-domain-0.2.0.tgz#44d923600feed4dca50356752f1594d60e0a867c"
-  integrity sha512-+DXzuhLY+sooBE6aMg8hd9swDelQLAjX5T2jzocTgOUv3IT1owtKVTtsZevo8Q1KhGsgB6zg6UQi/EH36FqaVQ==
+"@ournet/quotes-domain@~0.3.x", "@ournet/quotes-domain@~0.x.x":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@ournet/quotes-domain/-/quotes-domain-0.3.1.tgz#37561aa57103d555eb6edb00199853bc4b3f76b6"
+  integrity sha512-tBdux5EnOpe/7PJGVO5UDqWD0+QRpRIbDlq1hRqiA0BQ4lmlQqqZB+ng+nI7hBSVdDotZFH7Gzg7VoDW41y9mA==
   dependencies:
-    "@ournet/domain" "~0.3.x"
+    "@ournet/domain" "~0.x.x"
     ellipsize "^0.1.0"
     joi "^14.0.6"
 
-"@ournet/topics-data@~0.1.0":
+"@ournet/topics-data@~0.1.x":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@ournet/topics-data/-/topics-data-0.1.0.tgz#7065c058723b2767ba0ec2fd2c1dccef39bc3fcf"
   integrity sha512-35M1t/FoJDQHHCoW/3ypIChX7uWUiykJWKgsgaA/Af2XuCP+qcSOCdvOQM0YTiEwGrkKObt2yu6pJInPuyp9xA==
@@ -161,7 +161,7 @@
     mongodb "^3.1.9"
     nanoid "^2.0.0"
 
-"@ournet/topics-domain@^0.1.0", "@ournet/topics-domain@~0.1.0":
+"@ournet/topics-domain@^0.1.0", "@ournet/topics-domain@~0.1.x":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@ournet/topics-domain/-/topics-domain-0.1.0.tgz#56ae79cc74fb1fba503dbefa5d55eb6ade4b93db"
   dependencies:
@@ -169,7 +169,7 @@
     joi "^14.0.6"
     transliteration "^1.6.6"
 
-"@ournet/videos-data@~0.1.0":
+"@ournet/videos-data@~0.1.x":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@ournet/videos-data/-/videos-data-0.1.0.tgz#6a6a03feb1f99790098c18608a85a461543558f2"
   integrity sha512-w/t+LjsbqtDw5KgFy1Was0zOLQoRUjapGMrZSDIs/NAgaiQMdk2IBNgACWuutrsjt2VBVW/2lqDbAVE+ZMZmDQ==
@@ -179,7 +179,7 @@
     aws-sdk "^2.354.0"
     dynamo-item "^0.1.1"
 
-"@ournet/videos-domain@^0.1.0", "@ournet/videos-domain@~0.1.0":
+"@ournet/videos-domain@^0.1.0", "@ournet/videos-domain@~0.1.x":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@ournet/videos-domain/-/videos-domain-0.1.0.tgz#a118fb68db3b31f5bc1991db6f7dc67307a66f1c"
   integrity sha512-9fhcuo6LSb+gOviXQ9vArtNYNZ/dmpSKcVzmmLK/bgj28oO1loq4lbTVtF0C5wTw/IET1It0Z18kpB7NrSUcMA==
