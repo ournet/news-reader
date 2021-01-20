@@ -78,7 +78,7 @@
     "metascraper-image": "^4.9.0",
     "metascraper-title": "^4.9.0",
     "metascraper-url": "^4.9.0",
-    "mongodb": "^3.1.10",
+    "mongodb": "^3.1.13",
     "news-sanitizer": "^0.1.7",
     "news-sources": "^0.1.4",
     "ournet.logger": "^0.1.0",
