@@ -6,10 +6,9 @@ import {
 } from "@ournet/images-domain";
 import got from "got";
 import { URL } from "url";
-// const imghash = require('imghash');
-import sharp = require("sharp");
 import { getImageColor } from "./image-color2";
 import { getImageHash } from "./image-hash";
+const sharp = require("sharp");
 
 export async function exploreWebImage(imageUrl: string) {
   let body: Buffer;
