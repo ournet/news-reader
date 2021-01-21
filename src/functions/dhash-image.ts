@@ -1,5 +1,5 @@
 import assert from "assert";
-import sharp from "sharp";
+const sharp = require("sharp");
 
 const DEFAULT_HASH_SIZE = 8;
 
@@ -12,7 +12,8 @@ export default async function (path: string | Buffer, hashSize?: number) {
   // Covert to small gray image
   const pixels = await sharp(path)
     .grayscale()
-    .resize(width, height, { fit: "fill" })
+    .resize(width, height)
+    .ignoreAspectRatio()
     .raw()
     .toBuffer();
 

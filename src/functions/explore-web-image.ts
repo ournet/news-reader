@@ -55,10 +55,10 @@ async function getWebImage(data: Buffer, url: string): Promise<WebImage> {
   const masterSize = getImageSizeByName(getImageMasterSizeName());
   let resized = false;
   if (masterSize < width) {
-    image = await image.resize(masterSize, undefined);
+    image = image.resize(masterSize, undefined);
     resized = true;
   } else if (masterSize < height) {
-    image = await image.resize(undefined, masterSize);
+    image = image.resize(undefined, masterSize);
     resized = true;
   }
 
