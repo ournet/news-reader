@@ -1,4 +1,3 @@
-import got = require("got");
 import {
   BuildTopicParams,
   TopicType,
@@ -8,6 +7,7 @@ import { Locale } from "../types";
 import { Dictionary } from "@ournet/domain";
 import { URLSearchParams } from "url";
 import { truncateAt } from "../helpers";
+import got from "got";
 
 export interface TextTopicTopic extends BuildTopicParams {
   id: string;
@@ -35,23 +35,23 @@ export class ApiTextTopicsService implements TextTopicsService {
     text = truncateAt(text, 4000);
 
     const url = this.options.entitizerUrl;
-    const query = new URLSearchParams();
-    query.append("key", this.options.entitizerKey);
-    query.append("lang", locale.lang);
-    query.append("country", locale.country);
-    query.append("wikidata", "true");
+    const searchParams = new URLSearchParams();
+    searchParams.append("key", this.options.entitizerKey);
+    searchParams.append("lang", locale.lang);
+    searchParams.append("country", locale.country);
+    searchParams.append("wikidata", "true");
     // query.append('text', text);
 
-    const { body } = await got(url, {
-      method: "POST",
-      json: true,
-      timeout: 1000 * 3,
-      throwHttpErrors: true,
-      query,
-      body: {
-        text
+    const { body } = await got.post<{ data: EntitizerData; error?: unknown }>(
+      url,
+      {
+        timeout: 1000 * 3,
+        throwHttpErrors: true,
+        searchParams,
+        json: { text },
+        responseType: "json"
       }
-    });
+    );
 
     if (!body || !body.data) {
       throw new Error(
