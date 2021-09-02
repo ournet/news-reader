@@ -77,11 +77,11 @@
     "metascraper-url": "^4.9.0",
     "mongodb": "^3.1.10",
     "news-sanitizer": "^0.1.7",
-    "news-sources": "^0.1.4",
+    "news-sources": "^0.1.5",
     "ournet.logger": "^0.1.0",
     "quote-parser": "^0.1.6",
     "sanitize-html": "^1.20.0",
-    "sharp": "^0.21.1",
+    "sharp": "0.21.1",
     "standard-text": "^0.1.1",
     "striptags": "^3.1.1"
   }
