@@ -1,5 +1,5 @@
+import sharp from "sharp";
 const getColors = require("get-image-colors");
-const sharp = require("sharp");
 
 export async function getImageColor(
   data: Buffer,
