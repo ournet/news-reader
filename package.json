@@ -17,7 +17,7 @@
     "clean-test-code": "rimraf ./lib/**/*.test.js"
   },
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=12.16.2"
   },
   "repository": {
     "type": "git",
@@ -65,7 +65,7 @@
     "entities": "^1.1.2",
     "feedparser": "^2.2.9",
     "get-image-colors": "^2.0.0",
-    "get-video-id": "^3.1.0",
+    "get-video-id": "^3.4.1",
     "got": "^11.8.1",
     "iconv-lite": "^0.4.24",
     "in-text-search": "^0.1.0",
@@ -81,7 +81,7 @@
     "ournet.logger": "^0.1.0",
     "quote-parser": "^0.1.6",
     "sanitize-html": "^2.3.2",
-    "sharp": "0.21.1",
+    "sharp": "^0.24.0",
     "standard-text": "^0.1.1",
     "striptags": "^3.2.0"
   }
