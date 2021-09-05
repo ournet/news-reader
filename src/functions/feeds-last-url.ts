@@ -1,6 +1,7 @@
 import { Locale } from "../types";
 import { join } from "path";
 import { readFile, writeFile } from "fs";
+import { tmpdir } from "os";
 import { Dictionary } from "@ournet/domain";
 
 export function setLastReadedFeedUrl(
@@ -48,10 +49,8 @@ async function writeDataFile(locale: Locale, feedUrl: string, lastUrl: string) {
 
 function formatFilePath(locale: Locale) {
   return join(
-    __dirname,
-    "..",
-    "..",
-    "data",
+    tmpdir(),
+    "news-reader",
     `feed-last-urls-${locale.lang.toLowerCase()}-${locale.country.toLowerCase()}.json`
   );
 }
