@@ -50,7 +50,6 @@ async function writeDataFile(locale: Locale, feedUrl: string, lastUrl: string) {
 function formatFilePath(locale: Locale) {
   return join(
     tmpdir(),
-    "news-reader",
     `feed-last-urls-${locale.lang.toLowerCase()}-${locale.country.toLowerCase()}.json`
   );
 }
