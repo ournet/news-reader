@@ -52,7 +52,6 @@ function formatFilePath(locale: Locale) {
     "..",
     "..",
     "data",
-    "news-reader",
     `feed-last-urls-${locale.lang.toLowerCase()}-${locale.country.toLowerCase()}.json`
   );
 }
