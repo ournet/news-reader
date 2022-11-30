@@ -81,7 +81,7 @@
     "news-sources": "^0.1.6",
     "quote-parser": "^0.1.6",
     "sanitize-html": "^2.3.2",
-    "sharp": "^0.24.0",
+    "sharp": "^0.30.5",
     "standard-text": "^0.1.1",
     "striptags": "^3.2.0"
   }
