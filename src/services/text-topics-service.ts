@@ -7,7 +7,7 @@ import { Locale } from "../types";
 import { Dictionary } from "@ournet/domain";
 import { URLSearchParams } from "url";
 import { truncateAt } from "../helpers";
-import fetch from "node-fetch";
+import axios from "axios";
 
 export interface TextTopicTopic extends BuildTopicParams {
   id: string;
@@ -45,17 +45,16 @@ export class ApiTextTopicsService implements TextTopicsService {
     params.append("wikidata", "true");
     params.append("text", text);
 
-    const body = await fetch(url, {
+    const body = await axios<{ data: EntitizerData }>(url, {
       method: "POST",
       timeout: 1000 * 3,
-      body: JSON.stringify({
+      data: {
         text,
         lang: locale.lang,
         country: locale.country,
         wikidata: true
-      }),
-      headers: { "Content-Type": "application/json;charset=UTF-8" }
-    }).then<{ data: EntitizerData }>((r) => r.json());
+      }
+    }).then((r) => r.data);
 
     if (!body || !body.data) {
       throw new Error(

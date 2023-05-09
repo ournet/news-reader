@@ -4,8 +4,7 @@ import {
   getImageMasterSizeName,
   ImageFormatHelper
 } from "@ournet/images-domain";
-import fetch from "node-fetch";
-import { URL } from "url";
+import axios from "axios";
 import sharp from "sharp";
 import { getImageColor } from "./image-color2";
 import { getImageHash } from "./image-hash";
@@ -15,17 +14,18 @@ export async function exploreWebImage(imageUrl: string) {
   let url: string;
 
   try {
-    const data = await fetch(new URL(imageUrl), {
+    const data = await axios(imageUrl, {
       timeout: 1000 * 3,
       headers: {
         "user-agent":
           "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)",
         // 'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
         accept: "image/jpeg,image/png,image/webp"
-      }
+      },
+      responseType: "arraybuffer"
     });
-    body = await data.buffer();
-    url = data.url;
+    body = await data.data;
+    url = data.config.url || imageUrl;
   } catch (e: any) {
     throw new Error(e.message || "Error GET " + imageUrl);
   }

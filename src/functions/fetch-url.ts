@@ -1,7 +1,6 @@
-import fetch, { Headers } from "node-fetch";
+import axios from "axios";
 import iconv = require("iconv-lite");
 import { Dictionary } from "@ournet/domain";
-import { URL } from "url";
 
 const charset = require("charset");
 
@@ -9,17 +8,17 @@ export async function fetchUrl(
   webUrl: string,
   options?: { headers?: Dictionary<string>; timeout?: number }
 ) {
-  let headers: Headers;
+  let headers: any;
   let buffer: Buffer;
   let url: string;
 
   try {
-    const data = await fetch(new URL(webUrl), {
+    const data = await axios(webUrl, {
       ...options
     });
     headers = data.headers;
-    buffer = await data.buffer();
-    url = data.url;
+    buffer = await data.data;
+    url = data.config.url || webUrl;
   } catch (e: any) {
     throw new Error(e.message || "Error GET " + webUrl);
   }

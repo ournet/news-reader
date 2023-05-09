@@ -2,7 +2,7 @@ import { HtmlExploredVideo, HtmlExploredVideoInfo } from "./types";
 import { resolve as resolveUrl } from "url";
 import { uniqByProperty } from "@ournet/domain";
 import * as cheerio from "cheerio";
-import fetch, { Response } from "node-fetch";
+import axios, { AxiosResponse } from "axios";
 import { logger } from "../../logger";
 import { VideoSourceType } from "@ournet/videos-domain";
 import { getKnownVideoSource } from "./utils";
@@ -118,10 +118,10 @@ function getSize(n: number | undefined) {
 }
 
 async function getVideoSourceType(info: HtmlExploredVideoInfo) {
-  let response: Response;
+  let response: AxiosResponse<any>;
 
   try {
-    response = await fetch(info.url, {
+    response = await axios(info.url, {
       method: "HEAD",
       timeout: 1000 * 2,
       headers: {
@@ -137,7 +137,7 @@ async function getVideoSourceType(info: HtmlExploredVideoInfo) {
     return;
   }
 
-  const contentType = (response.headers.get("content-type") || "")
+  const contentType = (response.headers["content-type"] || "")
     .trim()
     .toLowerCase();
 
