@@ -53,7 +53,8 @@ export class ApiTextTopicsService implements TextTopicsService {
         lang: locale.lang,
         country: locale.country,
         wikidata: true
-      }
+      },
+      responseType: "json"
     }).then((r) => r.data);
 
     if (!body || !body.data) {
