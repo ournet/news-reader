@@ -8,7 +8,10 @@ const charset = require("charset");
 
 export async function fetchUrl(
   webUrl: string,
-  options?: { headers?: Dictionary<string>; timeout?: number }
+  {
+    timeout,
+    ...options
+  }: { headers?: Dictionary<string>; timeout?: number } = {}
 ) {
   let headers: IncomingHttpHeaders;
   let buffer: Buffer;
@@ -17,12 +20,13 @@ export async function fetchUrl(
   try {
     const data = await got(new URL(webUrl), {
       ...options,
+      timeout: timeout ? { response: timeout } : undefined,
       responseType: "buffer"
     });
     headers = data.headers;
     buffer = data.body;
     url = data.url;
-  } catch (e) {
+  } catch (e: any) {
     throw new Error(e.message || "Error GET " + webUrl);
   }
   const encoding = detectEncoding(headers["content-type"] as string, buffer);

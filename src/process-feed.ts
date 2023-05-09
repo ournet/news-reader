@@ -55,7 +55,7 @@ export async function processFeed(
           sourceId: source.id
         }
       );
-    } catch (e) {
+    } catch (e: any) {
       logger.error(
         `error on process feed item: ${e.message}, ${newsFeedItem.link}`,
         e

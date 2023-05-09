@@ -45,7 +45,7 @@ export async function exploreVideo(
     let sourceType: VideoSourceType | undefined;
     try {
       sourceType = await getVideoSourceType(info);
-    } catch (e) {
+    } catch (e: any) {
       logger.error(`Video HEAD response: ` + e.message, { url: info.url });
     }
 
@@ -122,12 +122,12 @@ async function getVideoSourceType(info: HtmlExploredVideoInfo) {
 
   try {
     response = await got.head(info.url, {
-      timeout: 1000 * 2,
+      timeout: { response: 1000 * 2 },
       headers: {
         accept: "text/html,q=0.9,video/*;q=0.8"
       }
     });
-  } catch (e) {
+  } catch (e: any) {
     throw new Error(e.message || "Error HEAD " + info.url);
   }
 

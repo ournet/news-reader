@@ -17,7 +17,7 @@ export async function exploreWebImage(imageUrl: string) {
   try {
     const data = await got(new URL(imageUrl), {
       responseType: "buffer",
-      timeout: 1000 * 3,
+      timeout: { response: 1000 * 3 },
       headers: {
         "user-agent":
           "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)",
@@ -27,7 +27,7 @@ export async function exploreWebImage(imageUrl: string) {
     });
     body = data.body;
     url = data.url;
-  } catch (e) {
+  } catch (e: any) {
     throw new Error(e.message || "Error GET " + imageUrl);
   }
 

@@ -64,7 +64,7 @@ export class S3ImagesStorage implements ImagesStorageService {
         this.newsName + "/" + key,
         this.eventsName + "/" + key
       );
-    } catch (err) {
+    } catch (err: any) {
       if (err.code === "SlowDown" && err.retryable) {
         await delay(1000);
         await this.copyToEventsByKey(key);

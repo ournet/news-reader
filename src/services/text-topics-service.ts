@@ -45,7 +45,7 @@ export class ApiTextTopicsService implements TextTopicsService {
     const { body } = await got.post<{ data: EntitizerData; error?: unknown }>(
       url,
       {
-        timeout: 1000 * 3,
+        timeout: { response: 1000 * 3 },
         throwHttpErrors: true,
         searchParams,
         json: { text },
