@@ -108,15 +108,6 @@
     joi "^14.0.3"
     normalize-url "^3.2.0"
 
-"@ournet/domain@^0.3.6", "@ournet/domain@~0.3.6":
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/@ournet/domain/-/domain-0.3.6.tgz#d4b217fd5829410da595155454ef19a287a4a30a"
-  integrity sha512-hvlIlD2tvCeMFXfiIptlKmFc8pc+hom4+sefxYTAlu3UcmXx7DJ3Z59K14PGXCl/zVN7d78GBF0Gb+mfAa7PHg==
-  dependencies:
-    atonic "^1.0.4"
-    joi "^14.0.3"
-    normalize-url "^4.5.1"
-
 "@ournet/domain@^0.4.2", "@ournet/domain@~0.4.2":
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/@ournet/domain/-/domain-0.4.2.tgz#460c6fee2490c2d7be7bab7d1dd41da113d90259"
@@ -144,27 +135,17 @@
     "@ournet/domain" "~0.x.x"
     joi "^14.0.6"
 
-"@ournet/news-data@~0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@ournet/news-data/-/news-data-0.1.9.tgz#1b5784db5f39427ff4c92ed16f040a95a8f7bd33"
-  integrity sha512-m1GhibsnlfHzJhH12UTd7J75UBqcHgP9llyYrObMQdxC2347hecPJ7OOsgMGCoAKy7Lhw7g513Ilou1RAid2Tg==
+"@ournet/news-data@~0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@ournet/news-data/-/news-data-0.2.0.tgz#4bb232600bd6d92be9f859ba7b73f623f7b9b553"
+  integrity sha512-dyUiAkwHtKWspEXsRT9eIQVqBmyoE80hZuuXrtis0GQR36DUUZhhWNFr7XJScvR9bG9qKVMbwtJAoT7dmvGFGw==
   dependencies:
-    "@ournet/domain" "~0.3.6"
-    "@ournet/news-domain" "~0.1.4"
+    "@ournet/domain" "~0.4.2"
+    "@ournet/news-domain" "~0.2.0"
     aws-sdk "^2.1058.0"
     dynamo-item "~0.1.1"
     elasticsearch "^16.7.2"
     ms "^2.1.1"
-
-"@ournet/news-domain@~0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@ournet/news-domain/-/news-domain-0.1.4.tgz#c4aaba56ebeb9946a7ba81a0dcbfb0b06d2060a4"
-  integrity sha512-Jiu7aU66GN8GY+k9MrgKyoZ6c/25peh47+u0ed8Vpy0WYtGC08TBXRgtbGpOLu/OlVGEr7zkxsX9ufvJTHKHWA==
-  dependencies:
-    "@ournet/domain" "^0.3.6"
-    ellipsize "^0.1.0"
-    joi "^13.6.0"
-    transliteration "^2.2.0"
 
 "@ournet/news-domain@~0.2.0":
   version "0.2.0"

@@ -49,7 +49,11 @@ export class DbDataService implements DataService {
   ) {
     const dynamoClient = new DynamoDB.DocumentClient(dynamoOptions);
     this.topicRep = TopicRepositoryBuilder.build(mongoDb as any);
-    this.newsRep = NewsRepositoryBuilder.build(dynamoClient, newsESHost);
+    this.newsRep = NewsRepositoryBuilder.build(dynamoClient, {
+      host: newsESHost,
+      ssl: { rejectUnauthorized: false, pfx: [] },
+      apiVersion: "1.7.6"
+    });
     this.eventRep = EventRepositoryBuilder.build(dynamoClient);
     this.articleContentRep =
       ArticleContentRepositoryBuilder.build(dynamoClient);
