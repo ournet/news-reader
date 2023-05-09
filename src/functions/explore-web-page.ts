@@ -23,7 +23,7 @@ export async function exploreWebPage(
     timeout: 1000 * 3,
     headers: {
       "user-agent":
-        "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
       // 'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
       // 'cache-control': 'max-age=0',
       accept: "text/html,application/xhtml+xml"
