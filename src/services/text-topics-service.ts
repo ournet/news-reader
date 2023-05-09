@@ -34,9 +34,7 @@ export class ApiTextTopicsService implements TextTopicsService {
   async extract(locale: Locale, text: string): Promise<TextTopic[]> {
     text = truncateAt(text, 4000);
 
-    const url = `${this.options.entitizerUrl}?key=${encodeURIComponent(
-      this.options.entitizerKey
-    )}`;
+    const url = this.options.entitizerUrl;
 
     const params = new URLSearchParams();
     params.append("key", this.options.entitizerKey);
@@ -48,18 +46,18 @@ export class ApiTextTopicsService implements TextTopicsService {
     const body = await axios<{ data: EntitizerData }>(url, {
       method: "POST",
       timeout: 1000 * 3,
-      data: {
-        text,
-        lang: locale.lang,
-        country: locale.country,
-        wikidata: true
-      },
-      // params,
+      // data: {
+      //   text,
+      //   lang: locale.lang,
+      //   country: locale.country,
+      //   wikidata: true
+      // },
+      params
       // responseType: "json",
-      headers: {
-        "Content-Type": "application/json",
-        key: this.options.entitizerKey
-      }
+      // headers: {
+      //   "Content-Type": "application/json",
+      //   key: this.options.entitizerKey
+      // }
     }).then((r) => r.data);
 
     if (!body || !body.data) {
