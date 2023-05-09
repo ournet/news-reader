@@ -34,36 +34,27 @@ export class ApiTextTopicsService implements TextTopicsService {
   async extract(locale: Locale, text: string): Promise<TextTopic[]> {
     text = truncateAt(text, 4000);
 
-    const url = this.options.entitizerUrl;
-    const searchParams = new URLSearchParams();
-    // searchParams.append("key", this.options.entitizerKey);
-    searchParams.append("lang", locale.lang);
-    searchParams.append("country", locale.country);
-    searchParams.append("wikidata", "true");
-    searchParams.append("text", text);
+    const url = `${this.options.entitizerUrl}?key=${encodeURIComponent(
+      this.options.entitizerKey
+    )}`;
 
-    const response = await fetch(url, {
-      headers: {
-        key: this.options.entitizerKey,
-        "Content-Type": "application/json"
-      },
+    const params = new URLSearchParams();
+    params.append("key", this.options.entitizerKey);
+    params.append("lang", locale.lang);
+    params.append("country", locale.country);
+    params.append("wikidata", "true");
+    params.append("text", text);
+
+    const body = await fetch(url, {
       method: "POST",
       timeout: 1000 * 3,
-      body: JSON.stringify({
-        lang: locale.lang,
-        country: locale.country,
-        text,
-        wikidata: true
-      })
-    });
-
-    const body = (await response.json()) as { data: EntitizerData };
+      body: params.toString()
+    }).then<{ data: EntitizerData }>((r) => r.json());
 
     if (!body || !body.data) {
       throw new Error(
         `Invalid entitizer response: ${JSON.stringify({
-          ...body,
-          status: response.status
+          ...body
         }).substring(0, 100)}`
       );
     }
