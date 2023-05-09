@@ -34,12 +34,12 @@ export class ApiTextTopicsService implements TextTopicsService {
   async extract(locale: Locale, text: string): Promise<TextTopic[]> {
     text = truncateAt(text, 4000);
 
-    const url = `${this.options.entitizerUrl}?key=${this.options.entitizerKey}&lang=${locale.lang}&country=${locale.country}&wikidata=true`;
+    const url = this.options.entitizerUrl;
     const searchParams = new URLSearchParams();
-    // searchParams.append("key", this.options.entitizerKey);
-    // searchParams.append("lang", locale.lang);
-    // searchParams.append("country", locale.country);
-    // searchParams.append("wikidata", "true");
+    searchParams.append("key", this.options.entitizerKey);
+    searchParams.append("lang", locale.lang);
+    searchParams.append("country", locale.country);
+    searchParams.append("wikidata", "true");
     searchParams.append("text", text);
 
     const response = await fetch(url, {
@@ -54,7 +54,7 @@ export class ApiTextTopicsService implements TextTopicsService {
     if (!body || !body.data) {
       throw new Error(
         `Invalid entitizer response: ${JSON.stringify({
-          body,
+          ...body,
           status: response.status
         }).substring(0, 100)}`
       );
