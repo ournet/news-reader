@@ -54,9 +54,12 @@ export class ApiTextTopicsService implements TextTopicsService {
         country: locale.country,
         wikidata: true
       },
-      params,
+      // params,
       // responseType: "json",
-      headers: { "Content-Type": "application/json" }
+      headers: {
+        "Content-Type": "application/json",
+        key: this.options.entitizerKey
+      }
     }).then((r) => r.data);
 
     if (!body || !body.data) {
