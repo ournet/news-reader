@@ -43,11 +43,14 @@ export class ApiTextTopicsService implements TextTopicsService {
     searchParams.append("text", text);
 
     const response = await fetch(url, {
-      headers: { key: this.options.entitizerKey },
+      // headers: { key: this.options.entitizerKey },
       method: "POST",
       timeout: 1000 * 3,
-      body: searchParams
-      // headers: { "Content-Type": "application/json" }
+      body: searchParams,
+      headers: {
+        "Content-Type": "application/json",
+        key: this.options.entitizerKey
+      }
     });
 
     const body = (await response.json()) as { data: EntitizerData };
