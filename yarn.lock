@@ -117,10 +117,10 @@
     joi "^14.0.3"
     normalize-url "^4.5.1"
 
-"@ournet/domain@~0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@ournet/domain/-/domain-0.4.1.tgz#58ff37090c5063b3e0cc581ccbad0215cbfda6f8"
-  integrity sha512-SyNanQ+0M5P3C1ez69Iic2/wozGeB6hZ1zxA/46lsLZBKbnwZEDUlhDcHG5BqsWo5mQI+K3TN8fCrCdxoWU/yA==
+"@ournet/domain@~0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@ournet/domain/-/domain-0.4.2.tgz#460c6fee2490c2d7be7bab7d1dd41da113d90259"
+  integrity sha512-SqSVEM3itAHgLP4mqUiLr6qniUy4IGOk4rMGD6bVv5S2JhYD7KnuhWQSdidZNWRS56CIJs+ms3Rlu/QRVh+/Ug==
   dependencies:
     atonic "^1.0.4"
     joi "^14.0.3"

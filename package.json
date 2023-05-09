@@ -46,7 +46,7 @@
     "typescript": "4.1.3"
   },
   "dependencies": {
-    "@ournet/domain": "~0.4.1",
+    "@ournet/domain": "~0.4.2",
     "@ournet/images-data": "~0.1.x",
     "@ournet/images-domain": "~0.1.x",
     "@ournet/news-data": "~0.1.9",

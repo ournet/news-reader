@@ -73,7 +73,7 @@ function normalizeWebPageUrl(url: string) {
     normalizeProtocol: true,
     forceHttps: true,
     forceHttp: false,
-    stripFragment: true,
+    stripHash: true,
     stripWWW: undefined,
     removeTrailingSlash: false,
     sortQueryParameters: false
