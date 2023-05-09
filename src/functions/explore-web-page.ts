@@ -71,8 +71,8 @@ export async function exploreWebPage(
 function normalizeWebPageUrl(url: string) {
   return normalizeUrl(url, {
     normalizeProtocol: true,
-    // normalizeHttps: undefined,
-    normalizeHttp: false,
+    forceHttps: true,
+    forceHttp: false,
     stripFragment: true,
     stripWWW: undefined,
     removeTrailingSlash: false,
