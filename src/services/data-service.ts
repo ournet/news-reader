@@ -52,7 +52,7 @@ export class DbDataService implements DataService {
     this.newsRep = NewsRepositoryBuilder.build(dynamoClient, {
       host: newsESHost,
       ssl: { rejectUnauthorized: false, pfx: [] },
-      apiVersion: "1.7.6"
+      apiVersion: "6.8"
     });
     this.eventRep = EventRepositoryBuilder.build(dynamoClient);
     this.articleContentRep =
