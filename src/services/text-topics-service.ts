@@ -49,9 +49,9 @@ export class ApiTextTopicsService implements TextTopicsService {
       headers: { "Content-Type": "application/json" }
     });
 
-    const data = (await response.json()) as EntitizerData;
+    const body = (await response.json()) as { data: EntitizerData };
 
-    if (!data) {
+    if (!body || !body.data) {
       throw new Error(
         `Invalid entitizer response: ${JSON.stringify(
           response.status
@@ -59,7 +59,7 @@ export class ApiTextTopicsService implements TextTopicsService {
       );
     }
 
-    // const data = body.data as EntitizerData;
+    const data = body.data;
     if (data.entities) {
       data.entities = data.entities.filter((item) => !!item.entity.wikiDataId);
     }
