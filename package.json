@@ -79,7 +79,6 @@
     "mongodb": "^3.1.10",
     "news-sanitizer": "^0.1.7",
     "news-sources": "^0.1.9",
-    "node-fetch": "^3.3.1",
     "quote-parser": "^0.1.6",
     "sanitize-html": "^2.3.2",
     "sharp": "^0.30.5",

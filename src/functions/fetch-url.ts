@@ -1,7 +1,8 @@
-import fetch, { Headers } from "node-fetch";
+import got from "got";
 import iconv = require("iconv-lite");
 import { Dictionary } from "@ournet/domain";
 import { URL } from "url";
+import { IncomingHttpHeaders } from "http";
 
 const charset = require("charset");
 
@@ -9,24 +10,22 @@ export async function fetchUrl(
   webUrl: string,
   options?: { headers?: Dictionary<string>; timeout?: number }
 ) {
-  let headers: Headers;
+  let headers: IncomingHttpHeaders;
   let buffer: Buffer;
   let url: string;
 
   try {
-    const data = await fetch(new URL(webUrl), {
-      ...options
+    const data = await got(new URL(webUrl), {
+      ...options,
+      responseType: "buffer"
     });
     headers = data.headers;
-    buffer = await data.buffer();
+    buffer = data.body;
     url = data.url;
   } catch (e) {
     throw new Error(e.message || "Error GET " + webUrl);
   }
-  const encoding = detectEncoding(
-    headers.get("content-type") as string,
-    buffer
-  );
+  const encoding = detectEncoding(headers["content-type"] as string, buffer);
 
   if (encoding) {
     if (encoding !== "utf8") {
