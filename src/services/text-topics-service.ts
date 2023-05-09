@@ -48,7 +48,7 @@ export class ApiTextTopicsService implements TextTopicsService {
       timeout: 1000 * 3,
       body: searchParams,
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "x-www-form-urlencoded",
         key: this.options.entitizerKey
       }
     });
