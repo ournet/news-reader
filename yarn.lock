@@ -117,14 +117,14 @@
     joi "^14.0.3"
     normalize-url "^4.5.1"
 
-"@ournet/domain@~0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@ournet/domain/-/domain-0.4.0.tgz#60c74569e8eb9500a120d38744a1e3f3a213ddc1"
-  integrity sha512-NHS3rWg/MokaDh/WggGoLfXPomh0ph/QdgTVt17qh22pHy693R36mXXoyQ1DnW+WmUZcgNpk+q2Ysat8RF6oAw==
+"@ournet/domain@~0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@ournet/domain/-/domain-0.4.1.tgz#58ff37090c5063b3e0cc581ccbad0215cbfda6f8"
+  integrity sha512-SyNanQ+0M5P3C1ez69Iic2/wozGeB6hZ1zxA/46lsLZBKbnwZEDUlhDcHG5BqsWo5mQI+K3TN8fCrCdxoWU/yA==
   dependencies:
     atonic "^1.0.4"
     joi "^14.0.3"
-    normalize-url "^8.0.0"
+    normalize-url "^4.5.1"
 
 "@ournet/images-data@~0.1.x":
   version "0.1.0"
@@ -3412,11 +3412,6 @@ normalize-url@^6.0.1, normalize-url@~6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-6.1.0.tgz#40d0885b535deffe3f3147bec877d05fe4c5668a"
   integrity sha512-DlL+XwOy3NxAQ8xuC0okPgK46iuVNAK01YN7RueYBqqFeGsBjV9XmCAzAdgt+667bCl5kPh9EqKKDwnaPG1I7A==
-
-normalize-url@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-8.0.0.tgz#593dbd284f743e8dcf6a5ddf8fadff149c82701a"
-  integrity sha512-uVFpKhj5MheNBJRTiMZ9pE/7hD1QTeEvugSJW/OmLzAp78PB5O6adfMNTvmfKhXBkvCzC+rqifWcVYpGFwTjnw==
 
 npm-run-path@^2.0.0:
   version "2.0.2"
