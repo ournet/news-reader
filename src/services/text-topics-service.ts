@@ -36,13 +36,14 @@ export class ApiTextTopicsService implements TextTopicsService {
 
     const url = this.options.entitizerUrl;
     const searchParams = new URLSearchParams();
-    searchParams.append("key", this.options.entitizerKey);
+    // searchParams.append("key", this.options.entitizerKey);
     searchParams.append("lang", locale.lang);
     searchParams.append("country", locale.country);
     searchParams.append("wikidata", "true");
     searchParams.append("text", text);
 
     const response = await fetch(url, {
+      headers: { key: this.options.entitizerKey },
       method: "POST",
       timeout: 1000 * 3,
       body: searchParams.toString()
