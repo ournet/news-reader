@@ -5,9 +5,9 @@ import {
 } from "@ournet/topics-domain";
 import { Locale } from "../types";
 import { Dictionary } from "@ournet/domain";
-import { URLSearchParams } from "url";
 import { truncateAt } from "../helpers";
 import fetch from "node-fetch";
+import FormData from "form-data";
 
 export interface TextTopicTopic extends BuildTopicParams {
   id: string;
@@ -35,26 +35,20 @@ export class ApiTextTopicsService implements TextTopicsService {
     text = truncateAt(text, 4000);
 
     const url = this.options.entitizerUrl;
-    const searchParams = new URLSearchParams();
-    // searchParams.append("key", this.options.entitizerKey);
-    searchParams.append("lang", locale.lang);
-    searchParams.append("country", locale.country);
-    searchParams.append("wikidata", "true");
-    searchParams.append("text", text);
+    const params = new FormData();
+    params.append("key", this.options.entitizerKey);
+    params.append("lang", locale.lang);
+    params.append("country", locale.country);
+    params.append("wikidata", "true");
+    params.append("text", text);
 
     const response = await fetch(url, {
       headers: {
-        key: this.options.entitizerKey,
-        "Content-Type": "application/json"
+        key: this.options.entitizerKey
       },
       method: "POST",
       timeout: 1000 * 3,
-      body: JSON.stringify({
-        lang: locale.lang,
-        country: locale.country,
-        text,
-        wikidata: true
-      })
+      body: params
     });
 
     const body = (await response.json()) as { data: EntitizerData };
