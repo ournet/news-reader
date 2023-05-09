@@ -7,7 +7,7 @@ import { Locale } from "../types";
 import { Dictionary } from "@ournet/domain";
 import { URLSearchParams } from "url";
 import { truncateAt } from "../helpers";
-import got from "got";
+import fetch from "node-fetch";
 
 export interface TextTopicTopic extends BuildTopicParams {
   id: string;
@@ -40,28 +40,26 @@ export class ApiTextTopicsService implements TextTopicsService {
     searchParams.append("lang", locale.lang);
     searchParams.append("country", locale.country);
     searchParams.append("wikidata", "true");
-    // query.append('text', text);
+    searchParams.append("text", text);
 
-    const { body } = await got.post<{ data: EntitizerData; error?: unknown }>(
-      url,
-      {
-        timeout: { response: 1000 * 3 },
-        throwHttpErrors: true,
-        searchParams,
-        json: { text },
-        responseType: "json"
-      }
-    );
+    const response = await fetch(url, {
+      method: "POST",
+      timeout: 1000 * 3,
+      body: searchParams,
+      headers: { "Content-Type": "application/json" }
+    });
 
-    if (!body || !body.data) {
+    const data = (await response.json()) as EntitizerData;
+
+    if (!data) {
       throw new Error(
         `Invalid entitizer response: ${JSON.stringify(
-          body.error || body
-        ).substr(0, 100)}`
+          response.status
+        ).substring(0, 100)}`
       );
     }
 
-    const data = body.data as EntitizerData;
+    // const data = body.data as EntitizerData;
     if (data.entities) {
       data.entities = data.entities.filter((item) => !!item.entity.wikiDataId);
     }

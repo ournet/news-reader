@@ -4,7 +4,7 @@ import {
   getImageMasterSizeName,
   ImageFormatHelper
 } from "@ournet/images-domain";
-import got from "got";
+import fetch from "node-fetch";
 import { URL } from "url";
 import sharp from "sharp";
 import { getImageColor } from "./image-color2";
@@ -15,9 +15,8 @@ export async function exploreWebImage(imageUrl: string) {
   let url: string;
 
   try {
-    const data = await got(new URL(imageUrl), {
-      responseType: "buffer",
-      timeout: { response: 1000 * 3 },
+    const data = await fetch(new URL(imageUrl), {
+      timeout: 1000 * 3,
       headers: {
         "user-agent":
           "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)",
@@ -25,7 +24,7 @@ export async function exploreWebImage(imageUrl: string) {
         accept: "image/jpeg,image/png,image/webp"
       }
     });
-    body = data.body;
+    body = await data.buffer();
     url = data.url;
   } catch (e: any) {
     throw new Error(e.message || "Error GET " + imageUrl);

@@ -2,7 +2,7 @@ import { HtmlExploredVideo, HtmlExploredVideoInfo } from "./types";
 import { resolve as resolveUrl } from "url";
 import { uniqByProperty } from "@ournet/domain";
 import * as cheerio from "cheerio";
-import got, { Response } from "got";
+import fetch, { Response } from "node-fetch";
 import { logger } from "../../logger";
 import { VideoSourceType } from "@ournet/videos-domain";
 import { getKnownVideoSource } from "./utils";
@@ -118,11 +118,12 @@ function getSize(n: number | undefined) {
 }
 
 async function getVideoSourceType(info: HtmlExploredVideoInfo) {
-  let response: Response<string>;
+  let response: Response;
 
   try {
-    response = await got.head(info.url, {
-      timeout: { response: 1000 * 2 },
+    response = await fetch(info.url, {
+      method: "HEAD",
+      timeout: 1000 * 2,
       headers: {
         accept: "text/html,q=0.9,video/*;q=0.8"
       }
@@ -131,12 +132,12 @@ async function getVideoSourceType(info: HtmlExploredVideoInfo) {
     throw new Error(e.message || "Error HEAD " + info.url);
   }
 
-  if (!response.statusCode || response.statusCode >= 400) {
-    logger.warn(`Video HEAD ${response.statusCode}`);
+  if (!response.status || response.status >= 400) {
+    logger.warn(`Video HEAD ${response.status}`);
     return;
   }
 
-  const contentType = (response.headers["content-type"] || "")
+  const contentType = (response.headers.get("content-type") || "")
     .trim()
     .toLowerCase();
 

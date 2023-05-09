@@ -1,6 +1,6 @@
 import test from "ava";
 import { getImageColor } from "./image-color2";
-import got from "got";
+import fetch from "node-fetch";
 
 const DATA: { [key: string]: { color: string; contentType: string } } = {
   "http://news.ournetcdn.net/events/gwf/master/gwFIWGIXyKI-8a3d34-150j.jpg": {
@@ -17,7 +17,7 @@ Object.keys(DATA).forEach((url) => {
   const image = DATA[url];
 
   test(url, async (t) => {
-    const response = await got(url).buffer();
+    const response = await fetch(url).then((r) => r.buffer());
     t.is(await getImageColor(response, image.contentType), image.color);
   });
 });
