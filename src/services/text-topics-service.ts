@@ -34,7 +34,7 @@ export class ApiTextTopicsService implements TextTopicsService {
   async extract(locale: Locale, text: string): Promise<TextTopic[]> {
     text = truncateAt(text, 4000);
 
-    const url = this.options.entitizerUrl;
+    const url = `${this.options.entitizerUrl}?key=${this.options.entitizerKey}&lang=${locale.lang}&country=${locale.country}&wikidata=true`;
     // const searchParams = new URLSearchParams();
     // searchParams.append("key", this.options.entitizerKey);
     // searchParams.append("lang", locale.lang);
@@ -45,13 +45,7 @@ export class ApiTextTopicsService implements TextTopicsService {
     const response = await fetch(url, {
       method: "POST",
       timeout: 1000 * 3,
-      body: JSON.stringify({
-        key: this.options.entitizerKey,
-        lang: locale.lang,
-        country: locale.country,
-        wikidata: true,
-        text: text
-      }),
+      body: JSON.stringify({ text }),
       headers: { "Content-Type": "application/json" }
     });
 
