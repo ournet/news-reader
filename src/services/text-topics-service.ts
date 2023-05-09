@@ -53,9 +53,10 @@ export class ApiTextTopicsService implements TextTopicsService {
 
     if (!body || !body.data) {
       throw new Error(
-        `Invalid entitizer response: ${JSON.stringify(
-          response.status
-        ).substring(0, 100)}`
+        `Invalid entitizer response: ${JSON.stringify({
+          body,
+          status: response.status
+        }).substring(0, 100)}`
       );
     }
 
