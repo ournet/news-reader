@@ -45,8 +45,8 @@ export class ApiTextTopicsService implements TextTopicsService {
     const response = await fetch(url, {
       method: "POST",
       timeout: 1000 * 3,
-      body: searchParams,
-      headers: { "Content-Type": "application/json" }
+      body: searchParams
+      // headers: { "Content-Type": "application/json" }
     });
 
     const body = (await response.json()) as { data: EntitizerData };
