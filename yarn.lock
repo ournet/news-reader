@@ -99,7 +99,7 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@ournet/domain@^0.3.3", "@ournet/domain@^0.3.4", "@ournet/domain@~0.3.4", "@ournet/domain@~0.x.x":
+"@ournet/domain@^0.3.3", "@ournet/domain@^0.3.4", "@ournet/domain@~0.x.x":
   version "0.3.5"
   resolved "https://registry.yarnpkg.com/@ournet/domain/-/domain-0.3.5.tgz#6536caa23c84bcb383207173285264caa2ee68ee"
   integrity sha512-/+qWVqYJIzGyt6cmqdQ/iPLF8u/EPTBggmHVdqsjRxobupuwDhahdh12LkicFpGK7Ltzn28Orm3g30hvlVC74Q==
@@ -108,7 +108,7 @@
     joi "^14.0.3"
     normalize-url "^3.2.0"
 
-"@ournet/domain@^0.x.x", "@ournet/domain@~0.3.6":
+"@ournet/domain@^0.3.6", "@ournet/domain@~0.3.6":
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/@ournet/domain/-/domain-0.3.6.tgz#d4b217fd5829410da595155454ef19a287a4a30a"
   integrity sha512-hvlIlD2tvCeMFXfiIptlKmFc8pc+hom4+sefxYTAlu3UcmXx7DJ3Z59K14PGXCl/zVN7d78GBF0Gb+mfAa7PHg==
@@ -135,37 +135,27 @@
     "@ournet/domain" "~0.x.x"
     joi "^14.0.6"
 
-"@ournet/news-data@~0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@ournet/news-data/-/news-data-0.1.8.tgz#edf4e382382dd44853ec3d81563d8e68a2d23e63"
-  integrity sha512-Pgf0t7YxgTTYOkr2LsNMv1SUA+j3MoaoSRDHEtzoqsHGStlBIk93xleYAGkcKj6vEVgH5NzfA8b8JFY5r5yoeQ==
+"@ournet/news-data@~0.1.9":
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/@ournet/news-data/-/news-data-0.1.9.tgz#1b5784db5f39427ff4c92ed16f040a95a8f7bd33"
+  integrity sha512-m1GhibsnlfHzJhH12UTd7J75UBqcHgP9llyYrObMQdxC2347hecPJ7OOsgMGCoAKy7Lhw7g513Ilou1RAid2Tg==
   dependencies:
-    "@ournet/domain" "~0.3.4"
-    "@ournet/news-domain" "~0.1.x"
+    "@ournet/domain" "~0.3.6"
+    "@ournet/news-domain" "~0.1.4"
     aws-sdk "^2.1058.0"
     dynamo-item "~0.1.1"
     elasticsearch "^16.7.2"
     ms "^2.1.1"
 
-"@ournet/news-domain@~0.1.3":
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/@ournet/news-domain/-/news-domain-0.1.3.tgz#80521734ab0d1b4ad05ded89403ff67f713ac589"
-  integrity sha512-VuWDMGgORBwHifQRbyQ91aDU3CjI/FDAM9CzJNlLz+CmvdZNzy9e6Tgg25KF7CYmndAX51Fwkdms6qN56mZOLA==
+"@ournet/news-domain@~0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@ournet/news-domain/-/news-domain-0.1.4.tgz#c4aaba56ebeb9946a7ba81a0dcbfb0b06d2060a4"
+  integrity sha512-Jiu7aU66GN8GY+k9MrgKyoZ6c/25peh47+u0ed8Vpy0WYtGC08TBXRgtbGpOLu/OlVGEr7zkxsX9ufvJTHKHWA==
   dependencies:
-    "@ournet/domain" "^0.x.x"
+    "@ournet/domain" "^0.3.6"
     ellipsize "^0.1.0"
     joi "^13.6.0"
     transliteration "^2.2.0"
-
-"@ournet/news-domain@~0.1.x":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@ournet/news-domain/-/news-domain-0.1.2.tgz#fce8103fc8d16f8274c5046ca5b1bcb1c9558ff2"
-  integrity sha512-unO2F3yqDB+2+7ffELKlj97GBZSOHwPos8X6RWcH+9vLFojr15D3PFrTWEFbG5nFzwuEtpQUxhsbwcyM+oZqYQ==
-  dependencies:
-    "@ournet/domain" "^0.3.4"
-    ellipsize "^0.1.0"
-    joi "^13.6.0"
-    transliteration "^1.6.6"
 
 "@ournet/quotes-data@~0.3.x":
   version "0.3.0"
