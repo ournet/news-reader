@@ -5,7 +5,7 @@ import {
 } from "@ournet/topics-domain";
 import { Locale } from "../types";
 import { Dictionary } from "@ournet/domain";
-import { URLSearchParams } from "url";
+// import { URLSearchParams } from "url";
 import { truncateAt } from "../helpers";
 import fetch from "node-fetch";
 
@@ -35,17 +35,23 @@ export class ApiTextTopicsService implements TextTopicsService {
     text = truncateAt(text, 4000);
 
     const url = this.options.entitizerUrl;
-    const searchParams = new URLSearchParams();
-    searchParams.append("key", this.options.entitizerKey);
-    searchParams.append("lang", locale.lang);
-    searchParams.append("country", locale.country);
-    searchParams.append("wikidata", "true");
-    searchParams.append("text", text);
+    // const searchParams = new URLSearchParams();
+    // searchParams.append("key", this.options.entitizerKey);
+    // searchParams.append("lang", locale.lang);
+    // searchParams.append("country", locale.country);
+    // searchParams.append("wikidata", "true");
+    // searchParams.append("text", text);
 
     const response = await fetch(url, {
       method: "POST",
       timeout: 1000 * 3,
-      body: searchParams,
+      body: JSON.stringify({
+        key: this.options.entitizerKey,
+        lang: locale.lang,
+        country: locale.country,
+        wikidata: true,
+        text: text
+      }),
       headers: { "Content-Type": "application/json" }
     });
 
