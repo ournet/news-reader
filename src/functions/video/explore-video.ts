@@ -96,8 +96,6 @@ function normalizeVideos(videos: HtmlExploredVideoInfo[], url: string) {
       url: resolveUrl(url, item.url.trim())
     };
 
-    // video.url = normalizeUrl(video.url, { normalizeHttp: false, normalizeHttps: false, });
-
     const width = getSize(item.width);
     const height = getSize(item.height);
 
