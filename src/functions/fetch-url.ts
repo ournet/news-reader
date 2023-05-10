@@ -14,7 +14,8 @@ export async function fetchUrl(
 
   try {
     const data = await axios(webUrl, {
-      ...options
+      ...options,
+      responseType: "arraybuffer"
     });
     headers = data.headers;
     buffer = await data.data;
