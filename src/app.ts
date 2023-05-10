@@ -1,3 +1,5 @@
+console.log(process.versions);
+
 require("dotenv").config();
 
 import { parseLocale } from "./helpers";

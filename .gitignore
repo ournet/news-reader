@@ -9,3 +9,4 @@ types
 package-lock.json
 *-error.log
 data/*.json
+output-*
