@@ -8,7 +8,8 @@ const VALID_LOCALES: Dictionary<string[]> = {
   en: ["in"],
   it: ["it"],
   cs: ["cz"],
-  hu: ["hu"]
+  hu: ["hu"],
+  es: ["es"]
 };
 
 export function isValidLocale(locale: Locale) {
