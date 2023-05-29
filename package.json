@@ -79,7 +79,7 @@
     "mongodb": "^3.1.10",
     "news-sanitizer": "^0.1.7",
     "news-sources": "^0.1.10",
-    "quote-parser": "^0.1.6",
+    "quote-parser": "^0.1.7",
     "sanitize-html": "^2.3.2",
     "sharp": "^0.30.5",
     "standard-text": "^0.1.1",

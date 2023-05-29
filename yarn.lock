@@ -3613,10 +3613,10 @@ queue-microtask@^1.2.2:
   resolved "https://registry.yarnpkg.com/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
-quote-parser@^0.1.6:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/quote-parser/-/quote-parser-0.1.6.tgz#c0fc22541f043b3ee6c3b4c0f7d0faa010ad053e"
-  integrity sha512-HSPDOvZ5wqySFvn6RG+fPndOuMbuzKiF+rs+Ow1cBXSacN0AfrkzFhMqac+/WFk1Ew5XRnq6jwcBLLqePTRRdw==
+quote-parser@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/quote-parser/-/quote-parser-0.1.7.tgz#a45ca5384afe682f34ef10555c1677c7bb0385ab"
+  integrity sha512-8q2fS8Oi14oNWRU5G3DK3hOC4tSy0ufoIpcT+7v9A9Lc6tqEymQXozM+ZQnpkYHI8p+lm3fViob4/lFqy6vSUg==
 
 rc@1.2.8, rc@^1.2.7, rc@^1.2.8:
   version "1.2.8"

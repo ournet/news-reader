@@ -7,24 +7,31 @@ import { logger } from "../../../logger";
 //     'publika.md'
 // ];
 
-export default function inputEmbedVideoFinder($: CheerioStatic): HtmlExploredVideoInfo[] {
-    const list = $('script[type="application/ld+json"]').toArray()
-        .map<{ '@type': string, contentUrl?: string, thumbnailUrl?: string }>(item => {
-            const text = $(item).contents().text();
-            try {
-                return JSON.parse(text);
-            } catch (e) {
-                logger.error(e);
-            }
-        })
-        .filter(item => item && item['@type'] === 'VideoObject' && item.contentUrl)
-        .map(item => {
-            const info: HtmlExploredVideoInfo = {
-                url: item.contentUrl || '',
-                image: item.thumbnailUrl || '',
-            }
-            return info;
-        });
+export default function inputEmbedVideoFinder(
+  $: CheerioStatic
+): HtmlExploredVideoInfo[] {
+  const list = $('script[type="application/ld+json"]')
+    .toArray()
+    .map<{ "@type": string; contentUrl?: string; thumbnailUrl?: string }>(
+      (item) => {
+        const text = $(item).contents().text();
+        try {
+          return JSON.parse(text);
+        } catch {
+          logger.info(`Invalid JSON: application/ld+json`);
+        }
+      }
+    )
+    .filter(
+      (item) => item && item["@type"] === "VideoObject" && item.contentUrl
+    )
+    .map((item) => {
+      const info: HtmlExploredVideoInfo = {
+        url: item.contentUrl || "",
+        image: item.thumbnailUrl || ""
+      };
+      return info;
+    });
 
-    return list as HtmlExploredVideoInfo[];
+  return list as HtmlExploredVideoInfo[];
 }
