@@ -78,7 +78,7 @@
     "metascraper-url": "^5.24.2",
     "mongodb": "^3.1.10",
     "news-sanitizer": "^0.1.7",
-    "news-sources": "^0.1.10",
+    "news-sources": "^0.1.11",
     "quote-parser": "^0.1.10",
     "sanitize-html": "^2.3.2",
     "sharp": "^0.30.5",
