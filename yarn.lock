@@ -3094,10 +3094,10 @@ negotiator@^0.6.3:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.3.tgz#58e323a72fedc0d6f9cd4d31fe49f51479590ccd"
   integrity sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==
 
-news-sanitizer@^0.1.7:
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/news-sanitizer/-/news-sanitizer-0.1.7.tgz#7d876d5d5ba47d0b36978ff464122cdcc63c31ed"
-  integrity sha512-n6v4oDEyjoQrSg4YtCCVupTWGajxPMH/0EGQNU8H6oDiECgD6ScscoHAF2V/OEH0v70undQbQemFC3Y2sshN1g==
+news-sanitizer@^0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/news-sanitizer/-/news-sanitizer-0.1.8.tgz#11abb8edbbcbd54eaf77cf91f8cfb7419195c0a0"
+  integrity sha512-rdgvn9dIsGUj48oiSoLBKbta2poIS6xQIV5CHfjPtKJHjk3kUm+8+tgdUqZ88VZ53xI9e6uou83E3XFP+ACWeg==
 
 news-sources@^0.1.11:
   version "0.1.11"
