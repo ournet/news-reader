@@ -3099,10 +3099,10 @@ news-sanitizer@^0.1.8:
   resolved "https://registry.yarnpkg.com/news-sanitizer/-/news-sanitizer-0.1.8.tgz#11abb8edbbcbd54eaf77cf91f8cfb7419195c0a0"
   integrity sha512-rdgvn9dIsGUj48oiSoLBKbta2poIS6xQIV5CHfjPtKJHjk3kUm+8+tgdUqZ88VZ53xI9e6uou83E3XFP+ACWeg==
 
-news-sources@^0.1.11:
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/news-sources/-/news-sources-0.1.11.tgz#848dbbb21845af4765a93c8bdbdcea39502de07e"
-  integrity sha512-Am3WDYH4dViDoETPYa9sPTyU60AVNoCYeLUMHcIZ9Kj/aDx5viA9soiBLhGor1+K5XX1H9aF+NhvbRAEJc6Y9Q==
+news-sources@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/news-sources/-/news-sources-0.1.12.tgz#207bb3c313048556d4451629e5e53da745bbf904"
+  integrity sha512-o4nDv/CO6V7llN4VEZ66Yf6AU/V33tdnWBtnY7Pkjmmu8P/c0wMqsAAidVdkdMU8NlRcdXskDMoyrkHCYOu6+Q==
 
 nice-try@^1.0.4:
   version "1.0.5"
