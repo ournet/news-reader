@@ -59,7 +59,7 @@
     "@ournet/videos-domain": "~0.1.x",
     "ascrape": "^0.2.0",
     "aws-sdk": "^2.384.0",
-    "axios": "^1.4.0",
+    "axios": "^1.6.0",
     "charset": "^1.0.1",
     "cheerio": "1.0.0-rc.2",
     "dotenv": "^6.2.0",
