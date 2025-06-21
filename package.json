@@ -61,7 +61,7 @@
     "aws-sdk": "^2.384.0",
     "axios": "^1.4.0",
     "charset": "^1.0.1",
-    "cheerio": "1.0.0-rc.2",
+    "cheerio": "1.0.0-rc.10",
     "dotenv": "^6.2.0",
     "ellipsize": "^0.1.0",
     "entities": "^1.1.2",
