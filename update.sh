@@ -1,5 +1,5 @@
 #!/bin/bash
 
 git pull
-yarn
-yarn tsc
+npm install
+npm run tsc
