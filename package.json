@@ -36,6 +36,7 @@
   },
   "homepage": "https://github.com/ournet/news-reader#readme",
   "devDependencies": {
+    "@types/bson": "^4.2.4",
     "@types/cheerio": "0.22.10",
     "@types/entities": "^1.1.0",
     "@types/feedparser": "^2.2.1",
