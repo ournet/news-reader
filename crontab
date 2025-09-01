@@ -16,7 +16,7 @@ HOME=/
 
 #0 14 * * * root cd /var/node/apps/ournet.geonames-sync/ && node ./lib/app.js
 
-0 0,2,4,5,6,12,16,20,22 * * * root cd /var/node/apps/ournet.exchange-updater/ && COUNTRIES=md,ro,bg,ru npm start
+0 0,2,4,5,6,12,16,20,22 * * * root cd /var/node/ournet/exchange-updater/ && COUNTRIES=md,ro,bg,ru npm start
 
 #0 * * * * root cd /var/node/apps/ournet-feeds-reader/ && npm start
 
@@ -33,8 +33,8 @@ HOME=/
 0 3 * * * root cd /var/node/ournet/horoscope-notifier/ && LANG=en npm run mobile-app
 0 3 * * * root cd /var/node/ournet/horoscope-notifier/ && LANG=it npm run mobile-app
 
-0 2 * * FRI root cd /var/node/apps/weather-newsletter/ && npm start
-0 8 * * FRI root cd /var/node/apps/weather-newsletter/ && npm run bounces
+0 2 * * FRI root cd /var/node/ournet/weather-newsletter/ && npm start
+0 8 * * FRI root cd /var/node/ournet/weather-newsletter/ && npm run bounces
 
 0 2 */2 * * root cd /var/node/textactor/actors-generator/ && LOCALE=ro-ro npm run collect &> output.txt
 0 3 */2 * * root cd /var/node/textactor/actors-generator/ && LOCALE=ro-md npm run collect

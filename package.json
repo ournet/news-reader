@@ -15,7 +15,8 @@
     "postversion": "git push --follow-tags",
     "prepublishOnly": "npm run tsc && npm run clean-test-code",
     "clean": "rimraf ./lib",
-    "clean-test-code": "rimraf ./lib/**/*.test.js"
+    "clean-test-code": "rimraf ./lib/**/*.test.js",
+    "setup-crontab": "cp ./crontab /etc/cron.d/ournet"
   },
   "engines": {
     "node": ">=12.16.2"
