@@ -36,15 +36,24 @@ HOME=/
 0 2 * * FRI root cd /var/node/ournet/weather-newsletter/ && npm start
 0 8 * * FRI root cd /var/node/ournet/weather-newsletter/ && npm run bounces
 
-0 2 */2 * * root cd /var/node/textactor/actors-generator/ && LOCALE=ro-ro npm run collect &> output.txt
-0 3 */2 * * root cd /var/node/textactor/actors-generator/ && LOCALE=ro-md npm run collect
-0 4 */2 * * root cd /var/node/textactor/actors-generator/ && LOCALE=ru-md npm run collect
+0 2 */2 * * root cd /var/node/textactor/actors-generator/ && LOCALE=ro-ro npm run collect &> output-col-ro.txt
+0 2 */3 * * root cd /var/node/textactor/actors-generator/ && LOCALE=ro-ro npm run generate &> output-gen-ro.txt
+0 3 */2 * * root cd /var/node/textactor/actors-generator/ && LOCALE=ro-md npm run collect &> output-col-md.txt
+0 3 */3 * * root cd /var/node/textactor/actors-generator/ && LOCALE=ro-md npm run generate &> output-gen-md.txt
+0 4 */2 * * root cd /var/node/textactor/actors-generator/ && LOCALE=ru-md npm run collect &> output-col-md.txt
+0 4 */3 * * root cd /var/node/textactor/actors-generator/ && LOCALE=ru-md npm run generate &> output-gen-md.txt
 #0 5 */2 * * root cd /var/node/textactor/actors-generator/ && LOCALE=ru-ru npm run collect
-0 6 */2 * * root cd /var/node/textactor/actors-generator/ && LOCALE=en-in npm run collect
-0 7 */2 * * root cd /var/node/textactor/actors-generator/ && LOCALE=it-it npm run collect
-0 8 */2 * * root cd /var/node/textactor/actors-generator/ && LOCALE=hu-hu npm run collect
-0 9 */2 * * root cd /var/node/textactor/actors-generator/ && LOCALE=cs-cz npm run collect
-0 5 */4 * * root cd /var/node/textactor/actors-generator/ && LOCALE=es-es npm run generate
+0 6 */2 * * root cd /var/node/textactor/actors-generator/ && LOCALE=en-in npm run collect &> output-col-in.txt
+0 6 */3 * * root cd /var/node/textactor/actors-generator/ && LOCALE=en-in npm run generate &> output-gen-in.txt
+0 7 */2 * * root cd /var/node/textactor/actors-generator/ && LOCALE=it-it npm run collect &> output-col-it.txt
+0 7 */3 * * root cd /var/node/textactor/actors-generator/ && LOCALE=it-it npm run generate &> output-gen-it.txt
+0 8 */2 * * root cd /var/node/textactor/actors-generator/ && LOCALE=hu-hu npm run collect &> output-col-hu.txt
+0 8 */3 * * root cd /var/node/textactor/actors-generator/ && LOCALE=hu-hu npm run generate &> output-gen-hu.txt
+0 9 */2 * * root cd /var/node/textactor/actors-generator/ && LOCALE=cs-cz npm run collect &> output-col-cz.txt
+0 9 */3 * * root cd /var/node/textactor/actors-generator/ && LOCALE=cs-cz npm run generate &> output-gen-cz.txt
+0 10 */2 * * root cd /var/node/textactor/actors-generator/ && LOCALE=es-es npm run collect &> output-col-es.txt
+0 10 */3 * * root cd /var/node/textactor/actors-generator/ && LOCALE=es-es npm run generate &> output-gen-es.txt
+
 
 0 8 * * 0,2,4 root cd /var/node/ournet/weather-notifier/ && sh update-places.sh
 
