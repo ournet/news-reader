@@ -1,4 +1,4 @@
-const quoteParser = require("quote-parser");
+import quoteParser from "quote-parser";
 
 export type TextQuote = {
   index: number;
