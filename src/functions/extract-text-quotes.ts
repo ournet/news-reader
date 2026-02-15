@@ -14,8 +14,8 @@ export function extractTextQuotes(
   let quotes: TextQuote[] = [];
   try {
     quotes = quoteParser.parse(text, lang, { persons }) as TextQuote[];
-  } catch (_e) {
-    console.log(`Quotes not supported for language ${lang}`);
+  } catch (e) {
+    console.log(`Quotes error for language ${lang}`, (e as any)?.message || e);
   }
   if (!quotes || !quotes.length) {
     return [];
