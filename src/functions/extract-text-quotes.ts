@@ -1,4 +1,4 @@
-import quoteParser from "quote-parser";
+import { parse } from "quote-parser";
 
 export type TextQuote = {
   index: number;
@@ -9,11 +9,11 @@ export type TextQuote = {
 export function extractTextQuotes(
   text: string,
   lang: string,
-  persons: { id: string; index: number }[]
+  persons: { id: string; index: number }[],
 ): TextQuote[] {
   let quotes: TextQuote[] = [];
   try {
-    quotes = quoteParser.parse(text, lang, { persons }) as TextQuote[];
+    quotes = parse(text, lang, { persons }) as TextQuote[];
   } catch (e) {
     console.log(`Quotes error for language ${lang}`, (e as any)?.message || e);
   }
