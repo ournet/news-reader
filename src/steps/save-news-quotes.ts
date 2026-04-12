@@ -39,7 +39,7 @@ export async function saveNewsQuotes(
       );
     }
   }
-  const textQuotes = await extractTextQuotes(text, newsItem.lang, persons);
+  const textQuotes = extractTextQuotes(text, newsItem.lang, persons);
 
   if (!textQuotes.length) {
     return [];
