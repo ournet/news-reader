@@ -1,32 +1,25 @@
-import axios from "axios";
 import iconv = require("iconv-lite");
 import { Dictionary } from "@ournet/domain";
+import { download } from "./http";
+import { LIMITS } from "../config";
 
 const charset = require("charset");
 
 export async function fetchUrl(
   webUrl: string,
-  options?: { headers?: Dictionary<string>; timeout?: number }
-) {
-  let headers: any;
-  let buffer: Buffer;
-  let url: string;
-
-  try {
-    const data = await axios(webUrl, {
-      ...options,
-      responseType: "arraybuffer"
-    });
-    headers = data.headers;
-    buffer = await data.data;
-    url = data.config.url || webUrl;
-  } catch (e: any) {
-    throw new Error(e.message || "Error GET " + webUrl);
+  options?: {
+    headers?: Dictionary<string>;
+    timeout?: number;
+    totalTimeout?: number;
+    maxBytes?: number;
   }
-  const encoding = detectEncoding(
-    headers.get("content-type") as string,
-    buffer
-  );
+) {
+  const { buffer, url, contentType } = await download(webUrl, {
+    ...options,
+    maxBytes: (options && options.maxBytes) || LIMITS.MAX_PAGE_BYTES
+  });
+
+  const encoding = detectEncoding(contentType as string, buffer);
 
   if (encoding) {
     if (encoding !== "utf8") {

@@ -5,9 +5,12 @@ import { isValidDate, decodeHtml } from "../helpers";
 
 const ITEM_CONTENT_NAMES = ["yandex:full-text"];
 
+const PARSE_TIMEOUT_MS = 1000 * 20;
+
 export async function readFeed(feedUrl: string): Promise<FeedReaderItem[]> {
   const { body } = await fetchUrl(feedUrl, {
     timeout: 1000 * 3,
+    totalTimeout: 1000 * 15,
     headers: {
       "user-agent":
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
@@ -26,7 +29,27 @@ export async function readFeed(feedUrl: string): Promise<FeedReaderItem[]> {
       addmeta: false
     });
 
-    feedparser.on("error", reject);
+    // feedparser can stall on a malformed document without emitting either
+    // "end" or "error", which would hang the run for good.
+    let settled = false;
+    const timer = setTimeout(() => {
+      if (settled) {
+        return;
+      }
+      settled = true;
+      reject(new Error(`Timed out parsing feed: ${feedUrl}`));
+    }, PARSE_TIMEOUT_MS);
+
+    const settle = (fn: () => void) => {
+      if (settled) {
+        return;
+      }
+      settled = true;
+      clearTimeout(timer);
+      fn();
+    };
+
+    feedparser.on("error", (error: Error) => settle(() => reject(error)));
 
     stream.pipe(feedparser);
 
@@ -70,7 +93,7 @@ export async function readFeed(feedUrl: string): Promise<FeedReaderItem[]> {
       }
     });
 
-    feedparser.on("end", () => resolve(items));
+    feedparser.on("end", () => settle(() => resolve(items)));
 
     stream.push(body, "utf8");
     stream.push(null);

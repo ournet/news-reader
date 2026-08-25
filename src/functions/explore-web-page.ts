@@ -21,6 +21,7 @@ export async function exploreWebPage(
 ) {
   const { body: html, url } = await fetchUrl(webpageUrl, {
     timeout: 1000 * 3,
+    totalTimeout: 1000 * 15,
     headers: {
       "user-agent":
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
@@ -80,16 +81,39 @@ function normalizeWebPageUrl(url: string) {
   });
 }
 
+const SCRAPE_TIMEOUT_MS = 1000 * 20;
+
 function scrapeArticleContent(html: string) {
   return new Promise<string | undefined>((resolve, reject) => {
+    // ascrape is callback based and gives no guarantee it calls back; without
+    // this the whole run stops on a single page it cannot parse.
+    let done = false;
+    const timer = setTimeout(() => {
+      if (done) {
+        return;
+      }
+      done = true;
+      reject(new Error(`ascrape timed out after ${SCRAPE_TIMEOUT_MS}ms`));
+    }, SCRAPE_TIMEOUT_MS);
+
+    const settle = (fn: () => void) => {
+      if (done) {
+        return;
+      }
+      done = true;
+      clearTimeout(timer);
+      fn();
+    };
+
     ascrape(html, (error: Error, article: any) => {
       if (error) {
-        return reject(error);
+        return settle(() => reject(error));
       }
-      if (article.content) {
-        resolve(article.content.html());
+      if (article && article.content) {
+        const content = article.content.html();
+        settle(() => resolve(content));
       } else {
-        resolve(undefined);
+        settle(() => resolve(undefined));
       }
     });
   });
