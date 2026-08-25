@@ -60,8 +60,13 @@ While it runs, in another shell:
 watch -n2 "ps -o rss=,etime=,cmd= -C node | grep app.js"
 ```
 
-Expect roughly **300MB RSS** and a flat curve. If RSS climbs past ~500MB, stop
+Expect roughly **340MB RSS** and a flat curve. If RSS climbs past ~500MB, stop
 and say so - that is not what this build does here.
+
+If memory is tighter than expected, `FEED_ITEM_CONCURRENCY=1` gives back ~38MB
+at the cost of roughly halving throughput. Lower that before touching
+`UV_THREADPOOL_SIZE`: the threadpool is what caps how many image operations run
+at once, so raising it costs more RSS than it saves in time.
 
 Sanity check the guards actually engage:
 
@@ -76,10 +81,10 @@ Sanity check the guards actually engage:
 | --- | --- | --- |
 | 1 GB (t3.micro) | `1` | `256` |
 | 2 GB (t3.small) | `2` | `320` |
-| 4 GB (t3.medium) | `4` | `384` |
-| 8 GB + | `6` | `512` |
+| 4 GB (t3.medium) | `3` | `384` |
+| 8 GB + | `5` | `512` |
 
-Rule of thumb: `MAX_CONCURRENT_RUNS × 350MB + 250MB` for the OS and whatever
+Rule of thumb: `MAX_CONCURRENT_RUNS × 340MB + 250MB` for the OS and whatever
 else is on the box (you also run horoscope-generator, weather-notifier,
 actors-generator and name-explorer from the same cron file - check their
 schedules do not collide with the news-reader minutes).
