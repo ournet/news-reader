@@ -61,15 +61,27 @@ HOME=/
 #0 8 * * * root cd /var/node/ournet/weather-notifier/ && COUNTRY=ru LANG=ru npm start
 0 9 * * * root cd /var/node/ournet/weather-notifier/ && COUNTRY=al LANG=sq npm start
 
-*/5 * * * * root cd /var/node/ournet/news-reader && LOCALE=ro-ro npm run start &> output-ro.txt
-*/11 * * * * root cd /var/node/ournet/news-reader && LOCALE=ro-md npm run start &> output-md.txt
-*/12 * * * * root cd /var/node/ournet/news-reader && LOCALE=ru-md npm run start &> output-md.txt
-#*/6 * * * * root cd /var/node/ournet/news-reader && LOCALE=ru-ru npm run start &> output-ru.txt
-*/7 * * * * root cd /var/node/ournet/news-reader && LOCALE=bg-bg npm run start &> output-bg.txt
-*/8 * * * * root cd /var/node/ournet/news-reader && LOCALE=en-in npm run start
-*/6 * * * * root cd /var/node/ournet/news-reader && LOCALE=cs-cz npm run start &> output-cz.txt
-*/7 * * * * root cd /var/node/ournet/news-reader && LOCALE=hu-hu npm run start &> output-hu.txt
-*/9 * * * * root cd /var/node/ournet/news-reader && LOCALE=it-it npm run start &> output-it.txt
-*/10 * * * * root cd /var/node/ournet/news-reader && LOCALE=es-es npm run start &> output-es.txt
+# --- news-reader -------------------------------------------------------------
+# One process per locale, ~300MB RSS each once warm.
+#
+# bin/run-locale.sh applies the resource limits (glibc arenas, V8 heap, libvips
+# threads) and takes a per-locale flock, so a run that overruns its slot is not
+# joined by the next tick - the next tick just exits. The app additionally caps
+# how many locales may run at once (MAX_CONCURRENT_RUNS) and stops itself at
+# MAX_RUN_SECONDS, leaving the remaining feeds to the next tick.
+#
+# Start minutes are staggered so the locales do not all pay the module load and
+# feed fetch cost on the same second.
+0-59/15  * * * * root /var/node/ournet/news-reader/bin/run-locale.sh ro-ro &> /var/log/news-reader-ro-ro.log
+2-59/15  * * * * root /var/node/ournet/news-reader/bin/run-locale.sh ro-md &> /var/log/news-reader-ro-md.log
+3-59/15  * * * * root /var/node/ournet/news-reader/bin/run-locale.sh ru-md &> /var/log/news-reader-ru-md.log
+5-59/15  * * * * root /var/node/ournet/news-reader/bin/run-locale.sh bg-bg &> /var/log/news-reader-bg-bg.log
+6-59/15  * * * * root /var/node/ournet/news-reader/bin/run-locale.sh en-in &> /var/log/news-reader-en-in.log
+8-59/15  * * * * root /var/node/ournet/news-reader/bin/run-locale.sh cs-cz &> /var/log/news-reader-cs-cz.log
+9-59/15  * * * * root /var/node/ournet/news-reader/bin/run-locale.sh hu-hu &> /var/log/news-reader-hu-hu.log
+11-59/15 * * * * root /var/node/ournet/news-reader/bin/run-locale.sh it-it &> /var/log/news-reader-it-it.log
+13-59/15 * * * * root /var/node/ournet/news-reader/bin/run-locale.sh es-es &> /var/log/news-reader-es-es.log
+#14-59/15 * * * * root /var/node/ournet/news-reader/bin/run-locale.sh ru-ru &> /var/log/news-reader-ru-ru.log
+# -----------------------------------------------------------------------------
 
 45 * * * * root cd /var/node/entipic/name-explorer && npm start &> output.txt

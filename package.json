@@ -69,7 +69,7 @@
     "ellipsize": "^0.1.0",
     "entities": "^1.1.2",
     "feedparser": "^2.2.10",
-    "get-image-colors": "^2.0.0",
+    "get-rgba-palette": "^2.0.0",
     "get-video-id": "^3.4.1",
     "iconv-lite": "^0.4.24",
     "in-text-search": "^0.1.0",

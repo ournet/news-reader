@@ -9,6 +9,7 @@ import { processFeed } from "./process-feed";
 import { createEvent } from "./steps/create-event";
 import { Config, isValidLocale } from "./config";
 import { logger } from "./logger";
+import { isPastDeadline } from "./deadline";
 
 export async function processLocale(
   dataService: DataService,
@@ -28,11 +29,27 @@ export async function processLocale(
     processFeedMinDate.getMinutes() - config.NEWS_PAST_MINUTES
   );
 
+  let processedFeeds = 0;
+  const totalFeeds = sources.reduce(
+    (count, source) =>
+      count + source.feeds.filter((f) => f.language === locale.lang).length,
+    0
+  );
+
   for (const source of sources) {
     for (const feed of source.feeds) {
       if (feed.language !== locale.lang) {
         continue;
       }
+      if (isPastDeadline()) {
+        // the next cron tick picks these feeds up; running past our slot only
+        // means overlapping with it
+        logger.warn(
+          `Deadline reached, stopping after ${processedFeeds}/${totalFeeds} feeds`
+        );
+        return;
+      }
+      processedFeeds++;
       debug(`Start processing feed: ${source.id}, ${feed.url}`);
       const items = await processFeed(
         dataService,
@@ -46,6 +63,9 @@ export async function processLocale(
       );
       debug(`${items.length} items readed`);
       for (const item of items) {
+        if (isPastDeadline()) {
+          break;
+        }
         try {
           await createEvent(dataService, imagesStorage, item, {
             minEventNews: config.MIN_EVENT_NEWS,

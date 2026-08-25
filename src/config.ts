@@ -19,6 +19,52 @@ export function isValidLocale(locale: Locale) {
   );
 }
 
+function envInt(name: string, defaultValue: number) {
+  const raw = process.env[name];
+  if (!raw) {
+    return defaultValue;
+  }
+  const value = parseInt(raw, 10);
+  if (Number.isNaN(value) || value <= 0) {
+    throw new Error(`${name} must be a positive integer, got: ${raw}`);
+  }
+  return value;
+}
+
+/**
+ * Resource limits.
+ *
+ * Separate from `Config` because these are never required: each one has a
+ * default that works, and they exist so a box running several locales at once
+ * can be tuned without a deploy. `Config` is the credentials and thresholds the
+ * app cannot start without, and it is validated as such.
+ *
+ * Read once at load, so anything that sets them must do so before requiring
+ * this module (dotenv is called first in app.ts).
+ */
+export const LIMITS = {
+  /** Soft cap on a single run. Keep it below the cron interval for the locale. */
+  MAX_RUN_SECONDS: envInt("MAX_RUN_SECONDS", 600),
+
+  /** Max news-reader processes allowed to run at the same time, all locales. */
+  MAX_CONCURRENT_RUNS: envInt("MAX_CONCURRENT_RUNS", 2),
+
+  /** Budget for a single article, end to end. */
+  ITEM_TIMEOUT_MS: envInt("ITEM_TIMEOUT_MS", 1000 * 90),
+
+  /** Default total time an outgoing request may take, connect to last byte. */
+  HTTP_TIMEOUT_MS: envInt("HTTP_TIMEOUT_MS", 1000 * 10),
+
+  /** Hard cap on a downloaded web page or feed. */
+  MAX_PAGE_BYTES: envInt("MAX_PAGE_BYTES", 1024 * 1024 * 3),
+
+  /** Hard cap on a downloaded image. */
+  MAX_IMAGE_BYTES: envInt("MAX_IMAGE_BYTES", 1024 * 1024 * 8),
+
+  /** libvips worker threads. Its own default is one per CPU, per process. */
+  SHARP_CONCURRENCY: envInt("SHARP_CONCURRENCY", 1)
+};
+
 export interface Config {
   S3_IMAGES_NEWS_NAME: string;
   S3_IMAGES_EVENTS_NAME: string;

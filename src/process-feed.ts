@@ -13,6 +13,9 @@ import { setLastReadedFeedUrl } from "./functions/feeds-last-url";
 import { DataService } from "./services/data-service";
 import { ImagesStorageService } from "./services/images-storage-service";
 import { TextTopicsService } from "./services/text-topics-service";
+import { isPastDeadline } from "./deadline";
+import { withTimeout } from "./functions/with-timeout";
+import { LIMITS } from "./config";
 
 export type ProcessFeedOptions = {
   minDate: Date;
@@ -39,21 +42,34 @@ export async function processFeed(
   }
 
   const newsItems: NewsItem[] = [];
+  // items are ordered oldest first, so this is the newest one we got through
+  let lastProcessedLink: string | undefined;
 
   for (const newsFeedItem of newsFeedItems) {
+    if (isPastDeadline()) {
+      logger.warn(`Deadline reached while reading feed: ${feed.url}`);
+      break;
+    }
+
     let newsItem: NewsItem | undefined;
 
     try {
-      newsItem = await processFeedItem(
-        dataService,
-        imagesStorage,
-        topicsService,
-        newsFeedItem,
-        {
-          country: source.country,
-          lang: feed.language,
-          sourceId: source.id
-        }
+      newsItem = await withTimeout(
+        processFeedItem(
+          dataService,
+          imagesStorage,
+          topicsService,
+          newsFeedItem,
+          {
+            country: source.country,
+            lang: feed.language,
+            sourceId: source.id
+          }
+        ),
+        // a single article must never stall the whole locale: everything it
+        // does is bounded already, but third party code can still sit there
+        LIMITS.ITEM_TIMEOUT_MS,
+        `process feed item: ${newsFeedItem.link}`
       );
     } catch (e: any) {
       logger.error(
@@ -61,6 +77,10 @@ export async function processFeed(
         e
       );
       continue;
+    } finally {
+      // advance the bookmark on failures too, otherwise a permanently broken
+      // article is re-fetched on every single run from now on
+      lastProcessedLink = newsFeedItem.link;
     }
     if (!newsItem) {
       continue;
@@ -71,11 +91,13 @@ export async function processFeed(
     debug(`Saved news: ${newsItem.urlHost}${newsItem.urlPath}`);
   }
 
-  await setLastReadedFeedUrl(
-    { lang: feed.language, country: source.country },
-    feed.url,
-    newsFeedItems[newsFeedItems.length - 1].link
-  );
+  if (lastProcessedLink) {
+    await setLastReadedFeedUrl(
+      { lang: feed.language, country: source.country },
+      feed.url,
+      lastProcessedLink
+    );
+  }
 
   return newsItems;
 }
