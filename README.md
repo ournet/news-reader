@@ -33,6 +33,11 @@ Three independent mechanisms prevent that:
 | Run slot | `src/run-guard.ts` | Same guarantee inside the app, plus a global cap across locales (`MAX_CONCURRENT_RUNS`). Stale locks from crashed runs are reclaimed. |
 | Deadline | `src/deadline.ts` | At `MAX_RUN_SECONDS` the run stops between feeds and exits; the remaining feeds are picked up next tick. A hard `process.exit` follows 30s later. |
 
+A run that cannot get through every feed in its slot resumes from where it
+stopped rather than from the top (`src/functions/feeds-cursor.ts`). Without
+that, a locale with 36 feeds and time for 15 would read the same first 15
+forever and never reach the rest.
+
 Every outgoing request is bounded in both **time** and **size**
 (`src/functions/http.ts`). Axios' own `timeout` is a socket *inactivity*
 timeout, so a slow-dripping server can hold a request open indefinitely -
@@ -56,6 +61,7 @@ Operational knobs. All optional, all defined in one place - `LIMITS` in
 | `MAX_PAGE_BYTES` | `3145728` | Cap on a downloaded page or feed. |
 | `MAX_IMAGE_BYTES` | `8388608` | Cap on a downloaded image. |
 | `SHARP_CONCURRENCY` | `1` | libvips worker threads. Its own default is one per CPU, *per process*. |
+| `FEED_ITEM_CONCURRENCY` | `3` | Articles fetched at once within a feed. Useful range 1-5; past 5 the sites throttle and it gets slower. |
 
 A non-numeric or non-positive value throws at startup rather than silently
 falling back to the default.

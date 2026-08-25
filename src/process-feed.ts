@@ -45,50 +45,60 @@ export async function processFeed(
   // items are ordered oldest first, so this is the newest one we got through
   let lastProcessedLink: string | undefined;
 
-  for (const newsFeedItem of newsFeedItems) {
+  const batchSize = Math.max(1, LIMITS.FEED_ITEM_CONCURRENCY);
+
+  // Batched rather than a rolling pool on purpose: the bookmark may only
+  // advance over a contiguous run of finished items, and a batch boundary is a
+  // point where that is trivially true even if the deadline stops us here.
+  for (let start = 0; start < newsFeedItems.length; start += batchSize) {
     if (isPastDeadline()) {
       logger.warn(`Deadline reached while reading feed: ${feed.url}`);
       break;
     }
 
-    let newsItem: NewsItem | undefined;
+    const batch = newsFeedItems.slice(start, start + batchSize);
 
-    try {
-      newsItem = await withTimeout(
-        processFeedItem(
-          dataService,
-          imagesStorage,
-          topicsService,
-          newsFeedItem,
-          {
-            country: source.country,
-            lang: feed.language,
-            sourceId: source.id
-          }
-        ),
-        // a single article must never stall the whole locale: everything it
-        // does is bounded already, but third party code can still sit there
-        LIMITS.ITEM_TIMEOUT_MS,
-        `process feed item: ${newsFeedItem.link}`
-      );
-    } catch (e: any) {
-      logger.error(
-        `error on process feed item: ${e.message}, ${newsFeedItem.link}`,
-        e
-      );
-      continue;
-    } finally {
-      // advance the bookmark on failures too, otherwise a permanently broken
-      // article is re-fetched on every single run from now on
-      lastProcessedLink = newsFeedItem.link;
+    const results = await Promise.all(
+      batch.map(async (newsFeedItem) => {
+        try {
+          return await withTimeout(
+            processFeedItem(
+              dataService,
+              imagesStorage,
+              topicsService,
+              newsFeedItem,
+              {
+                country: source.country,
+                lang: feed.language,
+                sourceId: source.id
+              }
+            ),
+            // a single article must never stall the whole locale: everything it
+            // does is bounded already, but third party code can still sit there
+            LIMITS.ITEM_TIMEOUT_MS,
+            `process feed item: ${newsFeedItem.link}`
+          );
+        } catch (e: any) {
+          logger.error(
+            `error on process feed item: ${e.message}, ${newsFeedItem.link}`,
+            e
+          );
+          return undefined;
+        }
+      })
+    );
+
+    // advance past failures too, otherwise a permanently broken article is
+    // re-fetched on every single run from now on
+    lastProcessedLink = batch[batch.length - 1].link;
+
+    for (const newsItem of results) {
+      if (!newsItem) {
+        continue;
+      }
+      newsItems.push(newsItem);
+      debug(`Saved news: ${newsItem.urlHost}${newsItem.urlPath}`);
     }
-    if (!newsItem) {
-      continue;
-    }
-
-    newsItems.push(newsItem);
-
-    debug(`Saved news: ${newsItem.urlHost}${newsItem.urlPath}`);
   }
 
   if (lastProcessedLink) {

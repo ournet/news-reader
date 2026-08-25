@@ -62,7 +62,16 @@ export const LIMITS = {
   MAX_IMAGE_BYTES: envInt("MAX_IMAGE_BYTES", 1024 * 1024 * 8),
 
   /** libvips worker threads. Its own default is one per CPU, per process. */
-  SHARP_CONCURRENCY: envInt("SHARP_CONCURRENCY", 1)
+  SHARP_CONCURRENCY: envInt("SHARP_CONCURRENCY", 1),
+
+  /**
+   * Articles fetched at once within a feed. The work is network bound - our own
+   * HTTP is ~360ms of a ~4s article, the rest is entitizer, dynamo, ES and S3 -
+   * so this buys wall clock cheaply. Every article in a batch hits the *same*
+   * host, though, and past 5 the sites start throttling and it gets slower, so
+   * the useful range is 1 to 5.
+   */
+  FEED_ITEM_CONCURRENCY: envInt("FEED_ITEM_CONCURRENCY", 3)
 };
 
 export interface Config {
