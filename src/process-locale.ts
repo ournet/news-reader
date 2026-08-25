@@ -10,6 +10,8 @@ import { createEvent } from "./steps/create-event";
 import { Config, isValidLocale } from "./config";
 import { logger } from "./logger";
 import { isPastDeadline } from "./deadline";
+import { getFeedStartIndex, setFeedStartIndex } from "./functions/feeds-cursor";
+import { NewsFeed, NewsSource } from "./functions/read-news-feed";
 
 export async function processLocale(
   dataService: DataService,
@@ -29,73 +31,85 @@ export async function processLocale(
     processFeedMinDate.getMinutes() - config.NEWS_PAST_MINUTES
   );
 
+  // one flat list, so the run can start where the previous one stopped
+  const feeds: { source: NewsSource; feed: NewsFeed }[] = [];
+  for (const source of sources) {
+    for (const feed of source.feeds) {
+      if (feed.language === locale.lang) {
+        feeds.push({ source, feed });
+      }
+    }
+  }
+
+  const totalFeeds = feeds.length;
+  const startIndex = await getFeedStartIndex(locale, totalFeeds);
+
   let processedFeeds = 0;
   let totalNews = 0;
   let totalEvents = 0;
   const startedAt = Date.now();
-  const totalFeeds = sources.reduce(
-    (count, source) =>
-      count + source.feeds.filter((f) => f.language === locale.lang).length,
-    0
+
+  logger.info(
+    `${totalFeeds} feeds to read for ${locale.lang}-${locale.country}, starting at #${startIndex}`
   );
 
-  logger.info(`${totalFeeds} feeds to read for ${locale.lang}-${locale.country}`);
+  for (let i = 0; i < totalFeeds; i++) {
+    const { source, feed } = feeds[(startIndex + i) % totalFeeds];
 
-  for (const source of sources) {
-    for (const feed of source.feeds) {
-      if (feed.language !== locale.lang) {
-        continue;
-      }
-      if (isPastDeadline()) {
-        // the next cron tick picks these feeds up; running past our slot only
-        // means overlapping with it
-        logger.warn(`Deadline reached with ${totalFeeds - processedFeeds} feeds left`);
-        return summarize();
-      }
-      processedFeeds++;
-      const feedStartedAt = Date.now();
-      debug(`Start processing feed: ${source.id}, ${feed.url}`);
-      const items = await processFeed(
-        dataService,
-        imagesStorage,
-        topicsService,
-        feed,
-        source,
-        {
-          minDate: processFeedMinDate
-        }
+    if (isPastDeadline()) {
+      // the next cron tick resumes from here rather than from the top, so the
+      // tail of the list is not starved
+      logger.warn(
+        `Deadline reached with ${totalFeeds - processedFeeds} feeds left`
       );
-      debug(`${items.length} items readed`);
-      totalNews += items.length;
-
-      let events = 0;
-      for (const item of items) {
-        if (isPastDeadline()) {
-          break;
-        }
-        try {
-          const event = await createEvent(dataService, imagesStorage, item, {
-            minEventNews: config.MIN_EVENT_NEWS,
-            minSearchScore: config.NEWS_SEARCH_MIN_SCORE
-          });
-          if (event) {
-            events++;
-          }
-        } catch (e: any) {
-          logger.error(`Error on createEvent: ${e.message}`, e);
-        }
-      }
-      totalEvents += events;
-
-      // one line per feed: a run is otherwise silent for minutes, which makes
-      // "still working" and "stuck" look identical from the outside
-      logger.info(
-        `[${processedFeeds}/${totalFeeds}] ${source.id} news=${items.length} events=${events} ${seconds(
-          feedStartedAt
-        )}s rss=${rssMb()}MB`
-      );
+      break;
     }
+
+    processedFeeds++;
+    const feedStartedAt = Date.now();
+    debug(`Start processing feed: ${source.id}, ${feed.url}`);
+    const items = await processFeed(
+      dataService,
+      imagesStorage,
+      topicsService,
+      feed,
+      source,
+      {
+        minDate: processFeedMinDate
+      }
+    );
+    debug(`${items.length} items readed`);
+    totalNews += items.length;
+
+    let events = 0;
+    for (const item of items) {
+      if (isPastDeadline()) {
+        break;
+      }
+      try {
+        const event = await createEvent(dataService, imagesStorage, item, {
+          minEventNews: config.MIN_EVENT_NEWS,
+          minSearchScore: config.NEWS_SEARCH_MIN_SCORE
+        });
+        if (event) {
+          events++;
+        }
+      } catch (e: any) {
+        logger.error(`Error on createEvent: ${e.message}`, e);
+      }
+    }
+    totalEvents += events;
+
+    // one line per feed: a run is otherwise silent for minutes, which makes
+    // "still working" and "stuck" look identical from the outside
+    logger.info(
+      `[${processedFeeds}/${totalFeeds}] ${source.id} news=${items.length} events=${events} ${seconds(
+        feedStartedAt
+      )}s rss=${rssMb()}MB`
+    );
   }
+
+  await setFeedStartIndex(locale, startIndex + processedFeeds, totalFeeds);
 
   summarize();
 
