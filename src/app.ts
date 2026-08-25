@@ -102,6 +102,24 @@ function finish(code: number) {
   process.exit(code);
 }
 
+/**
+ * Without these two, a rejection nobody awaited or a throw from a callback
+ * kills the process with a bare stack trace and no END line, which from the
+ * outside is indistinguishable from a run that simply stopped.
+ */
+process.on("unhandledRejection", (reason: any) => {
+  logger.error(
+    `UNHANDLED REJECTION ${localeName}: ${(reason && reason.message) || reason}`,
+    reason
+  );
+  finish(4);
+});
+
+process.on("uncaughtException", (e: Error) => {
+  logger.error(`UNCAUGHT EXCEPTION ${localeName}: ${e.message}`, e);
+  finish(5);
+});
+
 start()
   .then(() => finish(0))
   .catch((e) => {
